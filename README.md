@@ -10,7 +10,7 @@ Se realizó:
 - Creación de una animacion para el menu desplegable con Thread.
 
 | Imagen 1 | Imagen 2 | Imagen 3 |
-| ------------- |:-------------:| -----:|
+| ------------- |:-------------:| :-----:|
 | ![][1st_img_1] | ![][1st_img_2] | ![][1st_img_3] |
 
 ## 2nd version
@@ -25,7 +25,7 @@ para esta segunda version se realizo tambien:
 - La creacion de la plantilla para el reporte en Pdf.
 
 | Imagen 1 | Imagen 2 | Imagen 3 | Imagen 4 |
-| ------------- |:-------------:|:-------------:| -----:|
+| ------------- |:-------------:|:-------------:|:-------------:|
 | ![][2nd_img_1] | ![][2nd_img_2] | ![][2nd_img_3] | ![][2nd_img_4] |
 
 ---
