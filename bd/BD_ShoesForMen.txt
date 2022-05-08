@@ -277,7 +277,7 @@ end;
 # la creacion de distrito.
 # call pa_buscar_empleado_por_distrito('e');
 
-call pa_insertar_empleado('EM001','KEVIN','BASILIO','44455500','JR. 2 DE MAYO #43','999333555','paledot01@gmail.com','DI004','CAR01','','',1);
+call pa_insertar_empleado('EM001','KEVIN','BASILIO','44455500','JR. 2 DE MAYO #43','999333555','paledot01@gmail.com','DI004','CAR01','admin','admin',1);
 call pa_insertar_empleado('EM002','ANGELICA','ANDRADE CERNA','40138356','JR.M ANUEL PRADO #250','970315487','ANDRADE@gmail.com','DI005','CAR02','angelicaa','40138356',0);
 call pa_insertar_empleado('EM003','ROSAURA','TARAZONA RIVAS','40457140','JR. LOS ROSALES #350', '993315487','TARANOZA@gmail.com','DI002','CAR02','rosaurat','40457140',1);
 call pa_insertar_empleado('EM004','RUTH','TARDIO HUAMAN','40198740','AV. JOSE BALTA #170', '990115487','TARDIO@gmail.com','DI004','CAR02','rutht','40198740',0);
