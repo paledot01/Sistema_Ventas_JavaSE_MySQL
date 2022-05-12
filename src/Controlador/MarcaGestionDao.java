@@ -49,14 +49,14 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia generarCodigo() - MARCA" + e.getMessage());
+			System.out.println("Error en la sentencia generarCodigo() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
 				if( cs != null ) cs.close();
 				if( cn != null ) cn.close();
 			} catch (SQLException e2) {
-				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+				System.out.println("Error al cerrar la base de datos --> " + e2.getMessage());
 			}
 		}
 		return codMarca;
@@ -160,7 +160,9 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 	
 	
 	@Override
-	public Marca buscar(String valor) {
+	public ArrayList<Marca> buscar(String valor) {
+		
+		lista = new ArrayList<Marca>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -169,26 +171,27 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			
 			rs = cs.executeQuery();
 			
-			if(rs.next()){
+			while(rs.next()){
 				
 				obj = new Marca(
 						rs.getString(1),
 						rs.getString(2)
 				);
+				lista.add(obj);
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia buscar() - MARCA" + e.getMessage());
+			System.out.println("Error en la sentencia buscar() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
 				if( cs != null ) cs.close();
 				if( cn != null ) cn.close();
 			} catch (SQLException e2) {
-				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+				System.out.println("Error al cerrar la base de datos --> " + e2.getMessage());
 			}
 		}
-		return obj;
+		return lista;
 	
 	}
 

@@ -16,6 +16,8 @@ public interface MarcaInterfaceDao {
 	
 	public int actualizar(Marca c);
 	
-	public Marca buscar(String valor); // busca por codigo O descripcion
+	public ArrayList<Marca> buscar(String valor);
+	
+//	public Marca buscar(String valor); // busca por codigo O descripcion
 	
 }

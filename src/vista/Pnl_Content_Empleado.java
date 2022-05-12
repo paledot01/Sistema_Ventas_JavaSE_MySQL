@@ -94,7 +94,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private JCheckBox chEstado;
 	private JButton btnBuscar;
 	
-	RendererTable r = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	RendererTable render = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	private JButton btnExportarTXT;
 	private JButton btnExportarXLS;
 	private JButton btnExportarPDF;
@@ -126,14 +126,13 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		pnl_empleado_main.add(scrollPane);
 		
 		tblEmpleado = new JTable();
+		tblEmpleado.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tblEmpleado.setBorder(new LineBorder(new Color(95, 103, 112)));
 		tblEmpleado.addMouseListener(this);
 		tblEmpleado.addKeyListener(this);
 		tblEmpleado.setFillsViewportHeight(true);
+		tblEmpleado.setDefaultRenderer(Object.class, render); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		scrollPane.setViewportView(tblEmpleado);
-		tblEmpleado.setDefaultRenderer(Object.class, r); // <<<<<<<<<<<<<<<<<<<<
-		
-
 		
 		pnl_datos = new JPanel();
 		pnl_datos.setBorder(new LineBorder(new Color(95, 103, 112), 2, true));
@@ -339,11 +338,11 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		pnl_datos.add(btnModificar);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setVisible(false);
 		btnCancelar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Empleado.class.getResource("/img/cancelarr.png")));
 		btnCancelar.addActionListener(this);
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelar.setVisible(false);
 		btnCancelar.setBounds(10, 151, 116, 30);
 		pnl_datos.add(btnCancelar);
 		
@@ -387,12 +386,12 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtBuscar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		txtBuscar.setDisabledTextColor(Color.GRAY);
 		txtBuscar.setColumns(10);
-		txtBuscar.setBounds(90, 11, 239, 22);
+		txtBuscar.setBounds(78, 11, 251, 22);
 		panel.add(txtBuscar);
 		
 		lblBuscar = new JLabel("Buscar :");
 		lblBuscar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblBuscar.setBounds(10, 11, 70, 22);
+		lblBuscar.setBounds(10, 11, 58, 22);
 		panel.add(lblBuscar);
 		
 		// RADIO BUTTONS DE BUSQUEDA
@@ -498,7 +497,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		modelo.setRowCount(0);
 		ArrayList<Empleado> data = gEmpleado.listar();
 		
-		// Se muestra primero los ultimos, los primero abajo
+		/** Para mostrar los primeros al final y los ultimos al inicio **/
 		for (int i = data.size()-1; i >=0; i--) {
 			
 			Object fila[] = {
@@ -700,6 +699,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}else{
 			codCargo = c.getCod_cargo();
 		}
+		
 		// -------------->
 		if(codigo.equals("") || nombre.equals("") || apellidos.equals("") || dni.equals("")){
 			mensajeError("Error en el ingreso de Datos");
@@ -831,7 +831,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 
 			int posfila;
 			posfila = tblEmpleado.getSelectedRow();
-			// al presionar la tabla en una zona que no posee datos, la fila seleccionada es "-1"
+			// si presionas la tabla al iniciar en una zona que no posee datos, la fila seleccionada es "-1"
 			if(btnNuevo.isEnabled() && posfila != -1){
 				mostrarDatosTextBox(posfila);
 				btnModificar.setEnabled(true);
@@ -849,6 +849,12 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				mostrarResultadoBusquedaTabla(data);
 			}
 		}
+
+		
+	}
+	public void keyReleased(KeyEvent arg0) {
+		// Por defecto puedes usar el teclado para moverte en la tabla pero los datos de la fila no se muestran en las cajas de textos.
+		// Existe un desfase de una fila cuando este evento se realiza en " keyPressed "
 		if (arg0.getSource() == tblEmpleado) {
 			int posfila;
 			posfila = tblEmpleado.getSelectedRow();
@@ -858,9 +864,6 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				btnModificar.setEnabled(true);
 			}
 		}
-		
-	}
-	public void keyReleased(KeyEvent arg0) {
 		
 	}
 	public void keyTyped(KeyEvent arg0) {

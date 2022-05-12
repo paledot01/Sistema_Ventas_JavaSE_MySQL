@@ -2,63 +2,61 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import Controlador.MarcaGestionDao;
-import entidad.Marca;
-
 import java.awt.SystemColor;
-import java.util.ArrayList;
 import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JTabbedPane;
-import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import javax.swing.JSplitPane;
-import javax.swing.border.EtchedBorder;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
-public class Pnl_Content_Calzado extends JPanel {
+public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 	private JPanel pnl_calzado_main;
-	private JTable tblCalzado;
-	private JScrollPane scrollPane;
-
-	// Modelo tabla
-	private DefaultTableModel modeloCalzado = new DefaultTableModel();
-	private DefaultTableModel modeloMarca = new DefaultTableModel();
-	private MarcaGestionDao gMarca = new MarcaGestionDao();
-	private JLabel lblCodigo;
-	private JLabel lblModelo;
-	private JLabel lblTalla;
-	private JLabel lblColor;
-	private JLabel lblStock;
-	private JLabel lblNewLabel_1;
+	private JLabel lblCalzado;
+	private JPanel pnl_datos_calzado;
+	private JPanel pnl_codigo_calzado;
 	private JTextField textField;
+	private JLabel label;
+	private JLabel lblModelo;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private JLabel lblColor;
 	private JTextField textField_3;
-	private JPanel panel_2;
-	private JLabel lblCalzado;
-	private JPanel panel_1;
-	private JPanel panel_3;
-	private JLabel lblBuscar;
+	private JLabel lblTalla;
+	private JButton btnBuscar;
+	private JPanel panel;
+	private JLabel btnModelo;
+	private JButton button_2;
 	private JTextField textField_6;
-	private JButton btnNewButton;
-	private JLabel lblCodMarca;
-	private JLabel lblNombreMarca;
-	private JTextField txtNombreMarca;
-	private JTextField txtCodMarca;
-	private JTable tblMarca;
-	private JScrollPane scrollPane_1;
-	private JButton btnNewButton_1;
-	private JButton btnX;
-	private JButton btnG;
-	private JButton btnM;
-	
+	private JRadioButton rdbtnNewRadioButton;
+	public static JPanel pnl_mod_mar_cat;
+	private JLabel lblStock;
+	private JLabel lblBuscar;
+	private JButton button_5;
+	private JRadioButton rdbtnMarca;
+	private JRadioButton rdbtnCategoria;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private JTextField textField_4;
+	private JPanel panel_1;
+	private JRadioButton rdbtnTalla;
+	private JButton button;
+	private JButton button_1;
+	private JButton button_3;
+	private JRadioButton rdbtnColor;
+	private JRadioButton radioButton;
+	private JButton button_4;
+	private JButton button_6;
+	private JButton button_7;
+	private JLabel btnCategoria;
+	private JLabel btnMarca;
+
 	/**
 	 * Create the panel.
 	 */
@@ -66,219 +64,287 @@ public class Pnl_Content_Calzado extends JPanel {
 		setLayout(null);
 		
 		pnl_calzado_main = new JPanel();
+		pnl_calzado_main.setBorder(new LineBorder(new Color( 95, 103, 112 )));
 		pnl_calzado_main.setBounds(0, 0, 870, 670);
 		add(pnl_calzado_main);
 		pnl_calzado_main.setLayout(null);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 198, 850, 245);
-		pnl_calzado_main.add(scrollPane);
-		
-		tblCalzado = new JTable();
-		tblCalzado.setEnabled(false);
-		tblCalzado.setFillsViewportHeight(true);
-		scrollPane.setViewportView(tblCalzado);
-		
-		// Modelo tabla calzado
-		modeloCalzado.addColumn("CODIGO");
-		modeloCalzado.addColumn("MARCA");
-		modeloCalzado.addColumn("MODELO");
-		modeloCalzado.addColumn("TALLA");
-		modeloCalzado.addColumn("COLOR");
-		modeloCalzado.addColumn("CATEGORIA");
-		modeloCalzado.addColumn("P.VENTA");
-		modeloCalzado.addColumn("STOCK");
-		
-		tblCalzado.setModel(modeloCalzado);
-		
-		panel_2 = new JPanel();
-		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.WHITE, Color.GRAY));
-		panel_2.setBounds(10, 454, 850, 205);
-		pnl_calzado_main.add(panel_2);
-		panel_2.setLayout(null);
-		
-		lblCodMarca = new JLabel("Codigo");
-		lblCodMarca.setEnabled(false);
-		lblCodMarca.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblCodMarca.setBounds(10, 11, 60, 22);
-		panel_2.add(lblCodMarca);
-		
-		lblNombreMarca = new JLabel("Nombre");
-		lblNombreMarca.setEnabled(false);
-		lblNombreMarca.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblNombreMarca.setBounds(10, 44, 60, 22);
-		panel_2.add(lblNombreMarca);
-		
-		txtNombreMarca = new JTextField();
-		txtNombreMarca.setEnabled(false);
-		txtNombreMarca.setHorizontalAlignment(SwingConstants.CENTER);
-		txtNombreMarca.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		txtNombreMarca.setColumns(10);
-		txtNombreMarca.setBounds(68, 44, 114, 22);
-		panel_2.add(txtNombreMarca);
-		
-		txtCodMarca = new JTextField();
-		txtCodMarca.setText("xxxxx");
-		txtCodMarca.setHorizontalAlignment(SwingConstants.CENTER);
-		txtCodMarca.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		txtCodMarca.setEnabled(false);
-		txtCodMarca.setDisabledTextColor(Color.GRAY);
-		txtCodMarca.setColumns(10);
-		txtCodMarca.setBounds(68, 12, 114, 22);
-		panel_2.add(txtCodMarca);
-		
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 83, 254, 111);
-		panel_2.add(scrollPane_1);
-		
-		tblMarca = new JTable();
-		tblMarca.setFillsViewportHeight(true);
-		scrollPane_1.setViewportView(tblMarca);
 		
 		lblCalzado = new JLabel("CALZADO");
 		lblCalzado.setOpaque(true);
 		lblCalzado.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCalzado.setForeground(SystemColor.menu);
 		lblCalzado.setFont(new Font("Courier New", Font.BOLD, 20));
-		lblCalzado.setBackground(SystemColor.controlDkShadow);
+		lblCalzado.setBackground(new Color(95, 103, 112));
 		lblCalzado.setBounds(10, 11, 850, 24);
 		pnl_calzado_main.add(lblCalzado);
 		
-		panel_1 = new JPanel();
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.WHITE, Color.GRAY));
-		panel_1.setBounds(10, 46, 850, 45);
-		pnl_calzado_main.add(panel_1);
-		panel_1.setLayout(null);
+		pnl_datos_calzado = new JPanel();
+		pnl_datos_calzado.setBorder(new LineBorder(new Color(95, 103, 112), 2));
+		pnl_datos_calzado.setBounds(10, 46, 340, 329);
+		pnl_calzado_main.add(pnl_datos_calzado);
+		pnl_datos_calzado.setLayout(null);
 		
-		lblCodigo = new JLabel("Codigo");
-		lblCodigo.setBounds(10, 11, 60, 22);
-		panel_1.add(lblCodigo);
-		lblCodigo.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		
-		lblNewLabel_1 = new JLabel("CZ10001");
-		lblNewLabel_1.setBounds(80, 11, 72, 22);
-		panel_1.add(lblNewLabel_1);
-		lblNewLabel_1.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblNewLabel_1.setEnabled(false);
-		
-		lblModelo = new JLabel("Modelo");
-		lblModelo.setBounds(162, 11, 60, 22);
-		panel_1.add(lblModelo);
-		lblModelo.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		pnl_codigo_calzado = new JPanel();
+		pnl_codigo_calzado.setLayout(null);
+		pnl_codigo_calzado.setBackground(new Color(220, 220, 220));
+		pnl_codigo_calzado.setBounds(10, 11, 165, 36);
+		pnl_datos_calzado.add(pnl_codigo_calzado);
 		
 		textField = new JTextField();
-		textField.setBounds(220, 11, 100, 22);
-		panel_1.add(textField);
+		textField.setText("xxxxx");
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField.setEnabled(false);
+		textField.setDisabledTextColor(Color.GRAY);
 		textField.setColumns(10);
+		textField.setBounds(63, 7, 91, 22);
+		pnl_codigo_calzado.add(textField);
+		
+		label = new JLabel("Codigo");
+		label.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		label.setBounds(10, 7, 42, 22);
+		pnl_codigo_calzado.add(label);
+		
+		lblModelo = new JLabel("Modelo *");
+		lblModelo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblModelo.setEnabled(false);
+		lblModelo.setBounds(10, 64, 55, 22);
+		pnl_datos_calzado.add(lblModelo);
+		
+		lblColor = new JLabel("Color *");
+		lblColor.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblColor.setEnabled(false);
+		lblColor.setBounds(10, 90, 60, 22);
+		pnl_datos_calzado.add(lblColor);
 		
 		lblTalla = new JLabel("Talla");
-		lblTalla.setBounds(330, 11, 53, 22);
-		panel_1.add(lblTalla);
-		lblTalla.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(393, 11, 100, 22);
-		panel_1.add(textField_1);
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_1.setColumns(10);
-		
-		lblColor = new JLabel("Color");
-		lblColor.setBounds(503, 11, 53, 22);
-		panel_1.add(lblColor);
-		lblColor.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		
-		textField_2 = new JTextField();
-		textField_2.setBounds(566, 11, 100, 22);
-		panel_1.add(textField_2);
-		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_2.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_2.setColumns(10);
+		lblTalla.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblTalla.setEnabled(false);
+		lblTalla.setBounds(10, 116, 40, 22);
+		pnl_datos_calzado.add(lblTalla);
 		
 		lblStock = new JLabel("Stock");
-		lblStock.setBounds(676, 11, 53, 22);
-		panel_1.add(lblStock);
-		lblStock.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		lblStock.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblStock.setEnabled(false);
+		lblStock.setBounds(175, 116, 40, 22);
+		pnl_datos_calzado.add(lblStock);
+		
+		lblBuscar = new JLabel("BUSCAR");
+		lblBuscar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblBuscar.setEnabled(false);
+		lblBuscar.setBounds(10, 203, 55, 22);
+		pnl_datos_calzado.add(lblBuscar);
+		
+		textField_1 = new JTextField();
+		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_1.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField_1.setDisabledTextColor(Color.GRAY);
+		textField_1.setColumns(10);
+		textField_1.setBounds(75, 64, 190, 22);
+		pnl_datos_calzado.add(textField_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_2.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField_2.setDisabledTextColor(Color.GRAY);
+		textField_2.setColumns(10);
+		textField_2.setBounds(75, 90, 255, 22);
+		pnl_datos_calzado.add(textField_2);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(739, 11, 101, 22);
-		panel_1.add(textField_3);
 		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_3.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField_3.setDisabledTextColor(Color.GRAY);
 		textField_3.setColumns(10);
-		
-		panel_3 = new JPanel();
-		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.WHITE, Color.GRAY));
-		panel_3.setLayout(null);
-		panel_3.setBounds(10, 102, 850, 45);
-		pnl_calzado_main.add(panel_3);
-		
-		lblBuscar = new JLabel("Buscar");
-		lblBuscar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblBuscar.setBounds(10, 11, 60, 22);
-		panel_3.add(lblBuscar);
+		textField_3.setBounds(75, 116, 90, 22);
+		pnl_datos_calzado.add(textField_3);
 		
 		textField_6 = new JTextField();
 		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_6.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField_6.setDisabledTextColor(Color.GRAY);
 		textField_6.setColumns(10);
-		textField_6.setBounds(80, 12, 143, 22);
-		panel_3.add(textField_6);
+		textField_6.setBounds(75, 203, 192, 22);
+		pnl_datos_calzado.add(textField_6);
 		
-		btnNewButton = new JButton("B");
-		btnNewButton.setBounds(233, 11, 39, 23);
-		panel_3.add(btnNewButton);
+		btnBuscar = new JButton("Select");
+		btnBuscar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnBuscar.setBounds(265, 63, 65, 24);
+		pnl_datos_calzado.add(btnBuscar);
 		
-		modeloMarca.addColumn("CODIGO");
-		modeloMarca.addColumn("NOMBRE");
-		tblMarca.setModel(modeloMarca);
+		button_2 = new JButton("");
+		button_2.setBounds(10, 151, 30, 30);
+		pnl_datos_calzado.add(button_2);
 		
-		btnNewButton_1 = new JButton("N");
-		btnNewButton_1.setBounds(200, 11, 39, 23);
-		panel_2.add(btnNewButton_1);
+		button_5 = new JButton("");
+		button_5.setBounds(277, 202, 53, 53);
+		pnl_datos_calzado.add(button_5);
 		
-		btnX = new JButton("X");
-		btnX.setVisible(false);
-		btnX.setBounds(200, 44, 39, 23);
-		panel_2.add(btnX);
+		rdbtnNewRadioButton = new JRadioButton("Codigo");
+		rdbtnNewRadioButton.setBounds(10, 232, 65, 23);
+		pnl_datos_calzado.add(rdbtnNewRadioButton);
 		
-		btnG = new JButton("G");
-		btnG.setBounds(249, 11, 39, 23);
-		panel_2.add(btnG);
+		rdbtnMarca = new JRadioButton("Modelo");
+		rdbtnMarca.setBounds(100, 232, 65, 23);
+		pnl_datos_calzado.add(rdbtnMarca);
 		
-		btnM = new JButton("M");
-		btnM.setBounds(249, 44, 40, 23);
-		panel_2.add(btnM);
+		rdbtnCategoria = new JRadioButton("Categoria");
+		rdbtnCategoria.setBounds(190, 232, 75, 23);
+		pnl_datos_calzado.add(rdbtnCategoria);
 		
-		mostrarDataTabla();
+		rdbtnTalla = new JRadioButton("Talla");
+		rdbtnTalla.setBounds(100, 258, 65, 23);
+		pnl_datos_calzado.add(rdbtnTalla);
+		
+		textField_4 = new JTextField();
+		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_4.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		textField_4.setDisabledTextColor(Color.GRAY);
+		textField_4.setColumns(10);
+		textField_4.setBounds(240, 116, 90, 22);
+		pnl_datos_calzado.add(textField_4);
+		
+		panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(10, 192, 320, 2);
+		pnl_datos_calzado.add(panel_1);
+		
+		button = new JButton("");
+		button.setBounds(300, 151, 30, 30);
+		pnl_datos_calzado.add(button);
+		
+		button_1 = new JButton("");
+		button_1.setBounds(260, 151, 30, 30);
+		pnl_datos_calzado.add(button_1);
+		
+		button_3 = new JButton("");
+		button_3.setBounds(220, 151, 30, 30);
+		pnl_datos_calzado.add(button_3);
+		
+		rdbtnColor = new JRadioButton("Color");
+		rdbtnColor.setBounds(190, 258, 65, 23);
+		pnl_datos_calzado.add(rdbtnColor);
+		
+		radioButton = new JRadioButton("Marca");
+		radioButton.setBounds(10, 258, 65, 23);
+		pnl_datos_calzado.add(radioButton);
+		
+		button_4 = new JButton("");
+		button_4.setBounds(277, 288, 53, 30);
+		pnl_datos_calzado.add(button_4);
+		
+		button_6 = new JButton("");
+		button_6.setBounds(214, 288, 53, 30);
+		pnl_datos_calzado.add(button_6);
+		
+		button_7 = new JButton("");
+		button_7.setBounds(151, 288, 53, 30);
+		pnl_datos_calzado.add(button_7);
+		
+		panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(95, 103, 112), 2));
+		panel.setBounds(360, 46, 500, 329);
+		pnl_calzado_main.add(panel);
+		panel.setLayout(null);
+		
+		btnModelo = new JLabel("MODELO");
+		btnModelo.addMouseListener(this);
+		btnModelo.setBounds(0, 0, 166, 25);
+		panel.add(btnModelo);
+		btnModelo.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnModelo.setForeground(SystemColor.text);
+		btnModelo.setHorizontalAlignment(SwingConstants.CENTER);
+		btnModelo.setOpaque(true);
+		btnModelo.setBackground(new Color(95, 103, 112));
+		
+		btnMarca = new JLabel("MARCA");
+		btnMarca.addMouseListener(this);
+		btnMarca.setOpaque(true);
+		btnMarca.setHorizontalAlignment(SwingConstants.CENTER);
+		btnMarca.setForeground(Color.WHITE);
+		btnMarca.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnMarca.setBackground(new Color(95, 103, 112));
+		btnMarca.setBounds(167, 0, 166, 25);
+		panel.add(btnMarca);
+		
+		btnCategoria = new JLabel("CATEGORIA");
+		btnCategoria.addMouseListener(this);
+		btnCategoria.setOpaque(true);
+		btnCategoria.setHorizontalAlignment(SwingConstants.CENTER);
+		btnCategoria.setForeground(Color.WHITE);
+		btnCategoria.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCategoria.setBackground(new Color(95, 103, 112));
+		btnCategoria.setBounds(334, 0, 166, 25);
+		panel.add(btnCategoria);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 386, 850, 273);
+		pnl_calzado_main.add(scrollPane);
+		
+		table = new JTable();
+		table.setBorder(new LineBorder(new Color(95, 103, 112)));
+		table.setFillsViewportHeight(true);
+		scrollPane.setViewportView(table);
+		
+		pnl_mod_mar_cat = new JPanel();
+		pnl_mod_mar_cat.setBounds(0, 25, 500, 304);
+		panel.add(pnl_mod_mar_cat);
+		
+		Pnl_Content_Calzado_Modelo pnl_modelo = new Pnl_Content_Calzado_Modelo();
+		MostrarPanelModelo( pnl_modelo );
 
 	}
 	
-	public void mostrarDataTabla(){
+	static void MostrarPanelModelo(JPanel p){
 		
-		modeloMarca.setRowCount(0);
-		ArrayList<Marca> data = gMarca.listar();
+		p.setSize(500, 304);
+		p.setLocation(0,0);
+		pnl_mod_mar_cat.removeAll();
+		pnl_mod_mar_cat.setLayout(null);
+		pnl_mod_mar_cat.add(p);
+		pnl_mod_mar_cat.revalidate();
+		pnl_mod_mar_cat.repaint();
 		
-		for (Marca m : data) {
-			
-			Object fila[] = {
-					m.getCod_marca(),
-					m.getNombre_marca(),
-					
-			};
-			modeloMarca.addRow(fila);
-
+	}
+	public void mouseClicked(MouseEvent e) {
+	}
+	public void mouseEntered(MouseEvent e) {
+		if (e.getSource() == btnCategoria) {
+			btnCategoria.setBackground(utils.Library.Verde);
+		}
+		if (e.getSource() == btnMarca) {
+			btnMarca.setBackground(utils.Library.Verde);
+		}
+		if (e.getSource() == btnModelo) {
+			btnModelo.setBackground(utils.Library.Verde);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
+	public void mouseExited(MouseEvent e) {
+		if (e.getSource() == btnModelo) {
+			btnModelo.setBackground(new Color(95, 103, 112));
+		}
+		if (e.getSource() == btnMarca) {
+			btnMarca.setBackground(new Color(95, 103, 112));
+		}
+		if (e.getSource() == btnCategoria) {
+			btnCategoria.setBackground(new Color(95, 103, 112));
+		}
+	}
+	public void mousePressed(MouseEvent e) {
+		if (e.getSource() == btnModelo) {
+			MostrarPanelModelo(new Pnl_Content_Calzado_Modelo());
+		}
+		if (e.getSource() == btnMarca) {
+			MostrarPanelModelo(new Pnl_Content_Calzado_Marca());
+		}
+		if (e.getSource() == btnCategoria) {
+			MostrarPanelModelo(new Pnl_Content_Calzado_Categoria());
+		}
+	}
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
 }
 
 
@@ -301,5 +367,4 @@ public class Pnl_Content_Calzado extends JPanel {
 
 
 
-
-// aa
+//--

@@ -15,7 +15,9 @@ public interface CategoriaInterfaceDao {
 	
 	public int actualizar(Categoria c);
 	
-	public Categoria buscar(String valor); // busca por codigo O descripcion
+	public ArrayList<Categoria> buscar(String valor);
+	
+//	public Categoria buscar(String valor); // busca por codigo O descripcion
 	
 	
 }
