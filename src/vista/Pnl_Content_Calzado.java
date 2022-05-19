@@ -2,6 +2,8 @@ package vista;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -9,54 +11,79 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import Controlador.CalzadoGestionDao;
+import Controlador.ModeloGestionDao;
+import entidad.Calzado;
+import entidad.CalzadoReporte;
+import utils.Library;
+import utils.RendererTableCalzado;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.awt.event.MouseEvent;
 
-public class Pnl_Content_Calzado extends JPanel implements MouseListener {
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
+public class Pnl_Content_Calzado extends JPanel implements MouseListener, ActionListener, KeyListener {
 	private JPanel pnl_calzado_main;
 	private JLabel lblCalzado;
 	private JPanel pnl_datos_calzado;
 	private JPanel pnl_codigo_calzado;
-	private JTextField textField;
+	private JTextField txtCodigo;
 	private JLabel label;
 	private JLabel lblModelo;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	public static JTextField txtModelo;  // <<<<<<<<<<<<<<<<<
+	private JTextField txtColor;
 	private JLabel lblColor;
-	private JTextField textField_3;
+	private JTextField txtTalla;
 	private JLabel lblTalla;
-	private JButton btnBuscar;
 	private JPanel panel;
 	private JLabel btnModelo;
-	private JButton button_2;
-	private JTextField textField_6;
-	private JRadioButton rdbtnNewRadioButton;
+	private JButton btnCancelar;
+	private JTextField txtBuscar;
+	private JRadioButton rbCodigo;
 	public static JPanel pnl_mod_mar_cat;
 	private JLabel lblStock;
 	private JLabel lblBuscar;
-	private JButton button_5;
-	private JRadioButton rdbtnMarca;
-	private JRadioButton rdbtnCategoria;
-	private JTable table;
+	private JButton btnBuscar;
+	private JRadioButton rbModelo;
+	private JRadioButton rbCategoria;
+	private JTable tblCalzado;
 	private JScrollPane scrollPane;
-	private JTextField textField_4;
-	private JPanel panel_1;
-	private JRadioButton rdbtnTalla;
-	private JButton button;
-	private JButton button_1;
-	private JButton button_3;
-	private JRadioButton rdbtnColor;
-	private JRadioButton radioButton;
-	private JButton button_4;
-	private JButton button_6;
-	private JButton button_7;
+	private JTextField txtStock;
+	private JPanel pnlSeparador;
+	private JRadioButton rbTalla;
+	private JButton btnModificar;
+	private JButton btnGuardar;
+	private JButton btnNuevo;
+	private JRadioButton rbColor;
+	private JRadioButton rbMarca;
+	private JButton btnPdf;
+	private JButton btnExcel;
+	private JButton btnTxt;
 	private JLabel btnCategoria;
 	private JLabel btnMarca;
 
+	
+	boolean [] botones = {true, false, false}; // para los botones que muestran un panel, y para que el primer boton inicie y se mantenga activado<<<<
+	private CalzadoGestionDao gCalzado = new CalzadoGestionDao();
+	private ModeloGestionDao gModelo = new ModeloGestionDao();
+	private DefaultTableModel modelo;
+	
+	RendererTableCalzado render = new RendererTableCalzado(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<
+	private JLabel lblElegir;
+	
+	
 	/**
 	 * Create the panel.
 	 */
@@ -90,15 +117,15 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		pnl_codigo_calzado.setBounds(10, 11, 165, 36);
 		pnl_datos_calzado.add(pnl_codigo_calzado);
 		
-		textField = new JTextField();
-		textField.setText("xxxxx");
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField.setEnabled(false);
-		textField.setDisabledTextColor(Color.GRAY);
-		textField.setColumns(10);
-		textField.setBounds(63, 7, 91, 22);
-		pnl_codigo_calzado.add(textField);
+		txtCodigo = new JTextField();
+		txtCodigo.setText("-----");
+		txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCodigo.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtCodigo.setEnabled(false);
+		txtCodigo.setDisabledTextColor(Color.GRAY);
+		txtCodigo.setColumns(10);
+		txtCodigo.setBounds(63, 7, 91, 22);
+		pnl_codigo_calzado.add(txtCodigo);
 		
 		label = new JLabel("Codigo");
 		label.setFont(new Font("Lucida Console", Font.PLAIN, 12));
@@ -135,111 +162,149 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		lblBuscar.setBounds(10, 203, 55, 22);
 		pnl_datos_calzado.add(lblBuscar);
 		
-		textField_1 = new JTextField();
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_1.setDisabledTextColor(Color.GRAY);
-		textField_1.setColumns(10);
-		textField_1.setBounds(75, 64, 190, 22);
-		pnl_datos_calzado.add(textField_1);
+		lblElegir = new JLabel("");
+		lblElegir.setEnabled(false);
+		lblElegir.setHorizontalAlignment(SwingConstants.CENTER);
+		lblElegir.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/flecha_right.png")));
+		lblElegir.setBounds(290, 64, 40, 22);
+		pnl_datos_calzado.add(lblElegir);
 		
-		textField_2 = new JTextField();
-		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_2.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_2.setDisabledTextColor(Color.GRAY);
-		textField_2.setColumns(10);
-		textField_2.setBounds(75, 90, 255, 22);
-		pnl_datos_calzado.add(textField_2);
+		txtModelo = new JTextField();
+		txtModelo.setEnabled(false);
+		txtModelo.setHorizontalAlignment(SwingConstants.CENTER);
+		txtModelo.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtModelo.setDisabledTextColor(Color.GRAY);
+		txtModelo.setColumns(10);
+		txtModelo.setBounds(75, 64, 215, 22);
+		pnl_datos_calzado.add(txtModelo);
 		
-		textField_3 = new JTextField();
-		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_3.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_3.setDisabledTextColor(Color.GRAY);
-		textField_3.setColumns(10);
-		textField_3.setBounds(75, 116, 90, 22);
-		pnl_datos_calzado.add(textField_3);
+		txtColor = new JTextField();
+		txtColor.setEnabled(false);
+		txtColor.setHorizontalAlignment(SwingConstants.CENTER);
+		txtColor.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtColor.setDisabledTextColor(Color.GRAY);
+		txtColor.setColumns(10);
+		txtColor.setBounds(75, 90, 255, 22);
+		pnl_datos_calzado.add(txtColor);
 		
-		textField_6 = new JTextField();
-		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_6.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_6.setDisabledTextColor(Color.GRAY);
-		textField_6.setColumns(10);
-		textField_6.setBounds(75, 203, 192, 22);
-		pnl_datos_calzado.add(textField_6);
+		txtTalla = new JTextField();
+		txtTalla.setEnabled(false);
+		txtTalla.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTalla.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtTalla.setDisabledTextColor(Color.GRAY);
+		txtTalla.setColumns(10);
+		txtTalla.setBounds(75, 116, 90, 22);
+		pnl_datos_calzado.add(txtTalla);
 		
-		btnBuscar = new JButton("Select");
-		btnBuscar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnBuscar.setBounds(265, 63, 65, 24);
+		txtBuscar = new JTextField();
+		txtBuscar.addKeyListener(this);
+		txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+		txtBuscar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtBuscar.setDisabledTextColor(Color.GRAY);
+		txtBuscar.setColumns(10);
+		txtBuscar.setBounds(75, 203, 192, 22);
+		pnl_datos_calzado.add(txtBuscar);
+		
+		txtStock = new JTextField();
+		txtStock.setEnabled(false);
+		txtStock.setHorizontalAlignment(SwingConstants.CENTER);
+		txtStock.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtStock.setDisabledTextColor(Color.GRAY);
+		txtStock.setColumns(10);
+		txtStock.setBounds(240, 116, 90, 22);
+		pnl_datos_calzado.add(txtStock);
+		
+		pnlSeparador = new JPanel();
+		pnlSeparador.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlSeparador.setBounds(10, 192, 320, 2);
+		pnl_datos_calzado.add(pnlSeparador);
+		
+		btnCancelar = new JButton("");
+		btnCancelar.addActionListener(this);
+		btnCancelar.setVisible(false);
+		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/cancelar.png")));
+		btnCancelar.setBounds(10, 151, 30, 30);
+		pnl_datos_calzado.add(btnCancelar);
+		
+		btnNuevo = new JButton("");
+		btnNuevo.addActionListener(this);
+		btnNuevo.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/nuevo.png")));
+		btnNuevo.setBounds(220, 151, 30, 30);
+		pnl_datos_calzado.add(btnNuevo);
+		
+		btnGuardar = new JButton("");
+		btnGuardar.addActionListener(this);
+		btnGuardar.setEnabled(false);
+		btnGuardar.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/guardar.png")));
+		btnGuardar.setBounds(260, 151, 30, 30);
+		pnl_datos_calzado.add(btnGuardar);
+		
+		btnModificar = new JButton("");
+		btnModificar.addActionListener(this);
+		btnModificar.setEnabled(false);
+		btnModificar.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/modificar.png")));
+		btnModificar.setBounds(300, 151, 30, 30);
+		pnl_datos_calzado.add(btnModificar);
+		
+		rbCodigo = new JRadioButton("Codigo");
+		rbCodigo.setBounds(10, 232, 65, 23);
+		pnl_datos_calzado.add(rbCodigo);
+		
+		rbModelo = new JRadioButton("Modelo");
+		rbModelo.setSelected(true);
+		rbModelo.setBounds(100, 232, 65, 23);
+		pnl_datos_calzado.add(rbModelo);
+		
+		rbCategoria = new JRadioButton("Categoria");
+		rbCategoria.setBounds(190, 232, 75, 23);
+		pnl_datos_calzado.add(rbCategoria);
+		
+		rbMarca = new JRadioButton("Marca");
+		rbMarca.setBounds(10, 258, 65, 23);
+		pnl_datos_calzado.add(rbMarca);
+		
+		rbTalla = new JRadioButton("Talla");
+		rbTalla.setBounds(100, 258, 65, 23);
+		pnl_datos_calzado.add(rbTalla);
+		
+		rbColor = new JRadioButton("Color");
+		rbColor.setBounds(190, 258, 65, 23);
+		pnl_datos_calzado.add(rbColor);
+		
+		ButtonGroup grupoBusqueda = new ButtonGroup();
+		grupoBusqueda.add(rbCodigo);
+		grupoBusqueda.add(rbModelo);
+		grupoBusqueda.add(rbCategoria);
+		grupoBusqueda.add(rbMarca);
+		grupoBusqueda.add(rbTalla);
+		grupoBusqueda.add(rbColor);
+		
+		
+		btnBuscar = new JButton("");
+		btnBuscar.addActionListener(this);
+		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/buscar_53px.png")));
+		btnBuscar.setBounds(277, 202, 53, 53);
 		pnl_datos_calzado.add(btnBuscar);
 		
-		button_2 = new JButton("");
-		button_2.setBounds(10, 151, 30, 30);
-		pnl_datos_calzado.add(button_2);
+		btnPdf = new JButton("PDF");
+		btnPdf.addActionListener(this);
+		btnPdf.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPdf.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/pdf_30px.png")));
+		btnPdf.setBounds(255, 288, 75, 30);
+		pnl_datos_calzado.add(btnPdf);
 		
-		button_5 = new JButton("");
-		button_5.setBounds(277, 202, 53, 53);
-		pnl_datos_calzado.add(button_5);
+		btnExcel = new JButton("XLS");
+		btnExcel.setHorizontalAlignment(SwingConstants.LEFT);
+		btnExcel.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/excel_30px.png")));
+		btnExcel.addActionListener(this);
+		btnExcel.setBounds(170, 288, 75, 30);
+		pnl_datos_calzado.add(btnExcel);
 		
-		rdbtnNewRadioButton = new JRadioButton("Codigo");
-		rdbtnNewRadioButton.setBounds(10, 232, 65, 23);
-		pnl_datos_calzado.add(rdbtnNewRadioButton);
-		
-		rdbtnMarca = new JRadioButton("Modelo");
-		rdbtnMarca.setBounds(100, 232, 65, 23);
-		pnl_datos_calzado.add(rdbtnMarca);
-		
-		rdbtnCategoria = new JRadioButton("Categoria");
-		rdbtnCategoria.setBounds(190, 232, 75, 23);
-		pnl_datos_calzado.add(rdbtnCategoria);
-		
-		rdbtnTalla = new JRadioButton("Talla");
-		rdbtnTalla.setBounds(100, 258, 65, 23);
-		pnl_datos_calzado.add(rdbtnTalla);
-		
-		textField_4 = new JTextField();
-		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_4.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		textField_4.setDisabledTextColor(Color.GRAY);
-		textField_4.setColumns(10);
-		textField_4.setBounds(240, 116, 90, 22);
-		pnl_datos_calzado.add(textField_4);
-		
-		panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setBounds(10, 192, 320, 2);
-		pnl_datos_calzado.add(panel_1);
-		
-		button = new JButton("");
-		button.setBounds(300, 151, 30, 30);
-		pnl_datos_calzado.add(button);
-		
-		button_1 = new JButton("");
-		button_1.setBounds(260, 151, 30, 30);
-		pnl_datos_calzado.add(button_1);
-		
-		button_3 = new JButton("");
-		button_3.setBounds(220, 151, 30, 30);
-		pnl_datos_calzado.add(button_3);
-		
-		rdbtnColor = new JRadioButton("Color");
-		rdbtnColor.setBounds(190, 258, 65, 23);
-		pnl_datos_calzado.add(rdbtnColor);
-		
-		radioButton = new JRadioButton("Marca");
-		radioButton.setBounds(10, 258, 65, 23);
-		pnl_datos_calzado.add(radioButton);
-		
-		button_4 = new JButton("");
-		button_4.setBounds(277, 288, 53, 30);
-		pnl_datos_calzado.add(button_4);
-		
-		button_6 = new JButton("");
-		button_6.setBounds(214, 288, 53, 30);
-		pnl_datos_calzado.add(button_6);
-		
-		button_7 = new JButton("");
-		button_7.setBounds(151, 288, 53, 30);
-		pnl_datos_calzado.add(button_7);
+		btnTxt = new JButton("TXT");
+		btnTxt.addActionListener(this);
+		btnTxt.setIcon(new ImageIcon(Pnl_Content_Calzado.class.getResource("/img/texto_30px.png")));
+		btnTxt.setBounds(85, 288, 75, 30);
+		pnl_datos_calzado.add(btnTxt);
 		
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(95, 103, 112), 2));
@@ -255,7 +320,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		btnModelo.setForeground(SystemColor.text);
 		btnModelo.setHorizontalAlignment(SwingConstants.CENTER);
 		btnModelo.setOpaque(true);
-		btnModelo.setBackground(new Color(95, 103, 112));
+		btnModelo.setBackground(Library.Verde); // para que inicie activado.
 		
 		btnMarca = new JLabel("MARCA");
 		btnMarca.addMouseListener(this);
@@ -263,7 +328,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		btnMarca.setHorizontalAlignment(SwingConstants.CENTER);
 		btnMarca.setForeground(Color.WHITE);
 		btnMarca.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnMarca.setBackground(new Color(95, 103, 112));
+		btnMarca.setBackground(Library.Claro_2);
 		btnMarca.setBounds(167, 0, 166, 25);
 		panel.add(btnMarca);
 		
@@ -273,7 +338,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		btnCategoria.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCategoria.setForeground(Color.WHITE);
 		btnCategoria.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnCategoria.setBackground(new Color(95, 103, 112));
+		btnCategoria.setBackground(Library.Claro_2);
 		btnCategoria.setBounds(334, 0, 166, 25);
 		panel.add(btnCategoria);
 		
@@ -281,18 +346,39 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		scrollPane.setBounds(10, 386, 850, 273);
 		pnl_calzado_main.add(scrollPane);
 		
-		table = new JTable();
-		table.setBorder(new LineBorder(new Color(95, 103, 112)));
-		table.setFillsViewportHeight(true);
-		scrollPane.setViewportView(table);
+		// ----------------------------------------------------------
+		tblCalzado = new JTable();
+		tblCalzado.addKeyListener(this);
+		tblCalzado.addMouseListener(this);
+		tblCalzado.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tblCalzado.setBorder(new LineBorder(new Color(95, 103, 112)));
+		tblCalzado.setFillsViewportHeight(true);
+		tblCalzado.setDefaultRenderer(Object.class, render); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		scrollPane.setViewportView(tblCalzado);
+		
+		modelo = new DefaultTableModel();
+		modelo.addColumn("CODIGO");
+		modelo.addColumn("MODELO");
+		modelo.addColumn("MARCA");
+		modelo.addColumn("CATEGORIA");
+		modelo.addColumn("TALLA");
+		modelo.addColumn("COLOR");
+		modelo.addColumn("P.COMPRA");
+		modelo.addColumn("P.VENTA");
+		modelo.addColumn("STOCK");
+		tblCalzado.setModel(modelo);
 		
 		pnl_mod_mar_cat = new JPanel();
 		pnl_mod_mar_cat.setBounds(0, 25, 500, 304);
 		panel.add(pnl_mod_mar_cat);
 		
+		// Panel Modelo por defecto
 		Pnl_Content_Calzado_Modelo pnl_modelo = new Pnl_Content_Calzado_Modelo();
 		MostrarPanelModelo( pnl_modelo );
-
+		
+		// ---------------------------------
+		mostrarDataTabla();
+		
 	}
 	
 	static void MostrarPanelModelo(JPanel p){
@@ -306,6 +392,291 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 		pnl_mod_mar_cat.repaint();
 		
 	}
+	
+	void mostrarDataTabla(){
+		
+		modelo.setRowCount(0);
+		ArrayList<CalzadoReporte> data = gCalzado.listar();
+		
+		for( int i = data.size()-1 ; i>=0 ; i-- ){
+			
+			Object fila[] = {
+					data.get(i).getCod_calzado(),
+					data.get(i).getNombre_modelo(),
+					data.get(i).getNombre_marca(),
+					data.get(i).getDescripcion_categoria(),
+					data.get(i).getTalla(),
+					data.get(i).getColor(),
+					data.get(i).getPrecio_compra(),
+					data.get(i).getPrecio_venta(),
+					data.get(i).getStock()
+					
+			};
+			modelo.addRow(fila);
+			
+		}
+		
+	}
+	
+	public void controles( Boolean activo ){
+		
+		lblModelo.setEnabled(activo);
+		lblColor.setEnabled(activo);
+		lblTalla.setEnabled(activo);
+		lblStock.setEnabled(activo);
+
+		txtModelo.setEnabled(activo);
+		txtColor.setEnabled(activo);
+		txtTalla.setEnabled(activo);
+		txtStock.setEnabled(activo);
+
+		lblBuscar.setEnabled( !activo ); // << desactivado
+		txtBuscar.setEnabled( !activo );
+		btnBuscar.setEnabled( !activo );
+		rbCodigo.setEnabled( !activo );
+		rbModelo.setEnabled( !activo );
+		rbCategoria.setEnabled( !activo );
+		rbMarca.setEnabled( !activo );
+		rbTalla.setEnabled( !activo );
+		rbColor.setEnabled( !activo );
+
+		btnCancelar.setVisible(activo);
+		btnNuevo.setEnabled(!activo); 
+		btnGuardar.setEnabled(activo);
+		
+	}
+	
+	void mensajeError(String mensaje){
+		JOptionPane.showMessageDialog(pnl_calzado_main, mensaje, "Error", 0);
+	}
+	void mensajeExito(String mensaje){
+		JOptionPane.showMessageDialog(pnl_calzado_main, mensaje, "Sistema", 1);
+	}
+	
+	
+	void limpiarDatos(){
+
+		//txtCodigo.setText("xxxxx");
+		txtModelo.setText("");
+		txtColor.setText("");
+		txtTalla.setText("");
+		txtStock.setText("");;
+
+		btnModificar.setEnabled(false);
+
+	}
+	
+	public String leerModelo(){
+		
+		String codModelo = "";
+		
+		try{
+			codModelo = gModelo.buscarPorNombre(txtModelo.getText().trim()).getCod_modelo();
+		}catch (Exception e) {
+			System.out.println("Error en leerModelo() --> " + e.getMessage());
+		}
+		
+		return codModelo;
+	}
+	
+	public String leerColor(){
+		
+		String color = "";
+		
+		if(txtColor.getText().trim().length() > 0){
+			color = txtColor.getText().trim();
+		}
+		
+		return color;
+	}
+	
+	public int leerTalla(){
+		
+		int talla = -1;
+		
+		try{
+			talla = Integer.parseInt(txtTalla.getText());
+			if(talla <= 0){
+				talla = -1;
+			}
+		}catch (NumberFormatException e) {
+			System.out.println("Error en leerTalla() --> " + e.getMessage());
+		}catch (Exception e) {
+			System.out.println("Error en leerTalla() --> " + e.getMessage());
+		}
+			
+		return talla;
+	}
+	
+	public int leerStock(){
+		
+		int stock = -1;
+		
+		try{
+			stock = Integer.parseInt(txtStock.getText());
+			if(stock <= 0){
+				stock = -1;
+			}
+		}catch (NumberFormatException e) {
+			System.out.println("Error en leerStock() --> " + e.getMessage());
+		}catch (Exception e) {
+			System.out.println("Error en leerStock() --> " + e.getMessage());
+		}
+
+		return stock;
+		
+	}
+	
+	
+	public void registrarCalzado(){
+		
+		String codigo = txtCodigo.getText();
+		String codModelo = leerModelo();
+		int talla = leerTalla();
+		String color = leerColor();
+		int stock = leerStock();
+		
+		// -->
+		if(codModelo.equals("") || color.equals("") || talla == -1 || stock == -1 ){
+			mensajeError("Error en el ingreso de Dato");
+		}else{
+			Calzado calzado = new Calzado(codigo, codModelo, talla, color, stock );
+			int respuesta = gCalzado.registrar(calzado);
+			
+			if(respuesta <= 0){
+				mensajeError("Error en el Registro de Datos");
+			}else{
+				mostrarDataTabla();
+				mensajeExito("Registro Exitoso");
+				controles(false);
+				txtCodigo.setText("-----");
+				limpiarDatos();
+				//tblEmpleado.setEnabled(true);
+			}
+		}
+		
+	}
+	
+	void actualizarCalzado(){
+		
+		String codigo = txtCodigo.getText().trim();
+		String codModelo = leerModelo();
+		int talla = leerTalla();
+		String color = leerColor();
+		int stock = leerStock();
+		
+		// -->
+		if(codModelo.equals("") || color.equals("") || talla == -1 || stock == -1 ){
+			mensajeError("Error en el ingreso de Datos");
+		}else{
+			Calzado calzado = new Calzado(codigo, codModelo, talla, color, stock );
+			
+			int respuesta = gCalzado.actualizar(calzado); // unica diferencia con Registrar
+			
+			if( respuesta <= 0 ){
+				mensajeError("Error al actualizar los Datos");
+			}else{
+				mostrarDataTabla();
+				mensajeExito("Actualizacion Exitosa");
+				controles(false);
+				txtCodigo.setText("-----");
+				limpiarDatos();
+			}
+			
+		}
+		
+	}
+	
+	void mostrarDatosTextBox(int posicionFila){
+		
+		// En la fila de la tabla busca el codigo del Calzado, con este codigo se busca en la BD el calzado y trae todos sus datos.
+		Calzado calzado = new Calzado();
+		String codigoFila = tblCalzado.getValueAt(posicionFila, 0).toString();
+		calzado = gCalzado.buscarPorCodigoSimple(codigoFila).get(0);
+		
+		// --
+		txtCodigo.setText( calzado.getCod_calzado() );
+		txtModelo.setText(  gModelo.buscar(calzado.getCod_modelo()).get(0).getNombre_modelo()  );
+		txtTalla.setText( String.valueOf(calzado.getTalla()) );
+		txtColor.setText( calzado.getColor() );
+		txtStock.setText( String.valueOf(calzado.getStock()) );
+		
+	}
+	
+	public ArrayList<CalzadoReporte> resultadoBusqueda(){
+		
+		String valor = txtBuscar.getText().trim();
+		
+		ArrayList<CalzadoReporte> data = new ArrayList<CalzadoReporte>();
+		
+		try {
+			if(rbCodigo.isSelected()){
+				data = gCalzado.buscarPorCodigo(valor);
+			}else if(rbModelo.isSelected()){
+				data = gCalzado.buscarPorModelo(valor);
+			}else if(rbCategoria.isSelected()){
+				data = gCalzado.buscarPorCategoria(valor);
+			}else if(rbMarca.isSelected()){
+				data = gCalzado.buscarPorMarca(valor);
+			}else if(rbTalla.isSelected()){
+				if(valor.equals("")){
+					data = gCalzado.listar();
+				}else{
+					data = gCalzado.buscarPorTalla(Integer.parseInt(valor));
+				}
+			}else if(rbColor.isSelected()){
+				data = gCalzado.buscarPorColor(valor);
+			}
+		}catch (NumberFormatException e) {
+			System.out.println("Error en la busqueda() --> " + e.getMessage());
+		}catch (Exception e) {
+			System.out.println("Error en la busqueda() --> " + e.getMessage());
+		}
+		
+		return data;
+	}
+	
+	void mostrarResultadoBusquedaTabla(ArrayList<CalzadoReporte> data){
+
+		modelo.setRowCount(0);
+		
+		for (CalzadoReporte cr : data) {
+			
+			Object fila[] = {
+					
+					cr.getCod_calzado(),
+					cr.getNombre_modelo(),
+					cr.getNombre_marca(),
+					cr.getDescripcion_categoria(),
+					cr.getTalla(),
+					cr.getColor(),
+					cr.getPrecio_compra(),
+					cr.getPrecio_venta(),
+					cr.getStock()
+			
+			};
+			modelo.addRow(fila);
+		}
+		
+	}
+	
+	void buscarModelo(boolean activo){
+
+		// si un boton que no es el modelo esta activo, entoces se instancia y cambia al panel modelo, lo cual genera una demora al tener que cargar todo el panel con los datos
+		// si no solo se activa los botones. 
+		if(botones[0] == false){
+			MostrarPanelModelo(new Pnl_Content_Calzado_Modelo());
+			activarBoton(0, btnModelo); // <<<<<<<<<<<<<<<<<<<<<<<<<<
+		}
+		
+		lblElegir.setEnabled(activo);
+		Pnl_Content_Calzado_Modelo.btnEnviar.setVisible(activo); 
+		Pnl_Content_Calzado_Modelo.btnNuevo.setEnabled(!activo);
+		
+	}
+	
+	/** ----------------------------------------------------------------------------------- **/
+	
 	public void mouseClicked(MouseEvent e) {
 	}
 	public void mouseEntered(MouseEvent e) {
@@ -319,32 +690,162 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener {
 			btnModelo.setBackground(utils.Library.Verde);
 		}
 	}
-	public void mouseExited(MouseEvent e) {
-		if (e.getSource() == btnModelo) {
-			btnModelo.setBackground(new Color(95, 103, 112));
+	public void mouseExited(MouseEvent e) { // <<< modificar para mantener el cambio de color del boton activado
+		if (e.getSource() == btnModelo && botones[0] == false) {
+			btnModelo.setBackground(Library.Claro_2);
 		}
-		if (e.getSource() == btnMarca) {
-			btnMarca.setBackground(new Color(95, 103, 112));
+		if (e.getSource() == btnMarca && botones[1] == false) {
+			btnMarca.setBackground(Library.Claro_2);
 		}
-		if (e.getSource() == btnCategoria) {
-			btnCategoria.setBackground(new Color(95, 103, 112));
+		if (e.getSource() == btnCategoria && botones[2] == false) {
+			btnCategoria.setBackground(Library.Claro_2);
 		}
 	}
 	public void mousePressed(MouseEvent e) {
-		if (e.getSource() == btnModelo) {
-			MostrarPanelModelo(new Pnl_Content_Calzado_Modelo());
+		if (e.getSource() == tblCalzado) {
+			
+			int posFila = tblCalzado.getSelectedRow();
+			
+			if(btnNuevo.isEnabled() && posFila != -1){
+				mostrarDatosTextBox(posFila);
+				btnModificar.setEnabled(true);
+			}
+			
 		}
-		if (e.getSource() == btnMarca) {
-			MostrarPanelModelo(new Pnl_Content_Calzado_Marca());
+		if (e.getSource() == btnModelo) { // indice 0
+			if(btnNuevo.isEnabled()){
+				MostrarPanelModelo(new Pnl_Content_Calzado_Modelo());
+				activarBoton(0, btnModelo); // <<<<<<<<<<<<<<<<<<<<<<<<<<
+			}
+
 		}
-		if (e.getSource() == btnCategoria) {
-			MostrarPanelModelo(new Pnl_Content_Calzado_Categoria());
+		if (e.getSource() == btnMarca) { // indice 1
+			if(btnNuevo.isEnabled()){
+				MostrarPanelModelo(new Pnl_Content_Calzado_Marca());
+				activarBoton(1, btnMarca); // <<<<<<<<<<<<<<<<<<<<<<<<<<
+			}
+
+		}
+		if (e.getSource() == btnCategoria) { // indice 2
+			if(btnNuevo.isEnabled()){
+				MostrarPanelModelo(new Pnl_Content_Calzado_Categoria());
+				activarBoton(2, btnCategoria); // <<<<<<<<<<<<<<<<<<<<<<<<<<
+			}
 		}
 	}
 	public void mouseReleased(MouseEvent e) {
 		
+		
 	}
 
+	/** ----------------------------------------------------------------------------------- **/
+	
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnPdf) {
+			ArrayList<CalzadoReporte> data = resultadoBusqueda();
+			if(gCalzado.exportarPDF(data) == -1){
+				mensajeError("No se pudo generar el archivo");
+			}
+		}
+		if (arg0.getSource() == btnExcel) {
+			ArrayList<CalzadoReporte> data = resultadoBusqueda();
+			if(gCalzado.exportarXLSX(data) != -1){
+				mensajeExito("Se guardo correctamente");
+			}else{
+				mensajeError("Error al guardar el archivo");
+			}
+		}
+		if (arg0.getSource() == btnTxt) {
+			ArrayList<CalzadoReporte> data =resultadoBusqueda();
+			if(gCalzado.exportarTXT(data) != -1){
+				mensajeExito("Se guardo correctamente");
+			}else{
+				mensajeError("Error al guardar el archivo");
+			}
+		}
+		if (arg0.getSource() == btnBuscar) {
+			ArrayList<CalzadoReporte> data = resultadoBusqueda();
+			mostrarResultadoBusquedaTabla(data);
+		}
+		if (arg0.getSource() == btnModificar) {
+			controles(true);
+			btnModificar.setEnabled(false);
+			buscarModelo(true); // <<<<<<<<<<
+		}
+		if (arg0.getSource() == btnGuardar) {
+			String codigo = txtCodigo.getText();
+			ArrayList<Calzado> listaCalzado = gCalzado.buscarPorCodigoSimple(codigo);
+			
+			if(listaCalzado.size() != 1){
+				registrarCalzado();
+				buscarModelo(false); // <<<<<<<<<<
+			}else{
+				actualizarCalzado();
+				buscarModelo(false); // <<<<<<<<<<
+			}
+			
+		}
+		if (arg0.getSource() == btnCancelar) {
+			txtCodigo.setText("-----");
+			controles(false);
+			limpiarDatos();
+			buscarModelo(false); // <<<<<<<<<<
+		}
+		if (arg0.getSource() == btnNuevo) {
+			txtCodigo.setText( gCalzado.generarCodigo() );
+			controles(true);
+			limpiarDatos();
+			buscarModelo(true); // <<<<<<<<<<
+			
+		}
+	}
+
+	/** ----------------------------------------------------------------------------------- **/
+	
+	public void keyPressed(KeyEvent arg0) {
+		if (arg0.getSource() == txtBuscar) {
+
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER ) {
+				ArrayList<CalzadoReporte> data = resultadoBusqueda();
+				mostrarResultadoBusquedaTabla(data);
+			}
+			
+		}
+	}
+	public void keyReleased(KeyEvent arg0) {
+		if (arg0.getSource() == tblCalzado) {
+
+			int posFila = tblCalzado.getSelectedRow();
+			
+			if(btnNuevo.isEnabled() && posFila != -1){
+				mostrarDatosTextBox(posFila);
+				btnModificar.setEnabled(true);
+			}
+		}
+	}
+	public void keyTyped(KeyEvent arg0) {
+	}
+
+	/** ----------------------------------------------------------------------------------- **/
+	
+	void activarBoton( int indice , JLabel thisLabel ){ 
+		
+		// devuelve el color de fondo a todos los labels, y cambia solo el color al Label que tiene el indice que representa
+		
+		btnModelo.setBackground(Library.Claro_2);
+		btnMarca.setBackground(Library.Claro_2);
+		btnCategoria.setBackground(Library.Claro_2);
+
+		for (int i = 0; i < botones.length; i++) {
+			if ( i == indice ) {
+				botones[i] = true;
+				thisLabel.setBackground(Library.Verde);
+			}
+			else
+				botones[i] = false ;
+		}
+
+	}
 }
 
 

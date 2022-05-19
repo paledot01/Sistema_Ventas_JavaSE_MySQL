@@ -5,9 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import entidad.Marca;
 import entidad.Modelo;
 import interfaces.ModeloInterfaceDao;
 import utils.ConnectionMySQL_8;
@@ -28,16 +28,43 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	
 	final String GETALL = "{call pa_listar_modelo()}";
 	
-	
-	
-	
-	
+	final String LASTCODE = "{call pa_buscar_ultimo_codigo_modelo()}";
+	final String INSERT = "{call pa_insertar_modelo(?,?,?,?,?,?)}";
+	final String UPDATE = "{call pa_actualizar_modelo(?,?,?,?,?,?)}";
+	final String SEARCHSIMPLE = "{call pa_buscar_modelo_por_nombre_simple(?)}";
+	final String SEARCH = "{call pa_buscar_modelo(?)}";
 	
 	
 	@Override
 	public String generarCodigo() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		
+		String codModelo = "M1001";
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(LASTCODE);
+			rs = cs.executeQuery();
+			
+			if(rs.next()){
+				DecimalFormat df = new DecimalFormat("0000");
+				codModelo = "M" + df.format(Integer.parseInt(rs.getString(1)) + 1); // example -> 003 + 1 = 004
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia generarCodigo() - MODELO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia generarCodigo() - MODELO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return codModelo;
 	}
 
 	@Override
@@ -65,6 +92,8 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 			
 		}catch (SQLException e) {
 			System.out.println("Error en la sentencia Listar() - MODDELO" + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia Listar() - MODELO --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -80,23 +109,156 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 
 	@Override
 	public int registrar(Modelo m) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int respuesta = -1;
+		try {
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(INSERT);
+			
+			int i = 1;
+			cs.setString(i++, m.getCod_modelo());
+			cs.setString(i++, m.getNombre_modelo());
+			cs.setDouble(i++, m.getPrecio_compra());
+			cs.setDouble(i++, m.getPrecio_venta());
+			cs.setString(i++, m.getCod_marca());
+			cs.setString(i++, m.getCod_categoria());
+			
+			respuesta = cs.executeUpdate();
+			
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia registrar() - MODELO --> " + e1.getMessage());
+		}catch (Exception e1){
+			System.out.println("Error en la sentencia registrar() - MODELO --> " + e1.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return respuesta;
+	
 	}
 
 	@Override
 	public int actualizar(Modelo m) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int respuesta = -1;
+		try {
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(UPDATE);
+			
+			int i = 1;
+			cs.setString(i++, m.getCod_modelo());
+			cs.setString(i++, m.getNombre_modelo());
+			cs.setDouble(i++, m.getPrecio_compra());
+			cs.setDouble(i++, m.getPrecio_venta());
+			cs.setString(i++, m.getCod_marca());
+			cs.setString(i++, m.getCod_categoria());
+			
+			respuesta = cs.executeUpdate();
+			
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia actualizar() - MODELO --> " + e1.getMessage());
+		}catch (Exception e1){
+			System.out.println("Error en la sentencia actualizar() - MODELO --> " + e1.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return respuesta;
+		
 	}
 
 	@Override
 	public ArrayList<Modelo> buscar(String valor) {
-		// TODO Auto-generated method stub
-		return null;
+		lista = new ArrayList<Modelo>();
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCH);
+			cs.setString(1, valor);
+			
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				
+				obj = new Modelo(
+						rs.getString(1),
+						rs.getString(2),
+						rs.getDouble(3),
+						rs.getDouble(4),
+						rs.getString(5),
+						rs.getString(6)
+				);
+				lista.add(obj);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscar() - MODELO --> " + e.getMessage());
+		}catch (Exception e1){
+			System.out.println("Error en la sentencia buscar() - MODELO --> " + e1.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return lista;
 	}
+
 	
-	
+	@Override
+	public Modelo buscarPorNombre(String nombre) {
+		
+		obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCHSIMPLE);
+			cs.setString(1, nombre);
+			
+			rs = cs.executeQuery();
+			
+			if(rs.next()){
+				
+				obj = new Modelo(
+						rs.getString(1),
+						rs.getString(2),
+						rs.getDouble(3),
+						rs.getDouble(4),
+						rs.getString(5),
+						rs.getString(6)
+				);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscarPorNombre() - MODELO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorNombre() - MODELO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e) {
+				System.out.println("Error al cerrar la base de datos" + e.getMessage());
+			}
+		}
+		
+		return obj;
+		
+	}
 	
 
 }

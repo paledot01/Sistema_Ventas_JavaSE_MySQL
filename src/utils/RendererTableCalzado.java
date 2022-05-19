@@ -7,9 +7,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class RendererTable6 extends DefaultTableCellRenderer{
+public class RendererTableCalzado extends DefaultTableCellRenderer {
 
-	
 	private Component componente;//<<<<<
 	
 	@Override
@@ -24,9 +23,10 @@ public class RendererTable6 extends DefaultTableCellRenderer{
 			setBackground(Color.WHITE);
 		}
 		
-		if(column == 0){
+		if(column == 0 || column == 9){
 			setHorizontalAlignment(SwingConstants.CENTER);
 		}
+
 		
 		/** Al repintarse ya no se tiene que volver a cambiarlo para que regrese a la normalidad, CREO¡? **/
 		if (isSelected) {

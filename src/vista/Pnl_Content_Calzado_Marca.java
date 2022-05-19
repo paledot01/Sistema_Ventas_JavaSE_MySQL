@@ -66,7 +66,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		panel.add(panel_1);
 		
 		txtCodigo = new JTextField();
-		txtCodigo.setText("xxxxx");
+		txtCodigo.setText("-----");
 		txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
 		txtCodigo.setFont(new Font("Lucida Console", Font.PLAIN, 13));
 		txtCodigo.setEnabled(false);
@@ -144,7 +144,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		btnCancelar = new JButton("");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setVisible(false);
-		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/cancelarr.png")));
+		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/cancelar.png")));
 		btnCancelar.setBounds(10, 93, 30, 30);
 		panel.add(btnCancelar);
 		
@@ -209,7 +209,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		String nombre = txtNombre.getText().trim();
 		
 		
-		if(codigo.equals("") || nombre.equals("") ){
+		if(nombre.equals("") ){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
 			Marca mar = new Marca(codigo, nombre);
@@ -221,7 +221,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 				MostrarDataTabla();
 				mensajeExito("Registro Exitoso");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 			}
 		}
@@ -250,10 +250,10 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 	
 	void actualizarMarca(){
 		
-		String codigo = txtCodigo.getText().trim();
+		String codigo = txtCodigo.getText();
 		String nombre = txtNombre.getText().trim();
 		
-		if(  codigo.equals("") || nombre.equals("") ){
+		if(nombre.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
 			Marca mar = new Marca(codigo, nombre);
@@ -266,7 +266,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 				MostrarDataTabla();
 				mensajeExito("Actualizacion Exitosa");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 			}
 			
@@ -323,7 +323,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 			}
 		}
 		if (arg0.getSource() == btnCancelar) {
-			txtCodigo.setText("xxxxx");
+			txtCodigo.setText("-----");
 			controles(false);
 			limpiarDatos();
 		}

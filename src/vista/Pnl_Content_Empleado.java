@@ -61,10 +61,6 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private JTable tblEmpleado;
 	private JScrollPane scrollPane;
 
-	private DefaultTableModel modelo = new DefaultTableModel(); // <---
-	private EmpleadoGestionDao gEmpleado = new EmpleadoGestionDao(); // <---
-	private DistritoGestionDao gDistrito = new DistritoGestionDao(); // <---
-	private CargoGestionDao gCargo = new CargoGestionDao(); // <---
 	private JComboBox cboDistrito;
 	private JComboBox cboCargo;
 	private JTextField txtCodigo;
@@ -94,7 +90,13 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private JCheckBox chEstado;
 	private JButton btnBuscar;
 	
+	private DefaultTableModel modelo = new DefaultTableModel(); // <---
+	private EmpleadoGestionDao gEmpleado = new EmpleadoGestionDao(); // <---
+	private DistritoGestionDao gDistrito = new DistritoGestionDao(); // <---
+	private CargoGestionDao gCargo = new CargoGestionDao(); // <---
+	
 	RendererTable render = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	
 	private JButton btnExportarTXT;
 	private JButton btnExportarXLS;
 	private JButton btnExportarPDF;
@@ -245,7 +247,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtCodigo = new JTextField();
 		txtCodigo.setDisabledTextColor(Color.GRAY);
 		txtCodigo.setEnabled(false);
-		txtCodigo.setText("xxxxx");
+		txtCodigo.setText("-----");
 		txtCodigo.setBounds(63, 7, 91, 22);
 		pnl_codigo.add(txtCodigo);
 		txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -276,7 +278,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtUsuario = new JTextField();
 		txtUsuario.setDisabledTextColor(Color.GRAY);
 		txtUsuario.setEnabled(false);
-		txtUsuario.setText("xxxxx");
+		txtUsuario.setText("-----");
 		txtUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUsuario.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		txtUsuario.setColumns(10);
@@ -286,7 +288,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtContraseña = new JTextField();
 		txtContraseña.setDisabledTextColor(Color.GRAY);
 		txtContraseña.setEnabled(false);
-		txtContraseña.setText("xxxxx");
+		txtContraseña.setText("-----");
 		txtContraseña.setHorizontalAlignment(SwingConstants.CENTER);
 		txtContraseña.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		txtContraseña.setColumns(10);
@@ -340,7 +342,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setVisible(false);
 		btnCancelar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Empleado.class.getResource("/img/cancelarr.png")));
+		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Empleado.class.getResource("/img/cancelar.png")));
 		btnCancelar.addActionListener(this);
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(10, 151, 116, 30);
@@ -423,7 +425,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		grupBusqueda.add(rdbtnDistrito);
 		
 		btnBuscar = new JButton("");
-		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Empleado.class.getResource("/img/buscarxx_53px.png")));
+		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Empleado.class.getResource("/img/buscar_53px.png")));
 		btnBuscar.addActionListener(this);
 		btnBuscar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		btnBuscar.setBounds(339, 11, 53, 53);
@@ -560,11 +562,10 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		lblCargo.setEnabled(activo);
 		lblEstado.setEnabled(activo);
 		
-		
 	}
 	
 	public void registrarEmpleado(){
-		String codigo = txtCodigo.getText().trim();
+		String codigo = txtCodigo.getText();
 		String nombre = txtNombre.getText().trim();
 		String apellidos = txtApellido.getText().trim();
 		String dni = txtDni.getText().trim();
@@ -594,10 +595,10 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 		
 		// -->
-		if(codigo.equals("") || nombre.equals("") || apellidos.equals("") || dni.equals("")){
+		if(nombre.equals("") || apellidos.equals("") || dni.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
-			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo,estado);
+			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, estado);
 			int respuesta = gEmpleado.registrar(emp);
 			
 			if(respuesta == 0){
@@ -606,7 +607,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				mostrarDataTabla();
 				mensajeExito("Registro Exitoso");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 				//tblEmpleado.setEnabled(true);
 			}
@@ -662,8 +663,8 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtEmail.setText("");
 		cboDistrito.setSelectedIndex(0);
 		cboCargo.setSelectedIndex(0);
-		txtUsuario.setText("xxxxx");
-		txtContraseña.setText("xxxxx");
+		txtUsuario.setText("-----");
+		txtContraseña.setText("-----");
 		
 		btnModificar.setEnabled(false);
 
@@ -671,7 +672,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	void actualizarEmpleado(){
 		
-		String codigo = txtCodigo.getText().trim();
+		String codigo = txtCodigo.getText();
 		String nombre = txtNombre.getText().trim();
 		String apellidos = txtApellido.getText().trim();
 		String dni = txtDni.getText().trim();
@@ -701,7 +702,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 		
 		// -------------->
-		if(codigo.equals("") || nombre.equals("") || apellidos.equals("") || dni.equals("")){
+		if(nombre.equals("") || apellidos.equals("") || dni.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
 			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, estado);
@@ -713,7 +714,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				mostrarDataTabla();
 				mensajeExito("Modificacion Exitosa");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 				//tblEmpleado.setEnabled(true);
 			}
@@ -722,7 +723,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	public ArrayList<Empleado> resultadoBusqueda(){
 		
-		String valor = txtBuscar.getText();
+		String valor = txtBuscar.getText().trim();
 		
 		ArrayList<Empleado> data = new ArrayList<Empleado>();
 		Empleado emp = null;
@@ -768,13 +769,13 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	/** ----------------------------------------------------------------------------------- **/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnExportarPDF) {
-			ArrayList<Empleado> data =resultadoBusqueda();
+			ArrayList<Empleado> data = resultadoBusqueda();
 			if(gEmpleado.exportarPDF(data) == -1){
 				mensajeError("No se pudo generar el archivo");
 			}
 		}
 		if (e.getSource() == btnExportarXLS) {
-			ArrayList<Empleado> data =resultadoBusqueda();
+			ArrayList<Empleado> data = resultadoBusqueda();
 			if(gEmpleado.exportarXLSX(data) != -1){
 				mensajeExito("Se guardo correctamente");
 			}else{
@@ -782,7 +783,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 			}
 		}
 		if (e.getSource() == btnExportarTXT) {
-			ArrayList<Empleado> data =resultadoBusqueda();
+			ArrayList<Empleado> data = resultadoBusqueda();
 			if(gEmpleado.exportarTXT(data) != -1){
 				mensajeExito("Se guardo correctamente");
 			}else{
@@ -790,7 +791,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 			}
 		}
 		if (e.getSource() == btnBuscar) {
-			ArrayList<Empleado> data =resultadoBusqueda();
+			ArrayList<Empleado> data = resultadoBusqueda();
 			mostrarResultadoBusquedaTabla(data);
 		}
 		if (e.getSource() == btnGuardar) {
@@ -803,7 +804,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 			}
 		}
 		if (e.getSource() == btnCancelar) {
-			txtCodigo.setText("xxxxx");
+			txtCodigo.setText("-----");
 			controles(false);
 			limpiarDatos();
 		}

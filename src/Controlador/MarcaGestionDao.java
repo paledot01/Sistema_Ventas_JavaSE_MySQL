@@ -50,6 +50,8 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			
 		}catch (SQLException e) {
 			System.out.println("Error en la sentencia generarCodigo() - MARCA --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia generarCodigo() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -85,6 +87,8 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			
 		}catch (SQLException e) {
 			System.out.println("Error en la sentencia Listar() - MARCA" + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia Listar() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -115,6 +119,8 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			
 		}catch (SQLException e1) {
 			System.out.println("Error en la sentencia registrar() - MARCA" + e1.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia registrar() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -145,6 +151,8 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			
 		}catch (SQLException e1) {
 			System.out.println("Error en la sentencia actualizar() - MARCA" + e1.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia actualizar() - MARCA --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -181,6 +189,8 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 			}
 			
 		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscar() - MARCA --> " + e.getMessage());
+		}catch (Exception e){
 			System.out.println("Error en la sentencia buscar() - MARCA --> " + e.getMessage());
 		}finally {
 			try {

@@ -35,7 +35,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	//-- Componentes estaticos
 	public static  JPanel pnl_menu_content_2;
 	
-	boolean [] boton = { false,false,false,false,false,false }; // para los botones que muestran un panel
+	boolean [] boton = { false,false,false,false,false,false }; // para los botones que muestran un panel <<<<
 	
 	
 	// Atributo y metodos estaticos necesarios

@@ -1,13 +1,10 @@
 package Controlador;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
-import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,14 +31,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.swing.JRViewer;
-import net.sf.jasperreports.swing.JRViewerController;
-import net.sf.jasperreports.swing.JRViewerToolbar;
-import net.sf.jasperreports.view.JRSaveContributor;
 import net.sf.jasperreports.view.JasperViewer;
 import utils.ConnectionMySQL_8;
 
@@ -616,12 +606,12 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				for( int j = 0; j < empleados.size(); j++ ){
 					Row fila = hoja.createRow(j+1);  // Se crea apartir de la segunda fila
 					
-					for (int i = 0; i < 12; i++) {
+					for (int i = 0; i < 12; i++) { // i < numero de columnas 
 						Cell celda = fila.createCell(i);
 						
-						if(i == 11){
+						if(i == 11){ // convierte las columnas a entero antes de mandar el dato a la celda
 							celda.setCellValue( Integer.parseInt(empleados.get(j).atributoObjeto(i)));
-						}else{
+						}else{ // por default manda los datos como "cadena"
 							celda.setCellValue( empleados.get(j).atributoObjeto(i) );
 						}
 						
@@ -638,11 +628,11 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			}
 			
 		}catch (FileNotFoundException e) {
-			System.out.println(e);
-		}catch (IOException io) {
-			System.out.println(io);
+			System.out.println("Error en la sentencia exportarXLSX() --> " + e.getMessage());
+		}catch (IOException e) {
+			System.out.println("Error en la sentencia exportarXLSX() --> " + e.getMessage());
 		}catch (Exception e){
-			System.out.println(e);
+			System.out.println("Error en la sentencia exportarXLSX() --> " + e.getMessage());
 		}
 		
 		return respuesta;
@@ -670,7 +660,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			parametros.put("nombre_empresa","SHOES FOR MEN");
 			parametros.put("direccion_empresa","AV. URUGUAY N 389 ");
 			parametros.put("distrito_empresa","SAN ISIDRO");
-			parametros.put("nombre_empleado","KEVIN BASILIO VILLNUEVA");
+			parametros.put("nombre_empleado","KEVIN BASILIO");
 			parametros.put("ruc_empresa","12345678901");
 			
 			JasperPrint jprint = JasperFillManager.fillReport(report, parametros, new JREmptyDataSource()); // llenamos los datos, como todo lo llenamos por parametros, le mandamos como data source vacio

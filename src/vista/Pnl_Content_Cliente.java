@@ -232,7 +232,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Cliente.class.getResource("/img/cancelarr.png")));
+		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Cliente.class.getResource("/img/cancelar.png")));
 		btnCancelar.addActionListener(this);
 		btnCancelar.setVisible(false);
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -334,7 +334,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		grupBusqueda.add(rbDistrito);
 		
 		btnBuscar = new JButton("");
-		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Cliente.class.getResource("/img/buscarxx_53px.png")));
+		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Cliente.class.getResource("/img/buscar_53px.png")));
 		btnBuscar.addActionListener(this);
 		btnBuscar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		btnBuscar.setBounds(339, 11, 53, 53);

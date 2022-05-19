@@ -69,7 +69,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		panel.add(panel_1);
 		
 		txtCodigo = new JTextField();
-		txtCodigo.setText("xxxxx");
+		txtCodigo.setText("-----");
 		txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
 		txtCodigo.setFont(new Font("Lucida Console", Font.PLAIN, 13));
 		txtCodigo.setEnabled(false);
@@ -140,7 +140,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		btnCancelar = new JButton("");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setVisible(false);
-		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/cancelarr.png")));
+		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/cancelar.png")));
 		btnCancelar.setBounds(10, 93, 30, 30);
 		panel.add(btnCancelar);
 		
@@ -165,11 +165,11 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		panel.add(btnNuevo);
 
 		
-		MostrarDataTabla(); // --> Muestra los datos de la tabla Categoria
+		mostrarDataTabla(); // --> Muestra los datos de la tabla Categoria
 		
 	}
 	
-	void MostrarDataTabla(){
+	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
 		ArrayList<Categoria> data = gCategoria.listar();
@@ -211,7 +211,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		String nombre = txtNombre.getText().trim();
 		
 		
-		if(codigo.equals("") || nombre.equals("") ){
+		if(nombre.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
 			Categoria cat = new Categoria(codigo, nombre);
@@ -220,10 +220,10 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 			if ( respuesta <= 0 ) {
 				mensajeError("Error en el Registro");
 			}else{
-				MostrarDataTabla();
+				mostrarDataTabla();
 				mensajeExito("Registro Exitoso");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 			}
 		}
@@ -245,10 +245,10 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 	
 	void actualizarCategoria(){
 		
-		String codigo = txtCodigo.getText().trim();
+		String codigo = txtCodigo.getText();
 		String nombre = txtNombre.getText().trim();
 		
-		if(  codigo.equals("") || nombre.equals("") ){
+		if(nombre.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
 			Categoria cat = new Categoria(codigo, nombre);
@@ -258,10 +258,10 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 			if( respuesta <= 0 ){
 				mensajeError("Error al actualizar Datos");
 			}else{
-				MostrarDataTabla();
+				mostrarDataTabla();
 				mensajeExito("Actualizacion Exitosa");
 				controles(false);
-				txtCodigo.setText("xxxxx");
+				txtCodigo.setText("-----");
 				limpiarDatos();
 			}
 			
@@ -278,7 +278,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 	
 	public ArrayList<Categoria> resultadoBusqueda(){
 		
-		String valor = txtBuscar.getText();
+		String valor = txtBuscar.getText().trim();
 		
 		ArrayList<Categoria> data = new ArrayList<Categoria>();
 		
@@ -316,16 +316,16 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			ArrayList<Categoria> cat = gCategoria.buscar(cod);
+			ArrayList<Categoria> listCategorias = gCategoria.buscar(cod);
 			
-			if(cat.size() != 1){
+			if(listCategorias.size() != 1){
 				registrarCategoria();
 			}else{
 				actualizarCategoria();
 			}
 		}
 		if (arg0.getSource() == btnCancelar) {
-			txtCodigo.setText("xxxxx");
+			txtCodigo.setText("-----");
 			controles(false);
 			limpiarDatos();
 		}
