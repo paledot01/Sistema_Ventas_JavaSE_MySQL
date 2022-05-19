@@ -15,7 +15,7 @@ Se realizó:
 
 ## 2nd version
 
-Se desarrollo el mantenimiento empleado, el cual posee las siguientes funciones:
+Se desarrollo el mantenimiento Empleado, el cual posee las siguientes funciones:
 - Permite añadir un nuevo empleado, donde el sistema autogenera un código de identificacion asi como un usuario y contraseña, estos ultimos en funcion de sus datos personales.
 - Podemos modificar los datos de cada empleado, para esto debemos primero hacer uso del buscador con sus filtros para localizarlo.
 - Podemos hacer un reporte de los empleados en los formatos de texto, excel y pdf, estos tambien pueden hacer uso de los filtros.
@@ -28,6 +28,17 @@ para esta segunda version se realizo tambien:
 | ------------- |:-------------:|:-------------:|:-------------:|
 | ![][2nd_img_1] | ![][2nd_img_2] | ![][2nd_img_3] | ![][2nd_img_4] |
 
+## 3rd version
+Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del mantenimiento Empleado como, los reportes o los codigos que se autogenera, pero se añadieron otras nuevas :
+- Se incluyo dentro de este, otros mantenimientos que eran necesarios, esto con el fin de agilizar los registros de los calzados sin tener que entrar a otras ventanas para hacer esto.
+- Se añadio la opcion de transferir desde el panel Modelo el nombre, para facilitar el registro de los calzados.
+- Se amplio, las consultas a la Base de Datos para que nos permita filtrar los registros con una mayor cantidad de opciones.
+- Se realizo validaciones para los valores criticos como los numeros que podrian generaban errores en el sistema.
+
+| Imagen 1 | Imagen 2 |
+| ------------- |:-------------:|
+| ![][3rd_img_1] | ![][3rd_img_2] |
+
 ---
 
 ### Herramientas utilizadas:
@@ -37,6 +48,8 @@ para esta segunda version se realizo tambien:
 - **Corel Draw** para la creacion de iconos.
 - **Visual Studio Code** para la edicion de este README.md.
 - **Git Bash** para subir y actualizar este repositorio.
+
+
 
 ---
 
@@ -51,3 +64,6 @@ para esta segunda version se realizo tambien:
 [2nd_img_2]: ./screenshot/version_02_02.png
 [2nd_img_3]: ./screenshot/version_02_03.png
 [2nd_img_4]: ./screenshot/version_02_04.png
+[3rd_img_1]: ./screenshot/version_03_01.png
+[3rd_img_2]: ./screenshot/version_03_02.gif
+
