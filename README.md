@@ -29,11 +29,11 @@ para esta segunda version se realizo tambien:
 | ![][2nd_img_1] | ![][2nd_img_2] | ![][2nd_img_3] | ![][2nd_img_4] |
 
 ## 3rd version
-Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del mantenimiento Empleado como, los reportes o los codigos que se autogenera, pero se añadieron otras nuevas :
+Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del mantenimiento Empleado como, los reportes y los codigos autogenerados, ademas :
 - Se incluyo dentro de este, otros mantenimientos que eran necesarios, esto con el fin de agilizar los registros de los calzados sin tener que entrar a otras ventanas para hacer esto.
-- Se añadio la opcion de transferir desde el panel Modelo el nombre, para facilitar el registro de los calzados.
+- Se añadio la opcion de transferir desde el panel Modelo, el nombre, para facilitar el registro de los calzados.
 - Se amplio, las consultas a la Base de Datos para que nos permita filtrar los registros con una mayor cantidad de opciones.
-- Se realizo validaciones para los valores criticos como los numeros que podrian generaban errores en el sistema.
+- Se realizo validaciones para los valores criticos como los numeros que podrian generar errores en el sistema.
 
 | Imagen 1 | Imagen 2 |
 | ------------- |:-------------:|
@@ -44,7 +44,7 @@ Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del man
 ### Herramientas utilizadas:
 - **Eclipse** como IDE principal para el desarrollo del sistema.
 - **MySQL** como motor de la base de datos.
-- **JasperSoft** Studio para la creacion del reporte en PDF.
+- **JasperSoft Studio** para la creacion del reporte en PDF.
 - **Corel Draw** para la creacion de iconos.
 - **Visual Studio Code** para la edicion de este README.md.
 - **Git Bash** para subir y actualizar este repositorio.
@@ -65,5 +65,5 @@ Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del man
 [2nd_img_3]: ./screenshot/version_02_03.png
 [2nd_img_4]: ./screenshot/version_02_04.png
 [3rd_img_1]: ./screenshot/version_03_01.png
-[3rd_img_2]: ./screenshot/version_03_02.gif
+[3rd_img_2]: ./screenshot/version_03_02.png
 
