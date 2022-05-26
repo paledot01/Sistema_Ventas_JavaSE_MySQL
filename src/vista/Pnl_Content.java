@@ -7,6 +7,7 @@ import javax.swing.border.LineBorder;
 
 import Controlador.CargoGestionDao;
 import hilos.Animacion_Menu_01;
+import hilos.Animacion_Reloj;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -85,6 +86,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	private JLabel lblPaledot;
 	private JLabel lblGitHub;
 	private JLabel lblCorreo;
+	public static JLabel lblReloj;
 	
 	public Pnl_Content() {
 		setLayout(null);
@@ -433,7 +435,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFecha.setForeground(SystemColor.menu);
 		lblFecha.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblFecha.setBounds(564, 0, 296, 30);
+		lblFecha.setBounds(421, 0, 296, 30);
 		pnl_top_bar.add(lblFecha);
 		
 		lblPaledotgmailcom = new JLabel("paledot01@gmail.com");
@@ -458,6 +460,13 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		lblCorreo.setBounds(149, 0, 30, 30);
 		pnl_top_bar.add(lblCorreo);
 		
+		lblReloj = new JLabel("00:00:00 PM");
+		lblReloj.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReloj.setFont(new Font("Courier New", Font.BOLD, 16));
+		lblReloj.setForeground(SystemColor.menu);
+		lblReloj.setBounds(727, 0, 143, 30);
+		pnl_top_bar.add(lblReloj);
+		
 		// ESCONDER LOS PANELES QUE CONTIENEN LOS BOTONES OCULTOS
 		pnl_btn_calzado.setVisible(false);
 		pnl_btn_cliente.setVisible(false);
@@ -465,7 +474,14 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		// SUBIR EL PANEL ANIMADO
 		
 		fechaActual();
+		mostrarHora();
 		
+	}
+	
+	void mostrarHora(){
+		
+		Animacion_Reloj reloj = new Animacion_Reloj();
+		reloj.start();
 	}
 	
 	public void fechaActual() {
@@ -549,7 +565,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 			activarPanel(0, pnl_btn_dashboard);
 		}
 		if (arg0.getSource() == pnl_btn_mantenimiento) {
-			Animacion_Menu_01 hilo1 = new Animacion_Menu_01(pnl_menu_content_2);
+			Animacion_Menu_01 hilo1 = new Animacion_Menu_01(pnl_menu_content_2); // --> HILO
 			hilo1.start();
 		}
 		if (arg0.getSource() == pnl_btn_calzado) { // indice 1
@@ -614,5 +630,4 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		}
 
 	}
-	
 }

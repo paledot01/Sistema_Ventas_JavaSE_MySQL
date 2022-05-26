@@ -6,22 +6,20 @@ public class Boleta_Detalle {
 	private String cod_boleta;
 	private String cod_calzado;
 	private int cantidad;
-	private int importe;
+	private double importe;
 	
 	// Constructores
 	public Boleta_Detalle(){
 		
 	}
 
-	public Boleta_Detalle(String cod_boleta, String cod_calzado, int cantidad, int importe) {
+	public Boleta_Detalle(String cod_boleta, String cod_calzado, int cantidad, double importe) {
 		super();
 		this.cod_boleta = cod_boleta;
 		this.cod_calzado = cod_calzado;
 		this.cantidad = cantidad;
 		this.importe = importe;
 	}
-
-	// Metodos get-set
 
 	public String getCod_boleta() {
 		return cod_boleta;
@@ -47,13 +45,14 @@ public class Boleta_Detalle {
 		this.cantidad = cantidad;
 	}
 
-	public int getImporte() {
+	public double getImporte() {
 		return importe;
 	}
 
-	public void setImporte(int importe) {
+	public void setImporte(double importe) {
 		this.importe = importe;
 	}
+
 	
 	
 }
