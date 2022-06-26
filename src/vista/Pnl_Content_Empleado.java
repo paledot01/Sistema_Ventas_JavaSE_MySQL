@@ -850,7 +850,6 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				mostrarResultadoBusquedaTabla(data);
 			}
 		}
-
 		
 	}
 	public void keyReleased(KeyEvent arg0) {

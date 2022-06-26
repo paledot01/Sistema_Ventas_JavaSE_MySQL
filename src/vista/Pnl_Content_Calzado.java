@@ -91,7 +91,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		setLayout(null);
 		
 		pnl_calzado_main = new JPanel();
-		pnl_calzado_main.setBorder(new LineBorder(new Color( 95, 103, 112 )));
+		pnl_calzado_main.setBorder(new LineBorder(Library.Claro_2));
 		pnl_calzado_main.setBounds(0, 0, 870, 670);
 		add(pnl_calzado_main);
 		pnl_calzado_main.setLayout(null);
@@ -372,7 +372,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		pnl_mod_mar_cat.setBounds(0, 25, 500, 304);
 		panel.add(pnl_mod_mar_cat);
 		
-		// Panel Modelo por defecto
+		// Panel Modelo inicia activado por defecto
 		Pnl_Content_Calzado_Modelo pnl_modelo = new Pnl_Content_Calzado_Modelo();
 		MostrarPanelModelo( pnl_modelo );
 		

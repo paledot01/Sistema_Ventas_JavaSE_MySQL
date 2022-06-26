@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import entidad.Boleta_Cabecera;
 import entidad.Boleta_Detalle;
+import entidad.Cliente;
 import interfaces.VentaInterfaceDao;
 import utils.ConnectionMySQL_8;
 
@@ -23,19 +24,25 @@ public class VentaGestionDao implements VentaInterfaceDao{
 	
 	private ArrayList<Boleta_Detalle> lista;
 	
+//	ClienteGestionDao gCliente = new ClienteGestionDao();
+	
+	
 	
 	// Sentencias
 	
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_boleta()}";
-	final String INSERTCABECERA = "{call pa_insertar_boleta(?,?,?)}"; // parametros (codigo_boleta . XfechaX , cos_cliente , cod_empleado ) --> no necesita la fecha
+	final String INSERTCLIENTE = "{call pa_insertar_cliente(?,?,?,?,?,?,?,?)}"; 
+	final String INSERTCABECERA = "{call pa_insertar_boleta(?,?,?)}"; // parametros (codigo_boleta . XfechaX , cod_cliente , cod_empleado ) --> no necesita la fecha
 	final String INSERTDETALLE = "{call pa_insertar_detalle_boleta(?,?,?,?)}";
 	final String UPDATESTOCK = "{call pa_reducir_stock_calzado(?,?)}"; // parametros (codigo_calzado , cantidad)
 	
 	
 	
 	@Override
-	public String generarCodigo() {		String codEmpleado = "BL10001";
-	
+	public String generarCodigo() {
+		
+		String codEmpleado = "BL10001";
+
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(LASTCODE);
@@ -62,7 +69,7 @@ public class VentaGestionDao implements VentaInterfaceDao{
 	}
 
 	@Override
-	public int realizarVenta(Boleta_Cabecera cabBoleta, ArrayList<Boleta_Detalle> detBoleta) {
+	public int realizarVenta(Cliente c, Boleta_Cabecera cabBoleta, ArrayList<Boleta_Detalle> detBoleta) {
 
 		int respuesta = -1;
 		
@@ -70,16 +77,30 @@ public class VentaGestionDao implements VentaInterfaceDao{
 			cn = ConnectionMySQL_8.getConnection();
 			cn.setAutoCommit(false);
 			
-			/** Primer Instruccion --> **/
-			cs = cn.prepareCall(INSERTCABECERA);
+			/** Primera Instruccion --> Registro del Cliente **/
+			cs = cn.prepareCall(INSERTCLIENTE);
 			int i = 1;
-			cs.setString(i++, cabBoleta.getCod_boleta());
-			cs.setString(i++, cabBoleta.getCod_cliente());
-			cs.setString(i++, cabBoleta.getCod_empleado());
+			cs.setString(i++, c.getCod_cliente());
+			cs.setString(i++, c.getNombre());
+			cs.setString(i++, c.getApellidos());
+			cs.setString(i++, c.getDni());
+			cs.setString(i++, c.getDireccion());
+			cs.setString(i++, c.getTelefono());
+			cs.setString(i++, c.getEmail());
+			cs.setString(i++, c.getCod_distrito());
+			
+			respuesta = cs.executeUpdate();
+			
+			/** Segunda Instruccion -->  Registro del Encabezado Boleta **/
+			cs = cn.prepareCall(INSERTCABECERA);
+			int j = 1;
+			cs.setString(j++, cabBoleta.getCod_boleta());
+			cs.setString(j++, c.getCod_cliente());
+			cs.setString(j++, cabBoleta.getCod_empleado());
 
 			respuesta = cs.executeUpdate();
 			
-			/** Segunda Instruccion --> añade todos los calzados a la boleta**/
+			/** Tercera Instruccion --> añade todos los calzados a la boleta**/
 			for(Boleta_Detalle d : detBoleta){
 				cs = cn.prepareCall(INSERTDETALLE);
 				cs.setString(1, cabBoleta.getCod_boleta());
@@ -90,7 +111,7 @@ public class VentaGestionDao implements VentaInterfaceDao{
 				respuesta = cs.executeUpdate();
 			}
 			
-			/** Tercera Instruccion --> actualiza el stock de los calzados**/
+			/** Cuarta Instruccion --> Actualizacion del stock de los calzados**/
 			for(Boleta_Detalle d : detBoleta){
 				cs = cn.prepareCall(UPDATESTOCK);
 				cs.setString(1, d.getCod_calzado());
@@ -119,7 +140,6 @@ public class VentaGestionDao implements VentaInterfaceDao{
 		return respuesta;
 	}
 
-	
 	
 	
 }

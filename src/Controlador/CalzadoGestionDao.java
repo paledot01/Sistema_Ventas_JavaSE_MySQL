@@ -26,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import entidad.Calzado;
 import entidad.CalzadoReporte;
+import entidad.CalzadoReporteMini;
 import interfaces.CalzadoInterfaceDao;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -43,14 +44,19 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
-	private ArrayList<Calzado> listaCalzados;
-	private ArrayList<CalzadoReporte> lista;
-	private Calzado objCalzado;
-	private CalzadoReporte obj;
+	
+	private ArrayList<Calzado> listaOriginal;
+	private ArrayList<CalzadoReporte> listaReporte;
+	private ArrayList<CalzadoReporteMini> listaReporteMini;
+	
+	private Calzado obj;
+	private CalzadoReporte objR;
+	private CalzadoReporteMini objRM;
 	
 	
 	// Sentencias
 	final String GETALL = "{call pa_listar_calzado()}";
+	final String GETALLMINI = "{call pa_listar_calzado_mini()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_calzado()}";
 	final String INSERT = "{call pa_insertar_calzado(?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_calzado(?,?,?,?,?)}";
@@ -67,7 +73,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> listar() {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -76,7 +82,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -87,7 +93,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -103,14 +109,54 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
+		
+	}
+
+	
+	
+
+	public ArrayList<CalzadoReporteMini> listarMini() {
+		
+		listaReporteMini = new ArrayList<CalzadoReporteMini>();
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(GETALLMINI);
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				objRM = new CalzadoReporteMini(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getInt(i++), // ...
+						rs.getString(i++),
+						rs.getInt(i++)
+				);
+				listaReporteMini.add(objRM);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia listarMini() - CALZADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia listarMini() - CALZADO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return listaReporteMini;
 		
 	}
 
 
-
-
-
+	
+	
 	@Override
 	public String generarCodigo() {
 		
@@ -226,7 +272,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<Calzado> buscarPorCodigoSimple(String valor) {
 		
-		listaCalzados = new ArrayList<Calzado>();
+		listaOriginal = new ArrayList<Calzado>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -237,14 +283,14 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				objCalzado = new Calzado(
+				obj = new Calzado(
 						rs.getString(i++), 
 						rs.getString(i++), 
 						rs.getInt(i++),
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
-				listaCalzados.add(objCalzado);
+				listaOriginal.add(obj);
 			}
 			
 		}catch (SQLException e) {
@@ -260,7 +306,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return listaCalzados;
+		return listaOriginal;
 		
 	}
 	
@@ -272,7 +318,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor) {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -283,7 +329,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -294,7 +340,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -310,7 +356,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 
@@ -321,7 +367,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorModelo(String valor) {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -332,7 +378,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -343,7 +389,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -359,7 +405,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 
@@ -370,7 +416,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorCategoria(String valor) {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -381,7 +427,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -392,7 +438,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -408,7 +454,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 
@@ -419,7 +465,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorMarca(String valor) {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -430,7 +476,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -441,7 +487,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -457,7 +503,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 
@@ -468,7 +514,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorTalla(int valor) {
 		
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -479,7 +525,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -490,7 +536,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -506,7 +552,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 
@@ -517,7 +563,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorColor(String valor) {
 
-		lista = new ArrayList<CalzadoReporte>();
+		listaReporte = new ArrayList<CalzadoReporte>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -528,7 +574,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			while(rs.next()){
 				int i=1;
-				obj = new CalzadoReporte(
+				objR = new CalzadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -539,7 +585,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 						rs.getDouble(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaReporte.add(objR);
 			}
 			
 		}catch (SQLException e) {
@@ -555,7 +601,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaReporte;
 		
 	}
 

@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import entidad.Calzado;
 import entidad.CalzadoReporte;
+import entidad.CalzadoReporteMini;
 
 public interface CalzadoInterfaceDao {
 
 	public ArrayList<CalzadoReporte> listar();
+	
+	public ArrayList<CalzadoReporteMini> listarMini();
 	
 	public String generarCodigo();
 	

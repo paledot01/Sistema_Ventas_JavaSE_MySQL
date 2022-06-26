@@ -71,7 +71,7 @@ public class Pnl_Access_Login extends JPanel implements ActionListener, KeyListe
 		panel_login.add(txtUser);
 		txtUser.setColumns(10);
 		
-		btnEntrar = new JButton("Entrar");
+		btnEntrar = new JButton("Entrar pa");
 		btnEntrar.addActionListener(this);
 		btnEntrar.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		btnEntrar.setBounds(100, 191, 100, 25);

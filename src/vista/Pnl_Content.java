@@ -36,7 +36,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	//-- Componentes estaticos
 	public static  JPanel pnl_menu_content_2;
 	
-	boolean [] boton = { false,false,false,false,false,false }; // para los botones que muestran un panel <<<<
+	boolean [] boton = {true,false,false,false,false,false}; // para los botones que muestran un panel, y el primero inicie activado <<<<
 	
 	
 	// Atributo y metodos estaticos necesarios
@@ -144,40 +144,6 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		pnl_menu_content_1.add(pnl_menu_content_2);
 		pnl_menu_content_2.setLayout(null);
 		
-		pnl_btn_venta = new JPanel();
-		pnl_btn_venta.setLayout(null);
-		pnl_btn_venta.setBackground( utils.Library.Claro_1 );
-		pnl_btn_venta.setBounds(0, 0, 190, 22);
-		pnl_btn_venta.addMouseListener(this);
-		pnl_menu_content_2.add(pnl_btn_venta);
-		
-		lblVenta = new JLabel("VENTA          ");
-		lblVenta.setHorizontalTextPosition(SwingConstants.LEFT);
-		lblVenta.setHorizontalAlignment(SwingConstants.CENTER);
-		lblVenta.setForeground(SystemColor.menu);
-		lblVenta.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblVenta.setBounds(30, 0, 135, 22);
-		pnl_btn_venta.add(lblVenta);
-		
-		label_2 = new JLabel("");
-		label_2.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/dollar_22px.png")));
-		label_2.setOpaque(true);
-		label_2.setHorizontalTextPosition(SwingConstants.LEFT);
-		label_2.setHorizontalAlignment(SwingConstants.LEFT);
-		label_2.setForeground(SystemColor.menu);
-		label_2.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		label_2.setBackground(new Color(43, 47, 51));
-		label_2.setBounds(0, 0, 30, 22);
-		pnl_btn_venta.add(label_2);
-		
-		label_3 = new JLabel("");
-		label_3.setHorizontalTextPosition(SwingConstants.LEFT);
-		label_3.setHorizontalAlignment(SwingConstants.CENTER);
-		label_3.setForeground(SystemColor.menu);
-		label_3.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		label_3.setBounds(165, 0, 25, 22);
-		pnl_btn_venta.add(label_3);
-		
 		pnl_btn_reportes = new JPanel();
 		pnl_btn_reportes.setLayout(null);
 		pnl_btn_reportes.setBackground(new Color(63, 68, 73));
@@ -212,51 +178,12 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		label_6.setBounds(165, 0, 25, 22);
 		pnl_btn_reportes.add(label_6);
 		
-		pnl_btn_mantenimiento = new JPanel();
-		pnl_btn_mantenimiento.setBackground(utils.Library.Claro_1);
-		pnl_btn_mantenimiento.setBounds(10, 44, 190, 22);
-		pnl_menu_content_1.add(pnl_btn_mantenimiento);
-		pnl_btn_mantenimiento.setLayout(null);
-		pnl_btn_mantenimiento.addMouseListener(this);
-		
-		lblMantenimiento = new JLabel("MANTENIMIENTO  ");
-		lblMantenimiento.setBounds(30, 0, 135, 22);
-		pnl_btn_mantenimiento.add(lblMantenimiento);
-		lblMantenimiento.setHorizontalTextPosition(SwingConstants.LEFT);
-		lblMantenimiento.setIcon(null);
-//		lblMantenimiento.addMouseListener(this);
-		lblMantenimiento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMantenimiento.setForeground(SystemColor.menu);
-		lblMantenimiento.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-//		lblMantenimiento.setBackground(utils.Library.Claro_1);
-		
-		lblX = new JLabel("");
-		lblX.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/chart_22px.png")));
-		lblX.setBounds(0, 0, 30, 22);
-		pnl_btn_mantenimiento.add(lblX);
-		lblX.setOpaque(true);
-		lblX.setHorizontalTextPosition(SwingConstants.LEFT);
-		lblX.setHorizontalAlignment(SwingConstants.LEFT);
-		lblX.setForeground(SystemColor.menu);
-		lblX.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblX.setBackground(utils.Library.Oscuro_2);
-		
-		label = new JLabel("");
-		label.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/angle-down-solid_8px.png")));
-		label.setHorizontalTextPosition(SwingConstants.LEFT);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setForeground(SystemColor.menu);
-		label.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-//		label.setBackground(utils.Library.Claro_1);
-		label.setBounds(165, 0, 25, 22);
-		pnl_btn_mantenimiento.add(label);
-		
 		pnl_btn_dashboard = new JPanel();
+		pnl_btn_dashboard.setBounds(0, 0, 190, 22);
+		pnl_menu_content_2.add(pnl_btn_dashboard);
 		pnl_btn_dashboard.setLayout(null);
 		pnl_btn_dashboard.addMouseListener(this);
 		pnl_btn_dashboard.setBackground(new Color(63, 68, 73));
-		pnl_btn_dashboard.setBounds(10, 11, 190, 22);
-		pnl_menu_content_1.add(pnl_btn_dashboard);
 		
 		lblDashboard = new JLabel("DASHBOARD      ");
 		lblDashboard.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -285,6 +212,45 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		label_7.setBounds(165, 0, 25, 22);
 		pnl_btn_dashboard.add(label_7);
 		
+		pnl_btn_mantenimiento = new JPanel();
+		pnl_btn_mantenimiento.setBackground(utils.Library.Claro_1);
+		pnl_btn_mantenimiento.setBounds(10, 44, 190, 22);
+		pnl_menu_content_1.add(pnl_btn_mantenimiento);
+		pnl_btn_mantenimiento.setLayout(null);
+		pnl_btn_mantenimiento.addMouseListener(this);
+		
+		lblMantenimiento = new JLabel("MANTENIMIENTO  ");
+		lblMantenimiento.setBounds(30, 0, 135, 22);
+		pnl_btn_mantenimiento.add(lblMantenimiento);
+		lblMantenimiento.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblMantenimiento.setIcon(null);
+//		lblMantenimiento.addMouseListener(this);
+		lblMantenimiento.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMantenimiento.setForeground(SystemColor.menu);
+		lblMantenimiento.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+//		lblMantenimiento.setBackground(utils.Library.Claro_1);
+		
+		lblX = new JLabel("");
+		lblX.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/oie_271125432pr78yL.png")));
+		lblX.setBounds(0, 0, 30, 22);
+		pnl_btn_mantenimiento.add(lblX);
+		lblX.setOpaque(true);
+		lblX.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblX.setHorizontalAlignment(SwingConstants.LEFT);
+		lblX.setForeground(SystemColor.menu);
+		lblX.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		lblX.setBackground(utils.Library.Oscuro_2);
+		
+		label = new JLabel("");
+		label.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/angle-down-solid_8px.png")));
+		label.setHorizontalTextPosition(SwingConstants.LEFT);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(SystemColor.menu);
+		label.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+//		label.setBackground(utils.Library.Claro_1);
+		label.setBounds(165, 0, 25, 22);
+		pnl_btn_mantenimiento.add(label);
+		
 		pnl_btn_calzado = new JPanel();
 		pnl_btn_calzado.setLayout(null);
 		pnl_btn_calzado.setBackground(new Color(63, 68, 73));
@@ -304,7 +270,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		label_8.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/shoes_22px.png")));
 		label_8.setOpaque(true);
 		label_8.setHorizontalTextPosition(SwingConstants.LEFT);
-		label_8.setHorizontalAlignment(SwingConstants.LEFT);
+		label_8.setHorizontalAlignment(SwingConstants.CENTER);
 		label_8.setForeground(SystemColor.menu);
 		label_8.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		label_8.setBackground(new Color(43, 47, 51));
@@ -335,10 +301,10 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		pnl_btn_cliente.add(lblCliente);
 		
 		label_10 = new JLabel("");
-		label_10.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/chart_22px.png")));
+		label_10.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/people_22px.png")));
 		label_10.setOpaque(true);
 		label_10.setHorizontalTextPosition(SwingConstants.LEFT);
-		label_10.setHorizontalAlignment(SwingConstants.LEFT);
+		label_10.setHorizontalAlignment(SwingConstants.CENTER);
 		label_10.setForeground(SystemColor.menu);
 		label_10.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		label_10.setBackground(new Color(43, 47, 51));
@@ -372,7 +338,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		label_13.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/worker.png")));
 		label_13.setOpaque(true);
 		label_13.setHorizontalTextPosition(SwingConstants.LEFT);
-		label_13.setHorizontalAlignment(SwingConstants.LEFT);
+		label_13.setHorizontalAlignment(SwingConstants.CENTER);
 		label_13.setForeground(SystemColor.menu);
 		label_13.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		label_13.setBackground(new Color(43, 47, 51));
@@ -386,6 +352,40 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		label_14.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		label_14.setBounds(135, 0, 25, 22);
 		pnl_btn_empleado.add(label_14);
+		
+		pnl_btn_venta = new JPanel();
+		pnl_btn_venta.setBounds(10, 11, 190, 22);
+		pnl_menu_content_1.add(pnl_btn_venta);
+		pnl_btn_venta.setLayout(null);
+		pnl_btn_venta.setBackground(utils.Library.Verde); // Para que inicie resaltado.
+		pnl_btn_venta.addMouseListener(this);
+		
+		lblVenta = new JLabel("VENTA          ");
+		lblVenta.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblVenta.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVenta.setForeground(SystemColor.menu);
+		lblVenta.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		lblVenta.setBounds(30, 0, 135, 22);
+		pnl_btn_venta.add(lblVenta);
+		
+		label_2 = new JLabel("");
+		label_2.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/dollar_22px.png")));
+		label_2.setOpaque(true);
+		label_2.setHorizontalTextPosition(SwingConstants.LEFT);
+		label_2.setHorizontalAlignment(SwingConstants.LEFT);
+		label_2.setForeground(SystemColor.menu);
+		label_2.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		label_2.setBackground(new Color(43, 47, 51));
+		label_2.setBounds(0, 0, 30, 22);
+		pnl_btn_venta.add(label_2);
+		
+		label_3 = new JLabel("");
+		label_3.setHorizontalTextPosition(SwingConstants.LEFT);
+		label_3.setHorizontalAlignment(SwingConstants.CENTER);
+		label_3.setForeground(SystemColor.menu);
+		label_3.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		label_3.setBounds(165, 0, 25, 22);
+		pnl_btn_venta.add(label_3);
 		
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/logo_white_letter_200x.png")));
@@ -467,11 +467,18 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		lblReloj.setBounds(727, 0, 143, 30);
 		pnl_top_bar.add(lblReloj);
 		
+		
+		// EL PANEL VENTA INICIA ACTIVADO POR DEFECTO
+		Pnl_Content_Venta venta = new Pnl_Content_Venta();
+		MostrarEnPanelContentBody(venta);
+		
 		// ESCONDER LOS PANELES QUE CONTIENEN LOS BOTONES OCULTOS
 		pnl_btn_calzado.setVisible(false);
 		pnl_btn_cliente.setVisible(false);
 		pnl_btn_empleado.setVisible(false);
+		
 		// SUBIR EL PANEL ANIMADO
+		
 		
 		fechaActual();
 		mostrarHora();
@@ -508,8 +515,8 @@ public class Pnl_Content extends JPanel implements MouseListener {
 
 	}
 	public void mouseEntered(MouseEvent arg0) {
-		if (arg0.getSource() == pnl_btn_dashboard) {
-			pnl_btn_dashboard.setBackground(utils.Library.Verde);
+		if (arg0.getSource() == pnl_btn_venta) {
+			pnl_btn_venta.setBackground(utils.Library.Verde);
 		}
 		if (arg0.getSource() == pnl_btn_mantenimiento) {
 			pnl_btn_mantenimiento.setBackground(utils.Library.Verde);
@@ -523,8 +530,8 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		if (arg0.getSource() == pnl_btn_empleado) {
 			pnl_btn_empleado.setBackground(utils.Library.Verde);
 		}
-		if (arg0.getSource() == pnl_btn_venta) {
-			pnl_btn_venta.setBackground(utils.Library.Verde);
+		if (arg0.getSource() == pnl_btn_dashboard) {
+			pnl_btn_dashboard.setBackground(utils.Library.Verde);
 		}
 		if (arg0.getSource() == pnl_btn_reportes) {
 			pnl_btn_reportes.setBackground(utils.Library.Verde);
@@ -535,8 +542,8 @@ public class Pnl_Content extends JPanel implements MouseListener {
 
 	}
 	public void mouseExited(MouseEvent arg0) {
-		if (arg0.getSource() == pnl_btn_dashboard && boton[0] == false) {
-			pnl_btn_dashboard.setBackground(utils.Library.Claro_1);
+		if (arg0.getSource() == pnl_btn_venta && boton[0] == false) {
+			pnl_btn_venta.setBackground(utils.Library.Claro_1);
 		}
 		if (arg0.getSource() == pnl_btn_mantenimiento) {
 			pnl_btn_mantenimiento.setBackground(utils.Library.Claro_1);
@@ -550,8 +557,8 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		if (arg0.getSource() == pnl_btn_empleado && boton[3] == false) {
 			pnl_btn_empleado.setBackground(utils.Library.Claro_1);
 		}
-		if (arg0.getSource() == pnl_btn_venta && boton[4] == false) {
-			pnl_btn_venta.setBackground(utils.Library.Claro_1);
+		if (arg0.getSource() == pnl_btn_dashboard && boton[4] == false) {
+			pnl_btn_dashboard.setBackground(utils.Library.Claro_1);
 		}
 		if (arg0.getSource() == pnl_btn_reportes && boton[5] == false) {
 			pnl_btn_reportes.setBackground(utils.Library.Claro_1);
@@ -561,8 +568,9 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		}
 	}
 	public void mousePressed(MouseEvent arg0) {
-		if (arg0.getSource() == pnl_btn_dashboard) { // indice 0
-			activarPanel(0, pnl_btn_dashboard);
+		if (arg0.getSource() == pnl_btn_venta) { // indice 0
+			MostrarEnPanelContentBody(new Pnl_Content_Venta());
+			activarPanel(0, pnl_btn_venta);
 		}
 		if (arg0.getSource() == pnl_btn_mantenimiento) {
 			Animacion_Menu_01 hilo1 = new Animacion_Menu_01(pnl_menu_content_2); // --> HILO
@@ -580,8 +588,8 @@ public class Pnl_Content extends JPanel implements MouseListener {
 			MostrarEnPanelContentBody(new Pnl_Content_Empleado());
 			activarPanel(3, pnl_btn_empleado);
 		}
-		if (arg0.getSource() == pnl_btn_venta) { // indice 4
-			activarPanel(4, pnl_btn_venta);
+		if (arg0.getSource() == pnl_btn_dashboard) { // indice 4
+			activarPanel(4, pnl_btn_dashboard);
 		}
 		if (arg0.getSource() == pnl_btn_reportes) { // indice 5
 			activarPanel(5, pnl_btn_reportes);
@@ -599,7 +607,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	protected void mousePressedPnl_btn_exit(MouseEvent arg0) {
 		
 		int respuesta;
-		respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cerrar sesion?","Sistema",JOptionPane.YES_NO_OPTION);
+		respuesta = JOptionPane.showConfirmDialog(pnl_content_body, "¿Estas seguro que deseas cerrar sesion?","Sistema",JOptionPane.YES_NO_OPTION);
 		
 		if(respuesta == 0){
 			setActivo(true);
