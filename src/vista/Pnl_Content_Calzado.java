@@ -592,7 +592,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		// En la fila de la tabla busca el codigo del Calzado, con este codigo se busca en la BD el calzado y trae todos sus datos.
 		Calzado calzado = new Calzado();
 		String codigoFila = tblCalzado.getValueAt(posicionFila, 0).toString();
-		calzado = gCalzado.buscarPorCodigoSimple(codigoFila).get(0);
+		calzado = gCalzado.buscarOriginalPorCodigo(codigoFila).get(0);
 		
 		// --
 		txtCodigo.setText( calzado.getCod_calzado() );
@@ -774,7 +774,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String codigo = txtCodigo.getText();
-			ArrayList<Calzado> listaCalzado = gCalzado.buscarPorCodigoSimple(codigo);
+			ArrayList<Calzado> listaCalzado = gCalzado.buscarOriginalPorCodigo(codigo);
 			
 			if(listaCalzado.size() != 1){
 				registrarCalzado();

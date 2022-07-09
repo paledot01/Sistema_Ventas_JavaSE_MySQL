@@ -97,6 +97,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	RendererTable render = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
+	
 	private JButton btnExportarTXT;
 	private JButton btnExportarXLS;
 	private JButton btnExportarPDF;

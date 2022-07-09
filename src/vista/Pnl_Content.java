@@ -105,36 +105,36 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/230x3_50px.png")));
-		lblNewLabel.setBounds(15, 118, 50, 50);
+		lblNewLabel.setBounds(15, 140, 50, 50);
 		pnl_content_side.add(lblNewLabel);
 		
 		// Encontrando el Cargo del empleado conectado
 		String codigo = Pnl_Access_Login.empleadoConectado.getCod_cargo();
 		String cargo = gCargo.buscarCargo(codigo).getDescripcion().toUpperCase();
 		lblCargo = new JLabel(cargo); // <-------------------------------------------
-		lblCargo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCargo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCargo.setForeground(new Color(230,230,230));
-		lblCargo.setFont(new Font("Courier New", Font.BOLD, 13));
-		lblCargo.setBounds(75, 118, 140, 15);
+		lblCargo.setFont(new Font("Monospaced", Font.BOLD, 15));
+		lblCargo.setBounds(15, 114, 205, 15);
 		pnl_content_side.add(lblCargo);
 		
 		lblNombre = new JLabel( Pnl_Access_Login.empleadoConectado.getNombre() ); // <-----------
 		lblNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNombre.setForeground(new Color(230, 230, 230));
-		lblNombre.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblNombre.setBounds(85, 138, 130, 15);
+		lblNombre.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		lblNombre.setBounds(75, 148, 130, 15);
 		pnl_content_side.add(lblNombre);
 		
 		lblApellidos = new JLabel( Pnl_Access_Login.empleadoConectado.getApellidos() );
 		lblApellidos.setHorizontalAlignment(SwingConstants.LEFT);
 		lblApellidos.setForeground(new Color(230, 230, 230));
-		lblApellidos.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblApellidos.setBounds(85, 153, 130, 15);
+		lblApellidos.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		lblApellidos.setBounds(75, 167, 130, 15);
 		pnl_content_side.add(lblApellidos);
 		
 		pnl_menu_content_1 = new JPanel();
 		pnl_menu_content_1.setBackground(new Color(43, 47, 51));
-		pnl_menu_content_1.setBounds(10, 190, 210, 412);
+		pnl_menu_content_1.setBounds(10, 212, 210, 412);
 		pnl_content_side.add(pnl_menu_content_1);
 		pnl_menu_content_1.setLayout(null);
 		
@@ -326,7 +326,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		pnl_btn_empleado.addMouseListener(this);
 		pnl_menu_content_1.add(pnl_btn_empleado);
 		
-		lblEmpleado = new JLabel("EMPLEADO ");
+		lblEmpleado = new JLabel("EMPLEADO");
 		lblEmpleado.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblEmpleado.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmpleado.setForeground(SystemColor.menu);

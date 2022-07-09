@@ -47,11 +47,10 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	private ArrayList<Calzado> listaOriginal;
 	private ArrayList<CalzadoReporte> listaReporte;
-	private ArrayList<CalzadoReporteMini> listaReporteMini;
 	
-	private Calzado obj;
-	private CalzadoReporte objR;
-	private CalzadoReporteMini objRM;
+//	private Calzado obj;
+//	private CalzadoReporte objR = null;
+//  si dentro del metodo no se encuentra el objeto, dentro de este se debe cambiar este objeto a null o el obj mantendra el ultimo valor encontrado.
 	
 	
 	// Sentencias
@@ -61,8 +60,10 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	final String INSERT = "{call pa_insertar_calzado(?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_calzado(?,?,?,?,?)}";
 	
-	final String SEARCH_CODE_SIMPLE = "{call pa_buscar_calzado_solo_por_codigo(?)}";
+	final String SEARCH_ORIGINAL_CODE = "{call pa_buscar_calzado_original_por_codigo(?)}";
 	final String SEARCH_CODE = "{call pa_buscar_calzado_por_codigo(?)}";
+	final String SEARCH_CODE_EXACT = "{call pa_buscar_calzado_por_codigo_exacto(?)}";
+	
 	final String SEARCH_MODEL = "{call pa_buscar_calzado_por_modelo(?)}";
 	final String SEARCH_CATEGORY = "{call pa_buscar_calzado_por_categoria(?)}";
 	final String SEARCH_BRAND = "{call pa_buscar_calzado_por_marca(?)}";
@@ -74,7 +75,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> listar() {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(GETALL);
@@ -113,46 +114,6 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 		
 	}
 
-	
-	
-
-	public ArrayList<CalzadoReporteMini> listarMini() {
-		
-		listaReporteMini = new ArrayList<CalzadoReporteMini>();
-		
-		try{
-			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALLMINI);
-			rs = cs.executeQuery();
-			
-			while(rs.next()){
-				int i=1;
-				objRM = new CalzadoReporteMini(
-						rs.getString(i++), // posicion 1
-						rs.getString(i++), // posicion 2
-						rs.getInt(i++), // ...
-						rs.getString(i++),
-						rs.getInt(i++)
-				);
-				listaReporteMini.add(objRM);
-			}
-			
-		}catch (SQLException e) {
-			System.out.println("Error en la sentencia listarMini() - CALZADO --> " + e.getMessage());
-		}catch (Exception e){
-			System.out.println("Error en la sentencia listarMini() - CALZADO --> " + e.getMessage());
-		}finally {
-			try {
-				if( rs != null ) rs.close();
-				if( cs != null ) cs.close();
-				if( cn != null ) cn.close();
-			} catch (SQLException e2) {
-				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
-			}
-		}
-		return listaReporteMini;
-		
-	}
 
 
 	
@@ -270,13 +231,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Calzado> buscarPorCodigoSimple(String valor) {
+	public ArrayList<Calzado> buscarOriginalPorCodigo(String valor) {
 		
 		listaOriginal = new ArrayList<Calzado>();
-		
+		Calzado obj;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CODE_SIMPLE);
+			cs = cn.prepareCall(SEARCH_ORIGINAL_CODE);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -313,13 +274,57 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	
 	
+	public CalzadoReporte buscarPorCodigoExacto(String valor) {
+				
+		CalzadoReporte objR = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCH_CODE_EXACT);
+			cs.setString(1, valor);
+			
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				objR = new CalzadoReporte(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getInt(i++),
+						rs.getString(i++),
+						rs.getDouble(i++),
+						rs.getDouble(i++),
+						rs.getInt(i++)
+				);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscarPorCodigoExacto() - CALZADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorCodigoExacto() - CALZADO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return objR;
+		
+	}
+	
+	
 
 
 	@Override
 	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_CODE);
@@ -368,7 +373,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> buscarPorModelo(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_MODEL);
@@ -417,7 +422,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> buscarPorCategoria(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_CATEGORY);
@@ -466,7 +471,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> buscarPorMarca(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_BRAND);
@@ -515,7 +520,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> buscarPorTalla(int valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_TALLA);
@@ -564,7 +569,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	public ArrayList<CalzadoReporte> buscarPorColor(String valor) {
 
 		listaReporte = new ArrayList<CalzadoReporte>();
-		
+		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH_COLOR);

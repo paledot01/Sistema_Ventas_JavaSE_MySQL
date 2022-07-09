@@ -10,17 +10,17 @@ public interface CalzadoInterfaceDao {
 
 	public ArrayList<CalzadoReporte> listar();
 	
-	public ArrayList<CalzadoReporteMini> listarMini();
-	
 	public String generarCodigo();
 	
 	public int registrar(Calzado c);
 	
 	public int actualizar(Calzado c);
 	
-	public ArrayList<Calzado> buscarPorCodigoSimple(String valor);
+	public ArrayList<Calzado> buscarOriginalPorCodigo(String valor);
 	
 	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor);
+	
+	public CalzadoReporte buscarPorCodigoExacto(String valor);
 	
 	public ArrayList<CalzadoReporte> buscarPorModelo(String valor);
 	
