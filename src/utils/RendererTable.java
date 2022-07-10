@@ -40,23 +40,10 @@ public class RendererTable extends DefaultTableCellRenderer{
 			setBackground(Color.WHITE);
 		}
 		
-		if(column == 0){
-			setHorizontalAlignment(SwingConstants.CENTER);
-		}else if(column == 1){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 2){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 3){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 4){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 5){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 6){
-			setHorizontalAlignment(SwingConstants.LEFT);
-		}else if(column == 7){
-			
-			setHorizontalAlignment(SwingConstants.CENTER);
+		setHorizontalAlignment(SwingConstants.CENTER);
+		
+		if(column == 7){
+//			setHorizontalAlignment(SwingConstants.CENTER);
 			setFont(getFont().deriveFont( Font.BOLD));
 			String valor = value.toString();
 			if( valor.equals("ACTIVO") ){
@@ -65,6 +52,33 @@ public class RendererTable extends DefaultTableCellRenderer{
 				setBackground(new Color(223, 179, 196));
 			}
 		}
+		
+		
+//		if(column == 0){
+//			setHorizontalAlignment(SwingConstants.CENTER);
+//		}else if(column == 1){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 2){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 3){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 4){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 5){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 6){
+//			setHorizontalAlignment(SwingConstants.LEFT);
+//		}else if(column == 7){
+//			
+//			setHorizontalAlignment(SwingConstants.CENTER);
+//			setFont(getFont().deriveFont( Font.BOLD));
+//			String valor = value.toString();
+//			if( valor.equals("ACTIVO") ){
+//				setBackground(new Color(186, 223, 179));
+//			}else{
+//				setBackground(new Color(223, 179, 196));
+//			}
+//		}
 		
 		/** Al repintarse ya no se tiene que volver a cambiarlo para que regrese a la normalidad, CREO¡? **/
 		if (isSelected) {

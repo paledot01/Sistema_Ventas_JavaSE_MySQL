@@ -26,7 +26,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import entidad.Calzado;
 import entidad.CalzadoReporte;
-import entidad.CalzadoReporteMini;
 import interfaces.CalzadoInterfaceDao;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -55,7 +54,6 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	// Sentencias
 	final String GETALL = "{call pa_listar_calzado()}";
-	final String GETALLMINI = "{call pa_listar_calzado_mini()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_calzado()}";
 	final String INSERT = "{call pa_insertar_calzado(?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_calzado(?,?,?,?,?)}";

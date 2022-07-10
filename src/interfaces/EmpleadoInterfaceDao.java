@@ -3,11 +3,14 @@ package interfaces;
 import java.util.ArrayList;
 
 import entidad.Empleado;
+import entidad.EmpleadoReporte;
 
 public interface EmpleadoInterfaceDao {
 	
 	
-	public ArrayList<Empleado> listar();
+	public ArrayList<Empleado> listarOriginal();
+	
+	public ArrayList<EmpleadoReporte> listar();
 	
 	public Empleado validarAcceso(String user, String pass);
 	

@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 
 import Controlador.CalzadoGestionDao;
 import entidad.CalzadoReporte;
-import entidad.CalzadoReporteMini;
 import entidad.Modelo;
 import utils.Library;
 import utils.RendererTableSimple;

@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import entidad.Empleado;
+import entidad.EmpleadoReporte;
 import interfaces.EmpleadoInterfaceDao;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -43,12 +44,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
-	private ArrayList<Empleado> lista;
-	private Empleado obj;
+	private ArrayList<Empleado> listaOriginal;
+	private ArrayList<EmpleadoReporte> lista;
+//	private Empleado obj;
 	
 	// Sentencias
 	
 	final String VALIDATE = "{call pa_validar_empleado(?,?)}";
+	final String GETALLORIGINAL = "{call pa_listar_empleado_original()}";
 	final String GETALL = "{call pa_listar_empleado()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_empleado()}";
 	final String INSERT = "{call pa_insertar_empleado(?,?,?,?,?,?,?,?,?,?,?,?)}";
@@ -63,9 +66,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 	
 	
-	
 	@Override
 	public Empleado validarAcceso(String user, String pass) {
+		
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -112,13 +116,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Empleado> listar() {
+	public ArrayList<Empleado> listarOriginal() {
 		
-		lista = new ArrayList<Empleado>();
+		listaOriginal = new ArrayList<Empleado>();
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALLORIGINAL);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -137,6 +142,53 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
+				listaOriginal.add(obj);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia listarEmpelado" + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return listaOriginal;
+		
+	}
+	
+	
+	
+	@Override
+	public ArrayList<EmpleadoReporte> listar() {
+
+		lista = new ArrayList<EmpleadoReporte>();
+		EmpleadoReporte obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(GETALL);
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				obj = new EmpleadoReporte(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++)
+				);
 				lista.add(obj);
 			}
 			
@@ -152,7 +204,6 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			}
 		}
 		return lista;
-		
 	}
 	
 	
@@ -177,7 +228,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			cs.setString(i++, e.getCod_cargo());
 			cs.setString(i++, e.getUsuario());
 			cs.setString(i++, e.getContraseña());
-			cs.setInt(i++, e.getEstado());
+			cs.setInt(i++, e.getCod_estado());
 			
 			respuesta = cs.executeUpdate();
 			
@@ -249,7 +300,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			cs.setString(i++, e.getCod_cargo());
 			cs.setString(i++, e.getUsuario());
 			cs.setString(i++, e.getContraseña());
-			cs.setInt(i++, e.getEstado());
+			cs.setInt(i++, e.getCod_estado());
 			
 			respuesta = cs.executeUpdate();
 			
@@ -299,8 +350,8 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	@Override
 	public Empleado buscarPorCodigo(String codigo) {
-
-		obj = null;
+		
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -349,7 +400,8 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	@Override
 	public ArrayList<Empleado> buscarPorNombre(String valor) {
 		
-		lista = new ArrayList<Empleado>();
+		listaOriginal = new ArrayList<Empleado>();
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -374,7 +426,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaOriginal.add(obj);
 			}
 			
 		}catch (SQLException e) {
@@ -388,7 +440,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaOriginal;
 		
 	}
 
@@ -397,7 +449,8 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	@Override
 	public ArrayList<Empleado> buscarPorDni(String valor) {
 		
-		lista = new ArrayList<Empleado>();
+		listaOriginal = new ArrayList<Empleado>();
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -422,7 +475,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaOriginal.add(obj);
 			}
 			
 		}catch (SQLException e) {
@@ -436,7 +489,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaOriginal;
 		
 	}
 
@@ -449,7 +502,8 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	@Override
 	public ArrayList<Empleado> buscarPorDistrito(String valor) {
 
-		lista = new ArrayList<Empleado>();
+		listaOriginal = new ArrayList<Empleado>();
+		Empleado obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -474,7 +528,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
-				lista.add(obj);
+				listaOriginal.add(obj);
 			}
 			
 		}catch (SQLException e) {
@@ -488,7 +542,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return lista;
+		return listaOriginal;
 		
 	}
 
@@ -535,7 +589,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						emp.getCod_cargo() + "|" +
 						emp.getUsuario() + "|" +
 						emp.getContraseña() + "|" +
-						emp.getEstado() + "\n";
+						emp.getCod_estado() + "\n";
 				
 				data += linea;
 //				data.concat(linea); ESTA LINEA NO FUNCIONA NO SE ¿PORQUE?
@@ -684,6 +738,9 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 		 *  jasperreport.6.4.0.jar del 2016 y ahora esta DEPRECATE. En la unica posible solucion estaban usan la Api pooq/poor, que permite cambiar las 
 		 *  expresiones del lenguaje java por uno mas "expresivo". No logre entender lo suficiente como para pasarlo al Java normal **/
 	}
+
+
+
 
 
 }

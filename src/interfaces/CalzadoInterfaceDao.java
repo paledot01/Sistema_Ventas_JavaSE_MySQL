@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import entidad.Calzado;
 import entidad.CalzadoReporte;
-import entidad.CalzadoReporteMini;
 
 public interface CalzadoInterfaceDao {
 

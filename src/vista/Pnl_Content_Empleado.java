@@ -498,7 +498,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	public void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<Empleado> data = gEmpleado.listar();
+		ArrayList<Empleado> data = gEmpleado.listarOriginal();
 		
 		/** Para mostrar los primeros al final y los ultimos al inicio **/
 		for (int i = data.size()-1; i >=0; i--) {
@@ -511,7 +511,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 					data.get(i).getTelefono(),
 					gDistrito.buscarDistrito(data.get(i).getCod_distrito()).getDescripcion(),
 					gCargo.buscarCargo(data.get(i).getCod_cargo()).getDescripcion(),
-					estado(data.get(i).getEstado())
+					estado(data.get(i).getCod_estado())
 					
 			};
 			modelo.addRow(fila);
@@ -647,7 +647,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtContraseña.setText(emp.getContraseña());
 		
 		boolean respuesta = true;
-		if(emp.getEstado() != 1){
+		if(emp.getCod_estado() != 1){
 			respuesta = false;
 		}
 		chEstado.setSelected(respuesta);
@@ -759,7 +759,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 					e.getTelefono(),
 					gDistrito.buscarDistrito(e.getCod_distrito()).getDescripcion(),
 					gCargo.buscarCargo(e.getCod_cargo()).getDescripcion(),
-					estado(e.getEstado())
+					estado(e.getCod_estado())
 			};
 			modelo.addRow(fila);
 		}

@@ -15,7 +15,7 @@ public class Empleado {
 	private String cod_cargo;
 	private String usuario;
 	private String contraseña;
-	private Integer estado;
+	private Integer cod_estado;
 	
 	// Constructores
 	public Empleado (){	
@@ -24,7 +24,7 @@ public class Empleado {
 	// Constructor para recibir empleados de la Base de Datos
 	public Empleado(String cod_empleado, String nombre, String apellidos, String dni, String direccion, 
 			String telefono, String email, String cod_distrito, String cod_cargo, String usuario, 
-			String contraseña, Integer estado) {
+			String contraseña, Integer cod_estado) {
 		super();
 		this.cod_empleado = cod_empleado;
 		this.nombre = nombre;
@@ -37,7 +37,7 @@ public class Empleado {
 		this.cod_cargo = cod_cargo;
 		this.usuario = usuario;
 		this.contraseña = contraseña;
-		this.estado = estado;
+		this.cod_estado = cod_estado;
 	}
 	
 	// Constructor para crear un empleado >> sin user, pass, estado
@@ -55,12 +55,12 @@ public class Empleado {
 		this.cod_cargo = cod_cargo;
 		this.usuario = nombre.toLowerCase() + apellidos.toLowerCase().charAt(0);
 		this.contraseña = dni;
-		this.estado = 1; // por defecto esta en ACTIVO
+		this.cod_estado = 1; // por defecto esta en ACTIVO
 	}
 	
 	// Constructor para actualizar un empleado >> sin user, pass
 	public Empleado(String cod_empleado, String nombre, String apellidos, String dni, String direccion
-			, String telefono, String email, String cod_distrito, String cod_cargo, Integer estado) {
+			, String telefono, String email, String cod_distrito, String cod_cargo, Integer cod_estado) {
 		super();
 		this.cod_empleado = cod_empleado;
 		this.nombre = nombre;
@@ -73,7 +73,7 @@ public class Empleado {
 		this.cod_cargo = cod_cargo;
 		this.usuario = nombre.toLowerCase() + apellidos.toLowerCase().charAt(0);
 		this.contraseña = dni;
-		this.estado = estado;
+		this.cod_estado = cod_estado;
 	}
 
 	// Metodos get-set
@@ -165,12 +165,12 @@ public class Empleado {
 		this.contraseña = contraseña;
 	}
 
-	public Integer getEstado() {
-		return estado;
+	public Integer getCod_estado() {
+		return cod_estado;
 	}
 
-	public void setEstado(Integer estado) {
-		this.estado = estado;
+	public void setCod_estado(Integer cod_estado) {
+		this.cod_estado = cod_estado;
 	}
 
 	// DEVUELVE EL ATRIBUTO DEL OBJETO DE LA POSICION ESPECIFICADA
@@ -190,7 +190,7 @@ public class Empleado {
 		atributo[8] = getCod_cargo();
 		atributo[9] = getUsuario();
 		atributo[10] = getContraseña();
-		atributo[11] = getEstado().toString();	
+		atributo[11] = getCod_estado().toString();	
 		
 		
 //		atributo[0] = obj.getCod_empleado();
