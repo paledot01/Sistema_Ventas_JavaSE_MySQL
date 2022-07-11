@@ -18,8 +18,9 @@ import Controlador.EmpleadoGestionDao;
 import entidad.Cargo;
 import entidad.Distrito;
 import entidad.Empleado;
-//import utils.SuperTable;//<<<<<<<<<
-import utils.RendererTable;
+import entidad.EmpleadoReporte;
+
+import utils.RendererTableEmpleado;
 
 import javax.swing.JTextField;
 import javax.swing.JTable;
@@ -95,8 +96,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private DistritoGestionDao gDistrito = new DistritoGestionDao(); // <---
 	private CargoGestionDao gCargo = new CargoGestionDao(); // <---
 	
-	RendererTable render = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	
+	RendererTableEmpleado render = new RendererTableEmpleado(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
 	private JButton btnExportarTXT;
 	private JButton btnExportarXLS;
@@ -498,7 +498,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	public void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<Empleado> data = gEmpleado.listarOriginal();
+		ArrayList<EmpleadoReporte> data = gEmpleado.listar();
 		
 		/** Para mostrar los primeros al final y los ultimos al inicio **/
 		for (int i = data.size()-1; i >=0; i--) {
@@ -509,22 +509,12 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 					data.get(i).getApellidos(),
 					data.get(i).getDni(),
 					data.get(i).getTelefono(),
-					gDistrito.buscarDistrito(data.get(i).getCod_distrito()).getDescripcion(),
-					gCargo.buscarCargo(data.get(i).getCod_cargo()).getDescripcion(),
-					estado(data.get(i).getCod_estado())
+					data.get(i).getDistrito(),
+					data.get(i).getCargo(),
+					data.get(i).getEstado()
 					
 			};
 			modelo.addRow(fila);
-		
-		}
-		
-	}
-	
-	public String estado(Integer n){
-		if(n == 1){
-			return "ACTIVO";
-		}else{
-			return "INACTIVO";
 		}
 	}
 	
@@ -565,7 +555,9 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		
 	}
 	
+
 	public void registrarEmpleado(){
+
 		String codigo = txtCodigo.getText();
 		String nombre = txtNombre.getText().trim();
 		String apellidos = txtApellido.getText().trim();
@@ -573,33 +565,24 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		String direccion = txtDireccion.getText().trim();
 		String telefono = txtTelefono.getText().trim();
 		String email = txtEmail.getText().trim();
-		int estado = 1;
+		int codEstado = 1;
 		if(!chEstado.isSelected()){
-			estado = 0;
+			codEstado = 0;
 		}
 		
 		// obtiene el codigo distrito
-		String codDistrito = null;
 		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
-		if(d == null){
-			mensajeError("Escoge un Distrito");
-		}else{
-			codDistrito = d.getCod_distrito();
-		}
+		String codDistrito = d.getCod_distrito();
+		
 		// obtiene el codigo cargo
-		String codCargo = null;
 		Cargo c = gCargo.buscarCargo(cboCargo.getSelectedItem().toString()) ;
-		if(c == null){
-			mensajeError("Escoge un Cargo");
-		}else{
-			codCargo = c.getCod_cargo();
-		}
+		String codCargo = c.getCod_cargo();
 		
 		// -->
 		if(nombre.equals("") || apellidos.equals("") || dni.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
-			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, estado);
+			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, codEstado);
 			int respuesta = gEmpleado.registrar(emp);
 			
 			if(respuesta == 0){
@@ -624,30 +607,25 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	void mostrarDatosTextBox(int posicionFila){
 		// En la fila de la tabla busca el codigo del empleado, con este codigo se busca en la BD al empleado y trae todos sus datos.
-		Empleado emp = new Empleado();
+		EmpleadoReporte obj = new EmpleadoReporte();
 		String codigoFila = tblEmpleado.getValueAt(posicionFila, 0).toString();
 		
-		emp = gEmpleado.buscarPorCodigo(codigoFila);
+		obj = gEmpleado.buscarPorCodigoExacto(codigoFila);
 		
-		txtCodigo.setText(emp.getCod_empleado());
-		txtNombre.setText(emp.getNombre());
-		txtApellido.setText(emp.getApellidos());
-		txtDni.setText(emp.getDni());
-		txtDireccion.setText(emp.getDireccion());
-		txtTelefono.setText(emp.getTelefono());
-		txtEmail.setText(emp.getEmail());
-		
-		Object objDistrito = gDistrito.buscarDistrito(emp.getCod_distrito()).getDescripcion();
-		cboDistrito.setSelectedItem(objDistrito);
-		
-		Object objCargo = gCargo.buscarCargo(emp.getCod_cargo()).getDescripcion();
-		cboCargo.setSelectedItem(objCargo);
-		
-		txtUsuario.setText(emp.getUsuario());
-		txtContraseña.setText(emp.getContraseña());
+		txtCodigo.setText(obj.getCod_empleado());
+		txtNombre.setText(obj.getNombre());
+		txtApellido.setText(obj.getApellidos());
+		txtDni.setText(obj.getDni());
+		txtDireccion.setText(obj.getDireccion());
+		txtTelefono.setText(obj.getTelefono());
+		txtEmail.setText(obj.getEmail());
+		cboDistrito.setSelectedItem(obj.getDistrito());
+		cboCargo.setSelectedItem(obj.getCargo());
+		txtUsuario.setText(obj.getUsuario());
+		txtContraseña.setText(obj.getContraseña());
 		
 		boolean respuesta = true;
-		if(emp.getCod_estado() != 1){
+		if(obj.getEstado().equals("INACTIVO")){
 			respuesta = false;
 		}
 		chEstado.setSelected(respuesta);
@@ -680,33 +658,24 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		String direccion = txtDireccion.getText().trim();
 		String telefono = txtTelefono.getText().trim();
 		String email = txtEmail.getText().trim();
-		int estado = 1;
+		int codEstado = 1;
 		if(!chEstado.isSelected()){
-			estado = 0;
+			codEstado = 0;
 		}
 		
 		// obtiene el codigo distrito
-		String codDistrito = null;
 		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
-		if(d == null){
-			mensajeError("Escoge un Distrito");
-		}else{
-			codDistrito = d.getCod_distrito();
-		}
+		String codDistrito = d.getCod_distrito();
+		
 		// obtiene el codigo cargo
-		String codCargo = null;
 		Cargo c = gCargo.buscarCargo(cboCargo.getSelectedItem().toString()) ;
-		if(c == null){
-			mensajeError("Escoge un Cargo");
-		}else{
-			codCargo = c.getCod_cargo();
-		}
+		String codCargo = c.getCod_cargo();
 		
 		// -------------->
 		if(nombre.equals("") || apellidos.equals("") || dni.equals("")){
 			mensajeError("Error en el ingreso de Datos");
 		}else{
-			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, estado);
+			Empleado emp = new Empleado(codigo, nombre, apellidos, dni, direccion, telefono, email, codDistrito, codCargo, codEstado);
 			int respuesta = gEmpleado.actualizar(emp); // <---------
 			
 			if(respuesta == 0){
@@ -722,20 +691,15 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 	}
 	
-	public ArrayList<Empleado> resultadoBusqueda(){
+	public ArrayList<EmpleadoReporte> resultadoBusqueda(){
 		
 		String valor = txtBuscar.getText().trim();
-		
-		ArrayList<Empleado> data = new ArrayList<Empleado>();
-		Empleado emp = null;
+		ArrayList<EmpleadoReporte> data = new ArrayList<EmpleadoReporte>();
 		
 		if(rdbtnNombreapellido.isSelected()){
 			data = gEmpleado.buscarPorNombre(valor);
 		}else if(rdbtnCodigo.isSelected()){
-			emp = gEmpleado.buscarPorCodigo(valor);
-			if(emp != null){
-				data.add(emp);
-			}
+			data = gEmpleado.buscarPorCodigo(valor);
 		}else if(rdbtnDni.isSelected()){
 			data = gEmpleado.buscarPorDni(valor);
 		}else if(rdbtnDistrito.isSelected()){
@@ -745,11 +709,11 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		return data;
 	}
 	
-	void mostrarResultadoBusquedaTabla(ArrayList<Empleado> data){
+	void mostrarResultadoBusquedaTabla(ArrayList<EmpleadoReporte> data){
 
 		modelo.setRowCount(0);
 		
-		for (Empleado e : data) {
+		for (EmpleadoReporte e : data) {
 			
 			Object fila[] = {
 					e.getCod_empleado(),
@@ -757,26 +721,25 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 					e.getApellidos(),
 					e.getDni(),
 					e.getTelefono(),
-					gDistrito.buscarDistrito(e.getCod_distrito()).getDescripcion(),
-					gCargo.buscarCargo(e.getCod_cargo()).getDescripcion(),
-					estado(e.getCod_estado())
+					e.getDistrito(),
+					e.getCargo(),
+					e.getEstado()
 			};
 			modelo.addRow(fila);
 		}
-		
 	}
 	
 	
 	/** ----------------------------------------------------------------------------------- **/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnExportarPDF) {
-			ArrayList<Empleado> data = resultadoBusqueda();
+			ArrayList<EmpleadoReporte> data = resultadoBusqueda();
 			if(gEmpleado.exportarPDF(data) == -1){
 				mensajeError("No se pudo generar el archivo");
 			}
 		}
 		if (e.getSource() == btnExportarXLS) {
-			ArrayList<Empleado> data = resultadoBusqueda();
+			ArrayList<EmpleadoReporte> data = resultadoBusqueda();
 			if(gEmpleado.exportarXLSX(data) != -1){
 				mensajeExito("Se guardo correctamente");
 			}else{
@@ -784,7 +747,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 			}
 		}
 		if (e.getSource() == btnExportarTXT) {
-			ArrayList<Empleado> data = resultadoBusqueda();
+			ArrayList<EmpleadoReporte> data = resultadoBusqueda();
 			if(gEmpleado.exportarTXT(data) != -1){
 				mensajeExito("Se guardo correctamente");
 			}else{
@@ -792,12 +755,12 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 			}
 		}
 		if (e.getSource() == btnBuscar) {
-			ArrayList<Empleado> data = resultadoBusqueda();
+			ArrayList<EmpleadoReporte> data = resultadoBusqueda();
 			mostrarResultadoBusquedaTabla(data);
 		}
 		if (e.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			Empleado emp = gEmpleado.buscarPorCodigo(cod);
+			EmpleadoReporte emp = gEmpleado.buscarPorCodigoExacto(cod);
 			if(emp == null){
 				registrarEmpleado();
 			}else{
@@ -820,9 +783,8 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 
 	}
-	/** ----------------------------------------------------------------------------------- **/
+	/** -------------------------------------------------------------------------------------------------------- **/
 	public void mouseClicked(MouseEvent arg0) {
-		
 	}
 	public void mouseEntered(MouseEvent arg0) {
 	}
@@ -843,11 +805,11 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	}
 	public void mouseReleased(MouseEvent arg0) {
 	}
-	/** ----------------------------------------------------------------------------------- **/
+	/** -------------------------------------------------------------------------------------------------------- **/
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getSource() == txtBuscar) {
 			if(arg0.getKeyCode() == KeyEvent.VK_ENTER ) {
-				ArrayList<Empleado> data =resultadoBusqueda();
+				ArrayList<EmpleadoReporte> data = resultadoBusqueda();
 				mostrarResultadoBusquedaTabla(data);
 			}
 		}
@@ -869,7 +831,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	}
 	public void keyTyped(KeyEvent arg0) {
 	}
-	/** ----------------------------------------------------------------------------------- **/
+	/** -------------------------------------------------------------------------------------------------------- **/
 	public void stateChanged(ChangeEvent arg0) {
 		if (arg0.getSource() == chEstado) {
 			
@@ -882,7 +844,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 				txtActivo.setText("INACTIVO");
 				txtActivo.setDisabledTextColor(new Color(80, 0, 0));
 			}
-		
+		 
 		}
 	}
 	

@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import Controlador.CategoriaGestionDao;
 import entidad.Categoria;
 import utils.Library;
-import utils.RendererTable2;
+import utils.RendererTableSimple;
 
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -46,7 +46,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 
 	private DefaultTableModel modelo;
 	private CategoriaGestionDao gCategoria = new CategoriaGestionDao();
-	RendererTable2 render = new RendererTable2(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<
+	RendererTableSimple render = new RendererTableSimple(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
 	
 	

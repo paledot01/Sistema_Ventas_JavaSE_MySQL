@@ -11,7 +11,8 @@ import Controlador.ModeloGestionDao;
 import entidad.Categoria;
 import entidad.Marca;
 import entidad.Modelo;
-import utils.RendererTable6;
+import entidad.ModeloReporte;
+import utils.RendererTableSimple;
 
 import javax.swing.JScrollPane;
 
@@ -70,8 +71,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	private CategoriaGestionDao gCategoria = new CategoriaGestionDao();
 	private DefaultTableModel modelo; // <<<<<<<<
 
-	RendererTable6 render = new RendererTable6(); // <<<<<<<<<<<<<<<<<<<
-	
+	RendererTableSimple render = new RendererTableSimple(); // <<<<<<<<<<<<<<<<<<<
 	
 	
 	public Pnl_Content_Calzado_Modelo() {
@@ -274,21 +274,20 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 			cboMarca.addItem(mar.getNombre_marca());
 		}
 		
-		
 	}
 	
 	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<Modelo> data = gModelo.listar();
+		ArrayList<ModeloReporte> data = gModelo.listar();
 		
 		for( int i = data.size()-1 ; i>=0 ; i-- ){
 			
 			Object fila[] = {
 					data.get(i).getCod_modelo(),
 					data.get(i).getNombre_modelo(),
-					gMarca.buscar(data.get(i).getCod_marca()).get(0).getNombre_marca(),
-					gCategoria.buscar( data.get(i).getCod_categoria() ).get(0).getDescripcion(),
+					data.get(i).getMarca(),
+					data.get(i).getCategoria(),
 					data.get(i).getPrecio_compra(),
 					data.get(i).getPrecio_venta()
 					
@@ -417,24 +416,18 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	
 	void mostrarDatosTextBox(int posicionFila){
 		// En la fila de la tabla busca el codigo del empleado, con este codigo se busca en la BD al empleado y trae todos sus datos.
-		Modelo mod = new Modelo();
+		ModeloReporte mod = new ModeloReporte();
 		String codigoFila = tblModelo.getValueAt(posicionFila, 0).toString();
 		
 		mod = gModelo.buscar(codigoFila).get(0);
 		
 		txtCodigo.setText( mod.getCod_modelo());
 		txtNombre.setText( mod.getNombre_modelo() );
+		cboMarca.setSelectedItem(mod.getMarca());
+		cboCategoria.setSelectedItem(mod.getCategoria());
 		txtPc.setText( String.valueOf( mod.getPrecio_compra() ) );
 		txtPv.setText( String.valueOf( mod.getPrecio_venta() ) );
-		
-		
-		Object objCategoria = gCategoria.buscar(mod.getCod_categoria()).get(0).getDescripcion();
-		cboCategoria.setSelectedItem(objCategoria);
-		
-		Object objMarca = gMarca.buscar(mod.getCod_marca()).get(0).getNombre_marca();
-		cboMarca.setSelectedItem(objMarca);
-		
-		
+
 	}
 	
 	void actualizarModelo(){
@@ -475,11 +468,11 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		
 	}
 	
-	public ArrayList<Modelo> resultadoBusqueda(){
+	public ArrayList<ModeloReporte> resultadoBusqueda(){
 		
 		String valor = txtBuscar.getText().trim();
 		
-		ArrayList<Modelo> data = new ArrayList<Modelo>();
+		ArrayList<ModeloReporte> data = new ArrayList<ModeloReporte>();
 		
 		data = gModelo.buscar(valor);
 		
@@ -487,23 +480,22 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		
 	}
 	
-	void mostrarResultadoBusquedaTabla(ArrayList<Modelo> data){
+	void mostrarResultadoBusquedaTabla(ArrayList<ModeloReporte> data){
 
 		modelo.setRowCount(0);
 		
-		for (Modelo mod : data) {
+		for (ModeloReporte mod : data) {
 			
 			Object fila[] = {
 					mod.getCod_modelo(),
 					mod.getNombre_modelo(),
-					gMarca.buscar(mod.getCod_marca()).get(0).getNombre_marca(),
-					gCategoria.buscar(mod.getCod_categoria()).get(0).getDescripcion(),
+					mod.getMarca(),
+					mod.getCategoria(),
 					mod.getPrecio_compra(),
 					mod.getPrecio_venta(),
 			};
 			modelo.addRow(fila);
 		}
-		
 	}
 	
 	/** ----------------------------------------------------------------------------------- **/
@@ -529,7 +521,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 //			}
 		}
 		if (arg0.getSource() == btnBuscar) {
-			ArrayList<Modelo> data = resultadoBusqueda();
+			ArrayList<ModeloReporte> data = resultadoBusqueda();
 			mostrarResultadoBusquedaTabla(data);
 		}
 		if (arg0.getSource() == btnModificar) {
@@ -538,7 +530,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			ArrayList<Modelo> listModelos = gModelo.buscar(cod);
+			ArrayList<ModeloReporte> listModelos = gModelo.buscar(cod);
 			
 			if( listModelos.size() != 1 ){
 				registrarModelo();
@@ -587,7 +579,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getSource() == txtBuscar) {
 			if(arg0.getKeyCode() == KeyEvent.VK_ENTER ){
-				ArrayList<Modelo> data = resultadoBusqueda();
+				ArrayList<ModeloReporte> data = resultadoBusqueda();
 				mostrarResultadoBusquedaTabla(data);
 			}
 		}

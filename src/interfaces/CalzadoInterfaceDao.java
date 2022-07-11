@@ -15,11 +15,13 @@ public interface CalzadoInterfaceDao {
 	
 	public int actualizar(Calzado c);
 	
+	
 	public ArrayList<Calzado> buscarOriginalPorCodigo(String valor);
 	
 	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor);
 	
 	public CalzadoReporte buscarPorCodigoExacto(String valor);
+	
 	
 	public ArrayList<CalzadoReporte> buscarPorModelo(String valor);
 	
@@ -30,6 +32,7 @@ public interface CalzadoInterfaceDao {
 	public ArrayList<CalzadoReporte> buscarPorTalla(int valor);
 	
 	public ArrayList<CalzadoReporte> buscarPorColor(String valor);
+	
 	
 	public int exportarTXT(ArrayList<CalzadoReporte> calzados);
 	

@@ -10,8 +10,8 @@ public class EmpleadoReporte {
 	private String direccion;
 	private String telefono;
 	private String email;
-	private String cod_distrito;
-	private String cod_cargo;
+	private String distrito;
+	private String cargo;
 	private String usuario;
 	private String contraseña;
 	private String estado;
@@ -20,11 +20,10 @@ public class EmpleadoReporte {
 	public EmpleadoReporte (){	
 	}
 
-	
 	// Constructor para recibir empleados de la Base de Datos
-	public EmpleadoReporte(String cod_empleado, String nombre, String apellidos, String dni, String direccion, 
-			String telefono, String email, String cod_distrito, String cod_cargo, String usuario, 
-			String contraseña, String estado) {
+	public EmpleadoReporte(String cod_empleado, String nombre, String apellidos, String dni, String direccion,
+			String telefono, String email, String distrito, String cargo, String usuario, String contraseña,
+			String estado) {
 		super();
 		this.cod_empleado = cod_empleado;
 		this.nombre = nombre;
@@ -33,16 +32,15 @@ public class EmpleadoReporte {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.email = email;
-		this.cod_distrito = cod_distrito;
-		this.cod_cargo = cod_cargo;
+		this.distrito = distrito;
+		this.cargo = cargo;
 		this.usuario = usuario;
 		this.contraseña = contraseña;
 		this.estado = estado;
 	}
 	
-	
 	// Metodos GET-SET
-	
+
 	public String getCod_empleado() {
 		return cod_empleado;
 	}
@@ -99,20 +97,20 @@ public class EmpleadoReporte {
 		this.email = email;
 	}
 
-	public String getCod_distrito() {
-		return cod_distrito;
+	public String getDistrito() {
+		return distrito;
 	}
 
-	public void setCod_distrito(String cod_distrito) {
-		this.cod_distrito = cod_distrito;
+	public void setDistrito(String distrito) {
+		this.distrito = distrito;
 	}
 
-	public String getCod_cargo() {
-		return cod_cargo;
+	public String getCargo() {
+		return cargo;
 	}
 
-	public void setCod_cargo(String cod_cargo) {
-		this.cod_cargo = cod_cargo;
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 	public String getUsuario() {
@@ -138,9 +136,28 @@ public class EmpleadoReporte {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
 
-	
+	// DEVUELVE EL ATRIBUTO DEL OBJETO DE LA POSICION ESPECIFICADA
+	public String atributoObjeto( int position){
+		
+		String[] atributo = new String[15];
+//		int indice = 0;
+		
+		atributo[0] = getCod_empleado();
+		atributo[1] = getNombre();
+		atributo[2] = getApellidos();
+		atributo[3] = getDni();
+		atributo[4] = getDireccion();
+		atributo[5] = getTelefono();
+		atributo[6] = getEmail();
+		atributo[7] = getDistrito();
+		atributo[8] = getCargo();
+		atributo[9] = getUsuario();
+		atributo[10] = getContraseña();
+		atributo[11] = getEstado();	
+		
+		return atributo[position];
+	}
 	
 	
 }

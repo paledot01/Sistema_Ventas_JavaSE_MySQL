@@ -58,10 +58,13 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	final String UPDATE = "{call pa_actualizar_empleado(?,?,?,?,?,?,?,?,?,?,?,?)}";
 	//final String DELETE = "{call pa_eliminar_empleado(?)}";
 	
-	final String SEARCHCODE = "{call pa_buscar_empleado_por_codigo(?)}";
-	final String SEARCHNAME = "{call pa_buscar_empleado_por_nombre_apellido(?)}";
-	final String SEARCHDNI = "{call pa_buscar_empleado_por_dni(?)}";
-	final String SEARCHDISTRITO = "{call pa_buscar_empleado_por_distrito(?)}";
+	final String SEARCH_ORIGINAL_CODE = "{call pa_buscar_empleado_original_por_codigo(?)}";
+	final String SEARCH_CODE_EXACT = "{call pa_buscar_empleado_por_codigo_exacto(?)}";
+	final String SEARCH_CODE = "{call pa_buscar_empleado_por_codigo(?)}";
+
+	final String SEARCH_NAME = "{call pa_buscar_empleado_por_nombre_apellido(?)}";
+	final String SEARCH_DNI = "{call pa_buscar_empleado_por_dni(?)}";
+	final String SEARCH_DISTRITO = "{call pa_buscar_empleado_por_distrito(?)}";
 	
 
 	
@@ -98,8 +101,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				);
 			}
 			
-		}catch (SQLException e) {
-			System.out.println("Error en la sentencia ValidarAccesoEmpleado" + e.getMessage());
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia validarAcceso() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia validarAcceso() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -145,8 +150,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				listaOriginal.add(obj);
 			}
 			
-		}catch (SQLException e) {
-			System.out.println("Error en la sentencia listarEmpelado" + e.getMessage());
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia listarOriginal() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia listarOriginal() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -192,8 +199,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				lista.add(obj);
 			}
 			
-		}catch (SQLException e) {
-			System.out.println("Error en la sentencia listarEmpelado" + e.getMessage());
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia listar() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia listar() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -233,7 +242,9 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			respuesta = cs.executeUpdate();
 			
 		}catch (SQLException e1) {
-			System.out.println("Error en la sentencia registrarEmpleado" + e1.getMessage());
+			System.out.println("Error en la sentencia registrar() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia registrar() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -263,8 +274,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				codEmpleado = "EM" + df.format(Integer.parseInt(rs.getString(1)) + 1); // example -> 003 + 1 = 004
 			}
 			
-		}catch (SQLException e) {
-			System.out.println("Error en la sentencia generarCodigoEmpleado" + e.getMessage());
+		}catch (SQLException e1) {
+			System.out.println("Error en la sentencia generarCodigo() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia generarCodigo() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -305,7 +318,9 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			respuesta = cs.executeUpdate();
 			
 		}catch (SQLException e1) {
-			System.out.println("Error en la sentencia actualizarEmpleado" + e1.getMessage());
+			System.out.println("Error en la sentencia actualizar() - EMPLEADO --> " + e1.getMessage());
+		}catch (Exception e2){
+			System.out.println("Error en la sentencia actualizar() - EMPLEADO --> " + e2.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -349,19 +364,18 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public Empleado buscarPorCodigo(String codigo) {
+	public ArrayList<Empleado> buscarOriginalPorCodigo(String valor) {
 		
-		Empleado obj = null;
-		
+		listaOriginal = new ArrayList<Empleado>();
+		Empleado obj;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHCODE);
-			cs.setString(1, codigo);
+			cs = cn.prepareCall(SEARCH_ORIGINAL_CODE);
+			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
 			
-			if(rs.next()){
-				
+			while(rs.next()){
 				int i=1;
 				obj = new Empleado(
 						rs.getString(i++), // posicion 1
@@ -377,10 +391,60 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getInt(i++)
 				);
+				listaOriginal.add(obj);
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia buscarEmpleadoXCodigo" + e.getMessage());
+			System.out.println("Error en la sentencia buscarOriginalPorCodigo() - EMPLEADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarOriginalPorCodigo() - EMPLEADO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return listaOriginal;
+	}
+	
+	
+	
+	@Override
+	public EmpleadoReporte buscarPorCodigoExacto(String valor) {
+		
+		EmpleadoReporte obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCH_CODE_EXACT);
+			cs.setString(1, valor);
+			
+			rs = cs.executeQuery();
+			
+			if(rs.next()){
+				
+				int i=1;
+				obj = new EmpleadoReporte(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++)
+				);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscarPorCodigoExacto" + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -397,22 +461,25 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 	
 	
+
+
+
+
 	@Override
-	public ArrayList<Empleado> buscarPorNombre(String valor) {
+	public ArrayList<EmpleadoReporte> buscarPorCodigo(String valor) {
 		
-		listaOriginal = new ArrayList<Empleado>();
-		Empleado obj = null;
-		
+		lista = new ArrayList<EmpleadoReporte>();
+		EmpleadoReporte obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHNAME);
+			cs = cn.prepareCall(SEARCH_CODE);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
 				int i=1;
-				obj = new Empleado(
+				obj = new EmpleadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -424,13 +491,15 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getString(i++),
 						rs.getString(i++),
-						rs.getInt(i++)
+						rs.getString(i++)
 				);
-				listaOriginal.add(obj);
+				lista.add(obj);
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia buscarEmpleadoXNombre" + e.getMessage());
+			System.out.println("Error en la sentencia buscarPorCodigo() - EMPLEADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorCodigo() - EMPLEADO --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -440,28 +509,78 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return listaOriginal;
+		return lista;
+	}
+	
+	
+	
+	@Override
+	public ArrayList<EmpleadoReporte> buscarPorNombre(String valor) {
+		
+		lista = new ArrayList<EmpleadoReporte>();
+		EmpleadoReporte obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCH_NAME);
+			cs.setString(1, valor);
+			
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				obj = new EmpleadoReporte(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++)
+				);
+				lista.add(obj);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscarPorNombre() - EMPLEADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorNombre() - EMPLEADO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return lista;
 		
 	}
 
 
 
 	@Override
-	public ArrayList<Empleado> buscarPorDni(String valor) {
+	public ArrayList<EmpleadoReporte> buscarPorDni(String valor) {
 		
-		listaOriginal = new ArrayList<Empleado>();
-		Empleado obj = null;
+		lista = new ArrayList<EmpleadoReporte>();
+		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHDNI);
+			cs = cn.prepareCall(SEARCH_DNI);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
 				int i=1;
-				obj = new Empleado(
+				obj = new EmpleadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -473,13 +592,15 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getString(i++),
 						rs.getString(i++),
-						rs.getInt(i++)
+						rs.getString(i++)
 				);
-				listaOriginal.add(obj);
+				lista.add(obj);
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia buscarPorDni" + e.getMessage());
+			System.out.println("Error en la sentencia buscarPorDni() - EMPLEADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorDni() - EMPLEADO --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -489,7 +610,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return listaOriginal;
+		return lista;
 		
 	}
 
@@ -500,21 +621,21 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	 * un empleado, extrayendo solo los primeros valores.
 	 * **/
 	@Override
-	public ArrayList<Empleado> buscarPorDistrito(String valor) {
+	public ArrayList<EmpleadoReporte> buscarPorDistrito(String valor) {
 
-		listaOriginal = new ArrayList<Empleado>();
-		Empleado obj = null;
+		lista = new ArrayList<EmpleadoReporte>();
+		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHDISTRITO);
+			cs = cn.prepareCall(SEARCH_DISTRITO);
 			cs.setString(1, valor);
 
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
 				int i=1;
-				obj = new Empleado(
+				obj = new EmpleadoReporte(
 						rs.getString(i++), // posicion 1
 						rs.getString(i++), // posicion 2
 						rs.getString(i++), // ...
@@ -526,13 +647,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 						rs.getString(i++),
 						rs.getString(i++),
 						rs.getString(i++),
-						rs.getInt(i++)
+						rs.getString(i++)
 				);
-				listaOriginal.add(obj);
+				lista.add(obj);
 			}
-			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia buscarPorDistrito" + e.getMessage());
+			System.out.println("Error en la sentencia buscarPorDistrito() - EMPLEADO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorDistrito() - EMPLEADO --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -542,7 +664,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
 			}
 		}
-		return listaOriginal;
+		return lista;
 		
 	}
 
@@ -550,84 +672,80 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 	
 	@Override
-	public int exportarTXT(ArrayList<Empleado> empleados) {
+	public int exportarTXT(ArrayList<EmpleadoReporte> empleados) {
+		
 		
 		int respuesta = -1;
 		
-		File archivo;
-		FileInputStream archivoEntrada = null;
-		FileOutputStream archivoSalida = null;
-		
-		
-		JFileChooser ventSeleccion = new JFileChooser();
-		FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
-		ventSeleccion.setFileFilter(filtro);
-		ventSeleccion.setDialogTitle("Guardar Archivo");
-        ventSeleccion.setAcceptAllFileFilterUsed(true); // true: muestra el tambien filtro de todos los tipos de archivos, false : muestra solo el filtro seleccionado
-		
-		
-		/** showDialog(componentePadre, nombreBotonAprobado) -- devuelve un numero que representa la eleccion del usuario.*/
-		if(ventSeleccion.showDialog(null, "Guardar") == ventSeleccion.APPROVE_OPTION){
+		try {
 			
-			// toString(), transforma el archivo seleccionado en un cadena de la ruta del archivo, añadiendole el formarto.
-			String ruta = ventSeleccion.getSelectedFile().toString().concat(".txt"); 
-			archivo = new File(ruta); //archivo = ventSeleccion.getSelectedFile();
+			File archivo;
+			FileInputStream archivoEntrada = null;
+			FileOutputStream archivoSalida = null;
 			
-			String linea = "";
-			String data = linea;
 			
-			for(Empleado emp: empleados ){
+			JFileChooser ventSeleccion = new JFileChooser();
+			FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+			ventSeleccion.setFileFilter(filtro);
+			ventSeleccion.setDialogTitle("Guardar Archivo");
+	        ventSeleccion.setAcceptAllFileFilterUsed(true); // true: muestra el tambien filtro de todos los tipos de archivos, false : muestra solo el filtro seleccionado
 			
-				linea = emp.getCod_empleado() + "|" +
-						emp.getNombre() + "|" +
-						emp.getApellidos() + "|" +
-						emp.getDni() + "|" +
-						emp.getDireccion() + "|" +
-						emp.getTelefono() + "|" +
-						emp.getEmail() + "|" +
-						emp.getCod_distrito() + "|" +
-						emp.getCod_cargo() + "|" +
-						emp.getUsuario() + "|" +
-						emp.getContraseña() + "|" +
-						emp.getCod_estado() + "\n";
+			
+			/** showDialog(componentePadre, nombreBotonAprobado) -- devuelve un numero que representa la eleccion del usuario.*/
+			if(ventSeleccion.showDialog(null, "Guardar") == ventSeleccion.APPROVE_OPTION){
 				
-				data += linea;
-//				data.concat(linea); ESTA LINEA NO FUNCIONA NO SE ¿PORQUE?
-			}
-			
-			byte[] dataByte = data.getBytes();
-			
-			
-			try {
-				archivoSalida = new FileOutputStream(archivo); //<<<
-					try {
-						archivoSalida.write(dataByte); // <<<<
-						respuesta = 1;
-					} catch (IOException e) {
-						System.out.println("Error al escribir los datos" + e.getMessage());
-					}
+				// toString(), transforma el archivo seleccionado en un cadena de la ruta del archivo, añadiendole el formarto.
+				String ruta = ventSeleccion.getSelectedFile().toString().concat(".txt"); 
+				archivo = new File(ruta); //archivo = ventSeleccion.getSelectedFile();
+				
+				String linea = "";
+				String data = linea;
+				
+				for(EmpleadoReporte emp: empleados ){
+				
+					linea = emp.getCod_empleado() + "|" +
+							emp.getNombre() + "|" +
+							emp.getApellidos() + "|" +
+							emp.getDni() + "|" +
+							emp.getDireccion() + "|" +
+							emp.getTelefono() + "|" +
+							emp.getEmail() + "|" +
+							emp.getDistrito() + "|" +
+							emp.getCargo() + "|" +
+							emp.getUsuario() + "|" +
+							emp.getContraseña() + "|" +
+							emp.getEstado() + "\n";
 					
-			}catch (FileNotFoundException e) {
-				System.out.println("Error al crear el archivo de salida" + e.getMessage());
-			}catch (Exception e){
-				System.out.println(e);
-			}finally {
-				try {
-					archivoSalida.close();
-				} catch (Exception e2) {
-					// TODO: handle exception
+					data += linea;
+//					data.concat(linea); ESTA LINEA NO FUNCIONA NO SE ¿PORQUE?
 				}
-			}
 				
+				byte[] dataByte = data.getBytes();
+				
+				
+				archivoSalida = new FileOutputStream(archivo); //<<<
+				archivoSalida.write(dataByte); // <<<<
+				archivoSalida.close();
+				respuesta = 1;
+			}
+			
+		}catch (FileNotFoundException e) {
+			System.out.println("Error en la sentencia exportarTXT() --> " + e.getMessage());
+		}catch (IOException e) {
+			System.out.println("Error en la sentencia exportarTXT() --> " + e.getMessage());
+		}catch (Exception e) {
+			System.out.println("Error en la sentencia exportarTXT() --> " + e.getMessage());
 		}
+		
 		return respuesta;
+		
 		
 	}
 
 
 
 	@Override
-	public int exportarXLSX(ArrayList<Empleado> empleados) {
+	public int exportarXLSX(ArrayList<EmpleadoReporte> empleados) {
 		
 		int respuesta = -1;
 		
@@ -662,13 +780,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 					
 					for (int i = 0; i < 12; i++) { // i < numero de columnas 
 						Cell celda = fila.createCell(i);
-						
-						if(i == 11){ // convierte las columnas a entero antes de mandar el dato a la celda
-							celda.setCellValue( Integer.parseInt(empleados.get(j).atributoObjeto(i)));
-						}else{ // por default manda los datos como "cadena"
-							celda.setCellValue( empleados.get(j).atributoObjeto(i) );
-						}
-						
+						celda.setCellValue(empleados.get(j).atributoObjeto(i));
 					}
 				}
 				
@@ -696,7 +808,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 
 	@Override
-	public int exportarPDF(ArrayList<Empleado> empleados) {
+	public int exportarPDF(ArrayList<EmpleadoReporte> empleados) {
 		
 		int respuesta = -1;
 		/** existe otra manera, traer el .jrxml , pasarlo a un FileInputStream y resien compilarlo, aca usamos defrente la compilacion ".jasper"  **/
@@ -738,6 +850,10 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 		 *  jasperreport.6.4.0.jar del 2016 y ahora esta DEPRECATE. En la unica posible solucion estaban usan la Api pooq/poor, que permite cambiar las 
 		 *  expresiones del lenguaje java por uno mas "expresivo". No logre entender lo suficiente como para pasarlo al Java normal **/
 	}
+
+
+
+
 
 
 

@@ -21,7 +21,7 @@ public class Empleado {
 	public Empleado (){	
 	}
 	
-	// Constructor para recibir empleados de la Base de Datos
+	// Constructor para recibir empleados originales de la Base de Datos
 	public Empleado(String cod_empleado, String nombre, String apellidos, String dni, String direccion, 
 			String telefono, String email, String cod_distrito, String cod_cargo, String usuario, 
 			String contraseña, Integer cod_estado) {
@@ -38,24 +38,6 @@ public class Empleado {
 		this.usuario = usuario;
 		this.contraseña = contraseña;
 		this.cod_estado = cod_estado;
-	}
-	
-	// Constructor para crear un empleado >> sin user, pass, estado
-	public Empleado(String cod_empleado, String nombre, String apellidos, String dni, String direccion
-			, String telefono, String email, String cod_distrito, String cod_cargo) {
-		super();
-		this.cod_empleado = cod_empleado;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.dni = dni;
-		this.direccion = direccion;
-		this.telefono = telefono;
-		this.email = email;
-		this.cod_distrito = cod_distrito;
-		this.cod_cargo = cod_cargo;
-		this.usuario = nombre.toLowerCase() + apellidos.toLowerCase().charAt(0);
-		this.contraseña = dni;
-		this.cod_estado = 1; // por defecto esta en ACTIVO
 	}
 	
 	// Constructor para actualizar un empleado >> sin user, pass
@@ -173,46 +155,5 @@ public class Empleado {
 		this.cod_estado = cod_estado;
 	}
 
-	// DEVUELVE EL ATRIBUTO DEL OBJETO DE LA POSICION ESPECIFICADA
-	public String atributoObjeto( int position){
-		
-		String[] atributo = new String[15];
-		int indice = 0;
-		
-		atributo[0] = getCod_empleado();
-		atributo[1] = getNombre();
-		atributo[2] = getApellidos();
-		atributo[3] = getDni();
-		atributo[4] = getDireccion();
-		atributo[5] = getTelefono();
-		atributo[6] = getEmail();
-		atributo[7] = getCod_distrito();
-		atributo[8] = getCod_cargo();
-		atributo[9] = getUsuario();
-		atributo[10] = getContraseña();
-		atributo[11] = getCod_estado().toString();	
-		
-		
-//		atributo[0] = obj.getCod_empleado();
-//		atributo[1] = obj.getNombre();
-//		atributo[2] = obj.getApellidos();
-//		atributo[3] = obj.getDni();
-//		atributo[4] = obj.getDireccion();
-//		atributo[5] = obj.getTelefono();
-//		atributo[6] = obj.getEmail();
-//		atributo[7] = obj.getCod_distrito();
-//		atributo[8] = obj.getCod_cargo();
-//		atributo[9] = obj.getUsuario();
-//		atributo[10] = obj.getContraseña();
-//		atributo[11] = obj.getEstado().toString();
-			
-		
-		return atributo[position];
-	}
-	
-	
-	
-	
-	
 	
 }

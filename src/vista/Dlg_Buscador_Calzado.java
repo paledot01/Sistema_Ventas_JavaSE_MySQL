@@ -176,7 +176,8 @@ public class Dlg_Buscador_Calzado extends JDialog implements ActionListener, Key
 		modelo.setRowCount(0);
 		ArrayList<CalzadoReporte> data = gCalzado.listar();
 		
-		for( int i = data.size()-1 ; i >= data.size()-6 ; i-- ){
+		// i >= data.size()-6
+		for( int i = data.size()-1 ; i >= 0 ; i-- ){
 			
 			Object fila[] = {
 					data.get(i).getCod_calzado(),

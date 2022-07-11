@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import entidad.EmpleadoReporte;
 import entidad.Modelo;
+import entidad.ModeloReporte;
 import interfaces.ModeloInterfaceDao;
 import utils.ConnectionMySQL_8;
 
@@ -20,13 +22,15 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	private CallableStatement cs;
 	private ResultSet rs;
 	
-	private ArrayList<Modelo> lista;
-	private Modelo obj;
+	private ArrayList<Modelo> listaOriginal;
+	private ArrayList<ModeloReporte> lista;
+//	private Modelo obj;
 	
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_modelo()}";
+	final String GET_ALL_ORIGINAL = "{call pa_listar_modelo_original()}";
+	final String GET_ALL = "{call pa_listar_modelo()}";
 	
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_modelo()}";
 	final String INSERT = "{call pa_insertar_modelo(?,?,?,?,?,?)}";
@@ -68,13 +72,14 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	}
 
 	@Override
-	public ArrayList<Modelo> listar() {
+	public ArrayList<Modelo> listarOriginal() {
 		
-		lista = new ArrayList<Modelo>();
+		listaOriginal = new ArrayList<Modelo>();
+		Modelo obj;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GET_ALL_ORIGINAL);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -87,13 +92,56 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 						rs.getString(i++),
 						rs.getString(i++)
 				);
+				listaOriginal.add(obj);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia listarOriginal() - MODELO --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia listarOriginal() - MODELO --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return listaOriginal;
+		
+	}
+
+	
+	
+	@Override
+	public ArrayList<ModeloReporte> listar() {
+		
+		lista = new ArrayList<ModeloReporte>();
+		ModeloReporte obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(GET_ALL);
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				obj = new ModeloReporte(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getDouble(i++),
+						rs.getDouble(i++)
+				);
 				lista.add(obj);
 			}
 			
 		}catch (SQLException e) {
-			System.out.println("Error en la sentencia Listar() - MODDELO" + e.getMessage());
+			System.out.println("Error en la sentencia lista() - MODELO --> " + e.getMessage());
 		}catch (Exception e){
-			System.out.println("Error en la sentencia Listar() - MODELO --> " + e.getMessage());
+			System.out.println("Error en la sentencia lista() - MODELO --> " + e.getMessage());
 		}finally {
 			try {
 				if( rs != null ) rs.close();
@@ -106,7 +154,9 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 		return lista;
 		
 	}
-
+	
+	
+	
 	@Override
 	public int registrar(Modelo m) {
 		
@@ -178,9 +228,9 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	}
 
 	@Override
-	public ArrayList<Modelo> buscar(String valor) {
-		lista = new ArrayList<Modelo>();
-		
+	public ArrayList<ModeloReporte> buscar(String valor) {
+		lista = new ArrayList<ModeloReporte>();
+		ModeloReporte obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCH);
@@ -189,14 +239,14 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
-				
-				obj = new Modelo(
-						rs.getString(1),
-						rs.getString(2),
-						rs.getDouble(3),
-						rs.getDouble(4),
-						rs.getString(5),
-						rs.getString(6)
+				int i=1;
+				obj = new ModeloReporte(
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getDouble(i++),
+						rs.getDouble(i++)
 				);
 				lista.add(obj);
 			}
@@ -221,7 +271,7 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	@Override
 	public Modelo buscarPorNombre(String nombre) {
 		
-		obj = null;
+		Modelo obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -259,6 +309,8 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 		return obj;
 		
 	}
+
+
 	
 
 }

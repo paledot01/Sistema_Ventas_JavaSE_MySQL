@@ -9,6 +9,12 @@ descripcion     varchar(25),
 primary key (cod_distrito)
 );
 
+CREATE TABLE estado(
+cod_estado int(1),
+descripcion varchar(25),
+primary key(cod_estado)
+);
+
 CREATE TABLE cargo(
 cod_cargo       char(5),
 descripcion     varchar(25),
@@ -51,10 +57,11 @@ cod_distrito    char(5),
 cod_cargo       char(5),
 usuario         varchar(25),
 contraseña      varchar(25),
-estado          int(1), 
+cod_estado      int(1), 
 primary key (cod_empleado),
 foreign key (cod_distrito) references distrito(cod_distrito),
-foreign key (cod_cargo) references cargo(cod_cargo)
+foreign key (cod_cargo) references cargo(cod_cargo),
+foreign key (cod_estado) references estado(cod_estado)
 );
 
 CREATE TABLE cliente(
@@ -82,7 +89,7 @@ foreign key (cod_modelo) references modelo(cod_modelo)
 
 CREATE TABLE boleta(
 cod_boleta     char(7),
-fecha_emision  date,
+fecha_emision  datetime,
 cod_cliente    char(7),
 cod_empleado   char(5),
 primary key (cod_boleta),
@@ -94,11 +101,18 @@ CREATE TABLE detalle_boleta(
 cod_boleta     char(7),
 cod_calzado    char(7),
 cantidad       int,
-importe        int,
+importe        double,
 primary key (cod_boleta, cod_calzado),
 foreign key (cod_boleta) references boleta(cod_boleta),
 foreign key (cod_calzado) references calzado(cod_calzado)
 );
+
+############################################### ESTADO ################################################
+
+insert estado (cod_estado, descripcion) value ('0','INACTIVO');
+insert estado (cod_estado, descripcion) value ('1','ACTIVO');
+
+select * from estado;
 
 ############################################### DISTRITO ################################################
 
@@ -148,23 +162,40 @@ insert cargo (cod_cargo,descripcion) value ('CAR02','Vendedor');
 
 ############################################### EMPLEADO ################################################
 
+drop procedure if exists pa_validar_empleado;
 DELIMITER // 
 create procedure pa_validar_empleado(
 	in p_usuario varchar(25),
     in p_contraseña varchar(25)
 )
 begin
-	select * from empleado where usuario = p_usuario and contraseña = p_contraseña and estado = 1;
+	select * from empleado where usuario = p_usuario and contraseña = p_contraseña and cod_estado = 1;
 end;
 //DELIMITER ;
 
+drop procedure if exists pa_listar_empleado_original;
 DELIMITER // 
-create procedure pa_listar_empleado()
+create procedure pa_listar_empleado_original()
 begin
 	select * from empleado;
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_listar_empleado;
+DELIMITER // 
+create procedure pa_listar_empleado()
+begin
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+    order by 1 asc;
+end;
+//DELIMITER ;
+
+
+drop procedure if exists pa_insertar_empleado;
 DELIMITER //
 create procedure pa_insertar_empleado(
 	in p_cod_empleado char(5),
@@ -178,11 +209,11 @@ create procedure pa_insertar_empleado(
     in p_cod_cargo char(5),
     in p_usuario varchar(25),
     in p_contraseña varchar(25),
-    in p_estado int(1)
+    in p_cod_estado int(1)
 )
 begin
-	insert into empleado(cod_empleado,nombre,apellidos,dni,direccion,telefono,email,cod_distrito,cod_cargo,usuario,contraseña,estado)
-    values(p_cod_empleado,p_nombre,p_apellidos,p_dni,p_direccion,p_telefono,p_email,p_cod_distrito,p_cod_cargo,p_usuario,p_contraseña,p_estado);
+	insert into empleado(cod_empleado,nombre,apellidos,dni,direccion,telefono,email,cod_distrito,cod_cargo,usuario,contraseña,cod_estado)
+    values(p_cod_empleado,p_nombre,p_apellidos,p_dni,p_direccion,p_telefono,p_email,p_cod_distrito,p_cod_cargo,p_usuario,p_contraseña,p_cod_estado);
 end;
 //DELIMITER ;
 
@@ -208,7 +239,7 @@ create procedure pa_actualizar_empleado(
     in p_cod_cargo char(5),
     in p_usuario varchar(25),
     in p_contraseña varchar(25),
-    in p_estado int(1)
+    in p_cod_estado int(1)
 )
 begin
 	update empleado 
@@ -222,10 +253,11 @@ begin
         cod_cargo       = p_cod_cargo,
         usuario         = p_usuario,
         contraseña      = p_contraseña,
-        estado          = p_estado
+        cod_estado      = p_cod_estado
     where cod_empleado = p_cod_empleado;
 end;
 //DELIMITER ;
+
 
 DELIMITER //
 create procedure pa_buscar_ultimo_codigo_empleado()
@@ -234,8 +266,10 @@ begin
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_buscar_empleado_original_por_codigo;
 DELIMITER //
-create procedure pa_buscar_empleado_por_codigo(
+create procedure pa_buscar_empleado_original_por_codigo(
 	in p_valor varchar(50)
 )
 begin
@@ -243,32 +277,83 @@ begin
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_buscar_empleado_por_codigo_exacto;
+DELIMITER //
+create procedure pa_buscar_empleado_por_codigo_exacto(
+	in p_valor varchar(50)
+)
+begin
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+    having e.cod_empleado = p_valor;
+end;
+//DELIMITER ;
+
+
+drop procedure if exists pa_buscar_empleado_por_codigo;
+DELIMITER //
+create procedure pa_buscar_empleado_por_codigo(
+	in p_valor varchar(50)
+)
+begin
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+    having e.cod_empleado like concat('%',p_valor,'%')
+    order by 1 asc;
+end;
+//DELIMITER ;
+
+
+drop procedure if exists pa_buscar_empleado_por_nombre_apellido;
 DELIMITER //
 create procedure pa_buscar_empleado_por_nombre_apellido(
 	in p_valor varchar(50)
 )
 begin
-	select * from empleado where nombre like concat('%',p_valor,'%') or apellidos like concat('%',p_valor,'%');
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+	having e.nombre like concat('%',p_valor,'%') or e.apellidos like concat('%',p_valor,'%')
+    order by 1 asc;
+    
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_buscar_empleado_por_dni;
 DELIMITER //
 create procedure pa_buscar_empleado_por_dni(
 	in p_valor varchar(50)
 )
 begin
-	select * from empleado where dni like concat('%',p_valor,'%');
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+	having e.dni like concat('%',p_valor,'%')
+    order by 1 asc;
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_buscar_empleado_por_distrito;
 DELIMITER //
 create procedure pa_buscar_empleado_por_distrito(
 	in p_valor varchar(50)
 )
 begin
-	select e.* , d.* from empleado as e inner join distrito as d
-		on d.cod_distrito = e.cod_distrito
-        having d.descripcion like concat('%',p_valor,'%');
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+    inner join distrito as d on d.cod_distrito = e.cod_distrito
+    inner join cargo as c on c.cod_cargo = e.cod_cargo
+    inner join estado as et on et.cod_estado = e.cod_estado
+    having d.descripcion like concat('%',p_valor,'%')
+    order by 1 asc;
 end;
 //DELIMITER ;
 
@@ -304,7 +389,7 @@ call pa_insertar_empleado('EM024','CATALINA','MENDEZ HUERTA','44672834','AV. BER
 call pa_insertar_empleado('EM025','JOSE','SAEZ RAYA','28678543','AV. LIMA #51', '964732876','SAEZ@gmail.com','DI001','CAR02','joses','28678543',1);
 
 
-call pa_listar_empleado();
+call pa_listar_empleado_original();
 
 ############################################### CLIENTE ################################################
 
@@ -527,12 +612,26 @@ call pa_listar_categoria();
 
 ############################################### MODELO ################################################
 
+drop procedure if exists pa_listar_modelo_original;
 DELIMITER //
-create procedure pa_listar_modelo()
+create procedure pa_listar_modelo_original()
 begin
 	select * from modelo;
 end;
 //DELIMITER ;
+
+
+drop procedure if exists pa_listar_modelo;
+DELIMITER //
+create procedure pa_listar_modelo()
+begin
+	select md.cod_modelo, md.nombre_modelo, mr.nombre_marca, ct.descripcion, md.precio_compra, md.precio_venta from modelo as md
+    inner join marca as mr on md.cod_marca = mr.cod_marca
+    inner join categoria as ct on md.cod_categoria = ct.cod_categoria
+    order by 1 asc ;
+end;
+//DELIMITER ;
+
 
 DELIMITER //
 create procedure pa_insertar_modelo(
@@ -586,17 +685,18 @@ create procedure pa_buscar_modelo(
 	in p_valor varchar(50)
 )
 begin
-	select mo.* , ma.* , ca.* from modelo as mo 
-    inner join marca as ma on ma.cod_marca = mo.cod_marca
-    inner join categoria as ca on ca.cod_categoria = mo.cod_categoria
+	select md.cod_modelo, md.nombre_modelo, mr.nombre_marca, ct.descripcion, md.precio_compra, md.precio_venta from modelo as md
+    inner join marca as mr on md.cod_marca = mr.cod_marca
+    inner join categoria as ct on md.cod_categoria = ct.cod_categoria
     having 
-    mo.nombre_modelo like concat('%',p_valor,'%') 
-    or mo.cod_modelo like concat('%',p_valor,'%')
-    or ma.nombre_marca like concat('%',p_valor,'%')
-    or ca.descripcion like concat('%',p_valor,'%')
+    md.nombre_modelo like concat('%',p_valor,'%') 
+    or md.cod_modelo like concat('%',p_valor,'%')
+    or mr.nombre_marca like concat('%',p_valor,'%')
+    or ct.descripcion like concat('%',p_valor,'%')
     order by 1 asc ;
 end;
 //DELIMITER ;
+
 
 DELIMITER //
 create procedure pa_buscar_ultimo_codigo_modelo()
@@ -605,29 +705,32 @@ begin
 end;
 //DELIMITER ;
 
-call pa_insertar_modelo('M1001','1CEA003',110,180,'MA001','CAT01');
-call pa_insertar_modelo('M1002','1CSG001',145,220,'MA002','CAT01');
-call pa_insertar_modelo('M1003','5VCS001',125,200,'MA001','CAT02');
+call pa_insertar_modelo('M1001','1CEA003',110.00,180.00,'MA001','CAT01');
+call pa_insertar_modelo('M1002','1CSG001',145.00,220.00,'MA002','CAT01');
+call pa_insertar_modelo('M1003','5VCS001',125.00,200.00,'MA001','CAT02');
 
-call pa_insertar_modelo('M1004','Bartic Ne',200,325,'MA002','CAT02');
-call pa_insertar_modelo('M1005','Burkos Cl',93,155,'MA003','CAT02');
-call pa_insertar_modelo('M1006','Bart Gr',112,182,'MA002','CAT01');
+call pa_insertar_modelo('M1004','Bartic Ne',200.00,325.00,'MA002','CAT02');
+call pa_insertar_modelo('M1005','Burkos Cl',93.00,155.00,'MA003','CAT02');
+call pa_insertar_modelo('M1006','Bart Gr',112.00,182.00,'MA002','CAT01');
 
-call pa_insertar_modelo('M1007','FRESIEN-EMB009',160,240,'MA003','CAT01');
-call pa_insertar_modelo('M1008','ZALITH001',179,279,'MA001','CAT02');
-call pa_insertar_modelo('M1009','IMBROS410',139,219,'MA003','CAT01');
+call pa_insertar_modelo('M1007','FRESIEN-EMB009',160.00,240.00,'MA003','CAT01');
+call pa_insertar_modelo('M1008','ZALITH001',179.00,279.00,'MA001','CAT02');
+call pa_insertar_modelo('M1009','IMBROS410',139.00,219.00,'MA003','CAT01');
 
 call pa_listar_modelo();
 
+
+
 ############################################### CALZADO ################################################
 
-drop procedure if exists pa_listar_solo_calzado;
+drop procedure if exists pa_listar_calzado_original;
 DELIMITER //
-create procedure pa_listar_solo_calzado()
+create procedure pa_listar_calzado_original()
 begin
 	select * from calzado; 
 end;
 //DELIMITER ;
+
 
 drop procedure if exists pa_listar_calzado;
 DELIMITER //
@@ -640,6 +743,7 @@ begin
     order by 1 asc ;
 end;
 //DELIMITER ;
+
 
 DELIMITER //
 create procedure pa_insertar_calzado(
@@ -654,6 +758,7 @@ begin
     values(p_cod_calzado,p_cod_modelo,p_talla,p_color,p_stock);
 end;
 //DELIMITER ;
+
 
 DELIMITER //
 create procedure pa_actualizar_calzado(
@@ -674,6 +779,21 @@ begin
 end;
 //DELIMITER ;
 
+
+drop procedure if exists pa_reducir_stock_calzado;
+DELIMITER //
+create procedure pa_reducir_stock_calzado(
+	in p_cod_calzado    char(7),
+    in cantidad          int
+)
+begin
+	update calzado
+    set stock = stock - cantidad
+	where cod_calzado = p_cod_calzado;
+end;
+//DELIMITER ;
+
+
 DELIMITER //
 create procedure pa_buscar_ultimo_codigo_calzado()
 begin
@@ -681,15 +801,32 @@ begin
 end;
 //DELIMITER ;
 
-drop procedure if exists pa_buscar_calzado_solo_por_codigo;
+
+drop procedure if exists pa_buscar_calzado_original_por_codigo;
 DELIMITER //
-create procedure pa_buscar_calzado_solo_por_codigo(
+create procedure pa_buscar_calzado_original_por_codigo(
 	in p_valor varchar(50)
 )
 begin
 	select * from calzado where cod_calzado like concat('%',p_valor,'%');
 end;
 //DELIMITER ;
+
+
+drop procedure if exists pa_buscar_calzado_por_codigo_exacto;
+DELIMITER //
+create procedure pa_buscar_calzado_por_codigo_exacto(
+	in p_valor varchar(50)
+)
+begin
+	select cz.cod_calzado , md.nombre_modelo , mr.nombre_marca , ct.descripcion , cz.talla , cz.color , md.precio_compra , md.precio_venta , cz.stock from calzado as cz
+    inner join modelo as md on cz.cod_modelo = md.cod_modelo
+    inner join marca as mr on md.cod_marca = mr.cod_marca
+    inner join categoria as ct on md.cod_categoria = ct.cod_categoria
+    having cz.cod_calzado = p_valor;
+end;
+//DELIMITER ;
+
 
 drop procedure if exists pa_buscar_calzado_por_codigo;
 DELIMITER //
@@ -705,6 +842,7 @@ begin
 end;
 //DELIMITER ;
 
+
 drop procedure if exists pa_buscar_calzado_por_modelo;
 DELIMITER //
 create procedure pa_buscar_calzado_por_modelo(
@@ -718,6 +856,7 @@ begin
     having md.nombre_modelo like concat('%',p_valor,'%');
 end;
 //DELIMITER ;
+
 
 drop procedure if exists pa_buscar_calzado_por_categoria;
 DELIMITER //
@@ -734,6 +873,7 @@ begin
 end;
 //DELIMITER ;
 
+
 drop procedure if exists pa_buscar_calzado_por_marca;
 DELIMITER //
 create procedure pa_buscar_calzado_por_marca(
@@ -749,6 +889,7 @@ begin
 end;
 //DELIMITER ;
 
+
 drop procedure if exists pa_buscar_calzado_por_talla;
 DELIMITER //
 create procedure pa_buscar_calzado_por_talla(
@@ -763,6 +904,7 @@ begin
 end;
 //DELIMITER ;
 
+
 drop procedure if exists pa_buscar_calzado_por_color;
 DELIMITER //
 create procedure pa_buscar_calzado_por_color(
@@ -776,6 +918,7 @@ begin
     having cz.color like concat('%',p_valor,'%');
 end;
 //DELIMITER ;
+
 
 call pa_insertar_calzado('CZ10001','M1001',40,'Marron',14);
 call pa_insertar_calzado('CZ10002','M1001',40,'Azul',10);
@@ -802,22 +945,33 @@ begin
 end;
 //DELIMITER ;
 
+drop procedure if exists pa_insertar_boleta;
 DELIMITER //
 create procedure pa_insertar_boleta(
 	in p_cod_boleta char(7),
-    in p_fecha_emision date,
+    -- no es necesario colocar la fecha de emision como parametro porque se mySql lo obtiene con el metodo "now()"
     in p_cod_cliente char(7),
     in p_cod_empleado char(5)
 )
 begin
 	insert into boleta(cod_boleta,fecha_emision,cod_cliente,cod_empleado) 
-    values(p_cod_boleta,p_fecha_emision,p_cod_cliente,p_cod_empleado);
+    values(p_cod_boleta,now(),p_cod_cliente,p_cod_empleado);
 end;
 //DELIMITER ;
 
-call pa_insertar_boleta('BL10001','2020/12/25','CL10001','EM001');
-call pa_insertar_boleta('BL10002','2021/11/03','CL10002','EM002');
-call pa_insertar_boleta('BL10003','2022/01/15','CL10003','EM003');
+drop procedure if exists pa_buscar_ultimo_codigo_boleta;
+DELIMITER //
+create procedure pa_buscar_ultimo_codigo_boleta()
+begin
+	select substring( max( cod_boleta ),3 ) from boleta;
+end;
+//DELIMITER ;
+
+ -- no es necesario colocar la fecha de emision como parametro porque se mySql lo obtiene con el metodo "now()"
+call pa_insertar_boleta('BL10001','CL10001','EM001');
+call pa_insertar_boleta('BL10002','CL10002','EM002');
+call pa_insertar_boleta('BL10003','CL10003','EM003');
+call pa_insertar_boleta('BL10004','CL10003','EM003');
 
 call pa_listar_boleta;
 
@@ -830,12 +984,13 @@ begin
 end;
 //DELIMITER ;
 
+drop procedure if exists pa_insertar_detalle_boleta;
 DELIMITER //
 create procedure pa_insertar_detalle_boleta(
 	in p_cod_boleta char(7),
     in p_cod_calzado char(7),
     in p_cantidad int,
-    in p_importe int
+    in p_importe double
 )
 begin
 	insert into detalle_boleta(cod_boleta, cod_calzado, cantidad, importe) 
@@ -843,12 +998,12 @@ begin
 end;
 //DELIMITER ;
 
-call pa_insertar_detalle_boleta('BL10001','CZ10001','2',360.0);
-call pa_insertar_detalle_boleta('BL10001','CZ10006','1',200.0);
-call pa_insertar_detalle_boleta('BL10002','CZ10002','1',180.0);
-call pa_insertar_detalle_boleta('BL10002','CZ10008','1',325.0);
-call pa_insertar_detalle_boleta('BL10003','CZ10009','2',364.0);
-call pa_insertar_detalle_boleta('BL10003','CZ10007','1',325.0);
+call pa_insertar_detalle_boleta('BL10001','CZ10001','2',360.00);
+call pa_insertar_detalle_boleta('BL10001','CZ10006','1',200.00);
+call pa_insertar_detalle_boleta('BL10002','CZ10002','1',180.00);
+call pa_insertar_detalle_boleta('BL10002','CZ10008','1',325.00);
+call pa_insertar_detalle_boleta('BL10003','CZ10009','2',364.00);
+call pa_insertar_detalle_boleta('BL10003','CZ10007','1',325.00);
 
 call pa_listar_detalle_boleta;
 

@@ -14,19 +14,11 @@ public class RendererTableSimple extends DefaultTableCellRenderer{
 	
 	private Component componente;//<<<<<
 	
-//	private ImageIcon imgCancelar = new ImageIcon(getClass().getResource("/img/cancelar2.png"));
-//	private JLabel label = new JLabel(imgCancelar);
-	
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
 		
 		componente = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);//<<<<
-		
-		
-		if(value instanceof JLabel){
-			return (JLabel) value;
-		}
 		
 		
 		if(row % 2 == 0){
@@ -44,7 +36,6 @@ public class RendererTableSimple extends DefaultTableCellRenderer{
         
 		return componente;
 
-		
 	}
 	
 	

@@ -8,8 +8,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class RendererTable extends DefaultTableCellRenderer{
-	
+public class RendererTableEmpleado extends DefaultTableCellRenderer{
+
 	//DefaultTableCellRenderer cellRenderer7 = new DefaultTableCellRenderer();
 	private Component componente;//<<<<<
 	
@@ -54,32 +54,6 @@ public class RendererTable extends DefaultTableCellRenderer{
 		}
 		
 		
-//		if(column == 0){
-//			setHorizontalAlignment(SwingConstants.CENTER);
-//		}else if(column == 1){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 2){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 3){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 4){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 5){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 6){
-//			setHorizontalAlignment(SwingConstants.LEFT);
-//		}else if(column == 7){
-//			
-//			setHorizontalAlignment(SwingConstants.CENTER);
-//			setFont(getFont().deriveFont( Font.BOLD));
-//			String valor = value.toString();
-//			if( valor.equals("ACTIVO") ){
-//				setBackground(new Color(186, 223, 179));
-//			}else{
-//				setBackground(new Color(223, 179, 196));
-//			}
-//		}
-		
 		/** Al repintarse ya no se tiene que volver a cambiarlo para que regrese a la normalidad, CREO¡? **/
 		if (isSelected) {
             componente.setBackground( Library.Oscuro_2 );
@@ -90,5 +64,5 @@ public class RendererTable extends DefaultTableCellRenderer{
 		return componente;
 
 	}
-
+	
 }

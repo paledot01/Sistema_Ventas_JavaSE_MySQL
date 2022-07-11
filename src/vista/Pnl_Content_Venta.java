@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import utils.Library;
-import utils.RendererTableSimple;
 import utils.RendererTableVenta;
 import utils.SimpleDocumentListener;
 
@@ -116,7 +115,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	private DistritoGestionDao gDistrito = new DistritoGestionDao(); // --
 	private Empleado empConectado = Pnl_Access_Login.empleadoConectado;
 	
-	RendererTableSimple render = new RendererTableSimple(); // --
+	RendererTableVenta render = new RendererTableVenta(); // --
 	
 	private CalzadoReporte obj = null; // -- Para que mantenga el ultimo valor encontrado y podamos usarlo.
 	private JTextField txtTotalVenta;

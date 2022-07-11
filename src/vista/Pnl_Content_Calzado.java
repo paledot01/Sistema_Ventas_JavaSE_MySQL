@@ -18,7 +18,7 @@ import Controlador.ModeloGestionDao;
 import entidad.Calzado;
 import entidad.CalzadoReporte;
 import utils.Library;
-import utils.RendererTableCalzado;
+import utils.RendererTableSimple;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -80,7 +80,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 	private ModeloGestionDao gModelo = new ModeloGestionDao();
 	private DefaultTableModel modelo;
 	
-	RendererTableCalzado render = new RendererTableCalzado(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<
+	RendererTableSimple render = new RendererTableSimple(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<
 	private JLabel lblElegir;
 	
 	

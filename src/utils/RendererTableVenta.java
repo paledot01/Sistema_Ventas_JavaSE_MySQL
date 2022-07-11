@@ -5,6 +5,7 @@ import java.awt.Component;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,25 +16,21 @@ public class RendererTableVenta extends DefaultTableCellRenderer{
 
 	
 	private Component componente;//<<<<<
-	private JButton boton = new JButton();
-	private ImageIcon imgCancelar = new ImageIcon(Pnl_Content_Venta.class.getResource("/img/g.png"));
 	
-	
+
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		
 		
 		componente = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);//<<<<
 		
-		if(column == 6){
-			
-//		if(value instanceof JButton){
-			((JButton) value).setIcon(imgCancelar);
-			return (JButton)value;
-//			boton.setIcon(imgCancelar);
-//			return boton;
+		
+		if(value instanceof JLabel){
+			return (JLabel) value;
 		}
 		
+		
 		if(row % 2 == 0){
-			setBackground(new Color(235,235,235));
+			setBackground(new Color(240,240,240));
 		}else{
 			setBackground(Color.WHITE);
 		}
@@ -42,11 +39,12 @@ public class RendererTableVenta extends DefaultTableCellRenderer{
 		
 		/** Al repintarse ya no se tiene que volver a cambiarlo para que regrese a la normalidad, CREO¡? **/
 		if (isSelected) {
-            componente.setBackground( Library.Oscuro_2 );
+            componente.setBackground( Library.Claro_1 );
         }
         
 		return componente;
 
+		
 	}
 	
 }

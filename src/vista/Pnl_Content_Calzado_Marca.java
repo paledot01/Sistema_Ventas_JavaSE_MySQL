@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import Controlador.MarcaGestionDao;
 import entidad.Marca;
 import utils.Library;
-import utils.RendererTable2;
+import utils.RendererTableSimple;
 
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -47,7 +47,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 	
 	private DefaultTableModel modelo;
 	private MarcaGestionDao gMarca = new MarcaGestionDao();
-	RendererTable2 render = new RendererTable2(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	RendererTableSimple render = new RendererTableSimple(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
 	
 	public Pnl_Content_Calzado_Marca() {

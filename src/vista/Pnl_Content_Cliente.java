@@ -10,7 +10,7 @@ import entidad.Cargo;
 import entidad.Cliente;
 import entidad.Distrito;
 import entidad.Empleado;
-import utils.RendererTable;
+import utils.RendererTableSimple;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -79,7 +79,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 	private JButton button_1;
 	private JButton button_2;
 	
-	RendererTable render = new RendererTable(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	RendererTableSimple render = new RendererTableSimple(); // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	/**
 	 * Create the panel.
 	 */
