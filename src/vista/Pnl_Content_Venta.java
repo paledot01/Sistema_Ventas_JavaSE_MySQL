@@ -28,10 +28,15 @@ import javax.swing.table.TableCellRenderer;
 import org.apache.xmlbeans.GDurationSpecification;
 
 import Controlador.CalzadoGestionDao;
+import Controlador.ClienteGestionDao;
 import Controlador.DistritoGestionDao;
 import Controlador.VentaGestionDao;
+import entidad.Boleta_Cabecera;
+import entidad.Boleta_Cabecera_Reporte;
 import entidad.Boleta_Detalle;
+import entidad.Boleta_Detalle_Reporte;
 import entidad.CalzadoReporte;
+import entidad.Cliente;
 import entidad.Distrito;
 import entidad.Empleado;
 
@@ -49,6 +54,7 @@ import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ContainerListener;
@@ -57,8 +63,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.awt.event.ContainerEvent;
 import java.awt.Cursor;
+import javax.swing.JRadioButton;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
-public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseListener{
+public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseListener, ChangeListener{
 	private JPanel pnl_venta_main;
 	private JLabel lblVenta;
 	private JPanel panel;
@@ -110,6 +119,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	private JTextField txtTotal;
 
 	private DefaultTableModel modelo;
+	private ClienteGestionDao gCliente = new ClienteGestionDao(); // --
 	private CalzadoGestionDao gCalzado = new CalzadoGestionDao(); // --
 	private VentaGestionDao gVenta = new VentaGestionDao(); // --
 	private DistritoGestionDao gDistrito = new DistritoGestionDao(); // --
@@ -118,20 +128,21 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	RendererTableVenta render = new RendererTableVenta(); // --
 	
 	private CalzadoReporte obj = null; // -- Para que mantenga el ultimo valor encontrado y podamos usarlo.
+	private String codigoBoleta = null; // -- Para que mantenga el ultimo valor de la boleta.
 	private JTextField txtTotalVenta;
-	private JButton btnNewButton;
+	private JButton btnRealizarVenta;
 
 //	private JButton btnCancelar = new JButton(); // <<< BOTON ELIMINAR
 	private ImageIcon imgCancelar = new ImageIcon(Pnl_Content_Venta.class.getResource("/img/cancelar_red.png"));
 	private JLabel btnCancelar = new JLabel(imgCancelar); // BOTON CANCELAR DE LA TABLA
 	private JTextField txtTotal_1;
 	private JButton btnCancelarVenta;
-	private JLabel label;
-	private JLabel label_1;
 	private JPanel panel_3;
-	private JPanel panel_4;
-	private JTextField textField_1;
 	private JTextField textField_2;
+	private JRadioButton rbA4;
+	private JRadioButton rbTicket;
+	private JButton btnGenerarUltimoCDP;
+	private JTextField textField;
 //	private ArrayList<Boleta_Detalle> detBoleta = new ArrayList<Boleta_Detalle>();
 	
 
@@ -168,7 +179,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		
 		txtNumeroBoleta = new JTextField();
 		txtNumeroBoleta.setEnabled(false);
-		txtNumeroBoleta.setText("-----");
+		txtNumeroBoleta.setText(gVenta.generarCodigo()); // --> genera el numero de boleta al iniciar.
 		txtNumeroBoleta.setHorizontalAlignment(SwingConstants.CENTER);
 		txtNumeroBoleta.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtNumeroBoleta.setDisabledTextColor(Color.GRAY);
@@ -532,7 +543,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		btnCancelar.addMouseListener(this);
 		btnCancelar.setFocusable(false);
 		
-		txtNumeroBoleta.setText(gVenta.generarCodigo());
+		
 		
 		txtTotalVenta = new JTextField();
 		txtTotalVenta.setEnabled(false);
@@ -544,11 +555,12 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		txtTotalVenta.setBounds(681, 514, 159, 30);
 		panel.add(txtTotalVenta);
 		
-		btnNewButton = new JButton("Realizar Venta");
-		btnNewButton.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/dollar_32px2.png")));
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton.setBounds(596, 555, 244, 47);
-		panel.add(btnNewButton);
+		btnRealizarVenta = new JButton("Realizar Venta");
+		btnRealizarVenta.addActionListener(this);
+		btnRealizarVenta.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/dollar_32px2.png")));
+		btnRealizarVenta.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnRealizarVenta.setBounds(596, 555, 244, 47);
+		panel.add(btnRealizarVenta);
 		
 		txtTotal_1 = new JTextField();
 		txtTotal_1.setEnabled(false);
@@ -560,61 +572,71 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		txtTotal_1.setBounds(596, 514, 86, 30);
 		panel.add(txtTotal_1);
 		
-		btnCancelarVenta = new JButton("Cancelar Venta");
+		btnCancelarVenta = new JButton("Limpiar");
 		btnCancelarVenta.addActionListener(this);
-		btnCancelarVenta.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/cancelar_red.png")));
+		btnCancelarVenta.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/limpiar.png")));
 		btnCancelarVenta.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelarVenta.setBounds(10, 567, 147, 35);
+		btnCancelarVenta.setBounds(10, 555, 120, 47);
 		panel.add(btnCancelarVenta);
-		
-		label = new JLabel("");
-		label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		label.setOpaque(true);
-		label.setBackground(SystemColor.inactiveCaption);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/recibo_ticket.png")));
-		label.setBounds(239, 555, 50, 47);
-		panel.add(label);
-		
-		label_1 = new JLabel("");
-		label_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		label_1.setBackground(SystemColor.inactiveCaption);
-		label_1.setOpaque(true);
-		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/recibo_A4.png")));
-		label_1.setBounds(179, 555, 50, 47);
-		panel.add(label_1);
 		
 		panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
 		panel_3.setBounds(584, 514, 2, 88);
 		panel.add(panel_3);
 		
-		panel_4 = new JPanel();
-		panel_4.setBorder(new LineBorder(SystemColor.activeCaptionBorder));
-		panel_4.setBounds(167, 514, 2, 88);
-		panel.add(panel_4);
-		
-		textField_1 = new JTextField();
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textField_1.setDisabledTextColor(Color.GRAY);
-		textField_1.setColumns(10);
-		textField_1.setBounds(468, 514, 106, 30);
-		panel.add(textField_1);
-		
 		textField_2 = new JTextField();
 		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_2.setDisabledTextColor(Color.GRAY);
 		textField_2.setColumns(10);
-		textField_2.setBounds(352, 514, 106, 30);
+		textField_2.setBounds(298, 514, 133, 30);
 		panel.add(textField_2);
+		
+		rbA4 = new JRadioButton("");
+		rbA4.setSelected(true);
+		rbA4.addChangeListener(this);
+		rbA4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rbA4.setHorizontalAlignment(SwingConstants.CENTER);
+		rbA4.setBounds(470, 555, 47, 47);
+		rbA4.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_A4-c_47.png")));
+		panel.add(rbA4);
+		
+		rbTicket = new JRadioButton("");
+		rbTicket.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rbTicket.setHorizontalAlignment(SwingConstants.CENTER);
+		rbTicket.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_ticket-c_b_35_2.png")));
+		rbTicket.setBounds(527, 555, 47, 47);
+		panel.add(rbTicket);
+		
+		
+		ButtonGroup grupo = new ButtonGroup();
+		grupo.add(rbA4);
+		grupo.add(rbTicket);
+		
+		btnGenerarUltimoCDP = new JButton("Ultimo");
+		btnGenerarUltimoCDP.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/atras.png")));
+		btnGenerarUltimoCDP.addActionListener(this);
+		btnGenerarUltimoCDP.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnGenerarUltimoCDP.setBounds(140, 556, 120, 47);
+		panel.add(btnGenerarUltimoCDP);
+		
+		textField = new JTextField();
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textField.setDisabledTextColor(Color.GRAY);
+		textField.setColumns(10);
+		textField.setBounds(441, 514, 133, 30);
+		panel.add(textField);
+		
+		
 		
 		listarDistritosCbo();
 		// tblVenta.setValueAt(aValue, row, column); MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR MODIFICAR 
 	}
 		
+	
+	
+	
 	public void listarDistritosCbo(){
 		
 		ArrayList<Distrito> listDistrito = gDistrito.listarDistrito();
@@ -780,14 +802,141 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		return -1; // -1 porque la fila de la tabla puede ser 0
 	}
 	
-	// -----------------------------------------------------------------------------------------
+	void mensajeError(String mensaje){
+		JOptionPane.showMessageDialog(pnl_venta_main, mensaje, "Error", 0);
+	}
+	void mensajeExito(String mensaje){
+		JOptionPane.showMessageDialog(pnl_venta_main, mensaje, "Sistema", 1);
+	}
+	
+	private Cliente obtenerCliente(){ // Si el cliente ya existe simplemente lo llama de la base de datos si no, lo crea.
+		// Obtiene el cliente, si debe o no registrarlo porque ya existe, se verifica en la transaccion.
+//		String dni_cliente = txtDni.getText().trim();
+		Cliente obj = null;
+		
+//		obj = gCliente.buscarPorDniExacto(dni_cliente);
+//		if(obj == null){
+			String codigo = gCliente.generarCodigo();
+			String nombre = txtNombre.getText().trim();
+			String apellidos = txtApellido.getText().trim();
+			String dni = txtDni.getText().trim();
+			String telefono = txtTelefono.getText().trim();
+			
+			// obtiene el codigo distrito
+			Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+			String distrito = d.getCod_distrito();
+			if(!dni.equals("")){ // para que se cree el objeto almenos debe ingresar el dni si no el obj se mantiene null
+				obj = new Cliente(codigo, nombre, apellidos, dni, "", telefono, null, distrito);
+			}
+//		}
+		
+		return obj;
+		
+	}
+	
+	private Boleta_Cabecera obtenerCabeceraBoleta(){
+		
+		String codigo_boleta = txtNumeroBoleta.getText();
+		String codigo_empleado = Pnl_Access_Login.empleadoConectado.getCod_empleado();
+		
+		Boleta_Cabecera cabeza = new Boleta_Cabecera(codigo_boleta, null, null, null, codigo_empleado);
+		
+		return cabeza;
+	}
+	
+	private ArrayList<Boleta_Detalle> obtenerListaDetalleBoleta(){
+		
+		ArrayList<Boleta_Detalle> lista = new ArrayList<Boleta_Detalle>();
+		Boleta_Detalle obj = null;
+		int num_filas = tblVenta.getRowCount(); 
+		
+		for (int i = 0; i < num_filas; i++) {
+			String codigo_calzado = tblVenta.getValueAt(i, 1).toString();
+			int cantidad = Integer.parseInt(tblVenta.getValueAt(i, 0).toString());
+			double importe = Double.parseDouble(tblVenta.getValueAt(i, 5).toString());
+			
+			obj = new Boleta_Detalle(null, codigo_calzado, cantidad, importe);
+			lista.add(obj);
+			
+		}
+		
+		return lista;
+	}
+	
+	void RealizarVenta(){
+		
+		Cliente cliente = obtenerCliente();
+		Boleta_Cabecera cabeza = obtenerCabeceraBoleta();
+		ArrayList<Boleta_Detalle> listaCalzados = obtenerListaDetalleBoleta();
+		
+		if(cliente == null || listaCalzados.size() == 0){
+			mensajeError("Error en los datos ingresados");
+		}else{
+			int venta = gVenta.realizarVenta(cliente, cabeza, listaCalzados);
+			if(venta == -1)
+				mensajeError("Error al registrar la venta");
+			else{
+				GenerarComprobante();
+				txtNumeroBoleta.setText(gVenta.generarCodigo());
+				CancelarVenta();
+			}
+//				mensajeExito("Venta Registrada");
+			
+		}
+		
+	}
+	
+	void GenerarComprobante(){
+		codigoBoleta = txtNumeroBoleta.getText();
+		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoleta(codigoBoleta);
+		ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoleta(codigoBoleta);
+		
+		// 0 -> a4
+		// 1 -> ticket
+		int tipoCDP = 0;
+		if(!rbA4.isSelected()){
+			tipoCDP = 1;
+		}
+		
+		gVenta.generarBoleta(cabeza, detalle, tipoCDP);
+	}
+	
+	void GenerarUltimoComprobante(){
+		
+		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoleta(codigoBoleta);
+		if(cabeza == null){
+			mensajeError("No se encontro el ultimo Comprobante");
+		}else{
+			ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoleta(codigoBoleta);
+			// 0 -> a4
+			// 1 -> ticket
+			int tipoCDP = 0;
+			if(!rbA4.isSelected()){
+				tipoCDP = 1;
+			}
+			gVenta.generarBoleta(cabeza, detalle, tipoCDP);
+		}
+	}
+	
+	void CancelarVenta(){
+		limpiarSeccionCliente();
+		txtCodigoCalzado.setText("");
+		modelo.setRowCount(0);
+		txtNombre.requestFocus();
+	}
+	
+	
+	// -------------------------------------------------------------------------------------------------------------------------------------------
 	
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnGenerarUltimoCDP) {
+			GenerarUltimoComprobante();
+		}
+		if (arg0.getSource() == btnRealizarVenta) {
+			RealizarVenta();
+		}
 		if (arg0.getSource() == btnCancelarVenta) {
-			modelo.setRowCount(0);
-			txtCodigoCalzado.setText("");
-			limpiarSeccionCliente();
-			txtNombre.requestFocus();
+			CancelarVenta();
 		}
 		if (arg0.getSource() == btnAgregar) {
 			// Comprueba que el calzado que se va agregar exista
@@ -818,7 +967,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 				generarTotal();
 			}
 		}
-		if (arg0.getSource() == btnAumentar) {			
+		if (arg0.getSource() == btnAumentar) {
 			if(obj != null){
 				int unidades = leerUnidades();
 				if(unidades < obj.getStock()){
@@ -835,8 +984,8 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 			buscadorCalzado.setVisible(true);
 		}
 	}
-
-	// ------------------------------------------------------------------------------------------
+	
+	// -------------------------------------------------------------------------------------------------------------------------------------------
 	
 	@Override
 	public void mouseClicked(MouseEvent e) { }
@@ -849,7 +998,6 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 		if(e.getSource() == tblVenta){ // << 
 			int fila = tblVenta.rowAtPoint(e.getPoint());
 			int columna = tblVenta.columnAtPoint(e.getPoint());
-			
 			
 			if( fila != -1){
 				if(columna == 6){
@@ -865,8 +1013,34 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) { }
+	
+	// -------------------------------------------------------------------------------------------------------------------------------------------
+	
+	public void stateChanged(ChangeEvent arg0) {
+		if (arg0.getSource() == rbA4) {
+			if(rbA4.isSelected()){
+				rbA4.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_A4-c_47.png")));
+				rbTicket.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_ticket-c_b_35_2.png")));
+			}else{
+				rbA4.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_A4-c_b_35.png")));
+				rbTicket.setIcon(new ImageIcon(Pnl_Content_Venta.class.getResource("/img/CDP_ticket-c_47.png")));
+			}
+		}
+	}
 }
 
 
 
 // --> MODIFICAR LA CANTIDAD DE LOS CALZADOS YA AGREGADOS
+// --> AL REGISTRAR UN CLIENTE SE DEBE VERIFICAR SI ESTE YA FUE UN CLIENTE, EN ESE CASO NO NECESITA VOLVER A REGISTRAR, SE UTILIZA LA 
+//	   INFORMACION DE LA BASE DE DATOS, PERO SI EN CASO SI ES NUEVO SE REGISTRA
+// --> CREAR EL INTERRUPTOR PARA ACTIVAR ENTRE COMPROBANTE Y TICKET Y A LA HORA DE REALIZAR LA VENTA LO DETECTE Y MUESTRE EL CORRESPONDIENTE.
+// --> OBSERVACION: EL RBA4 TIENE EL EVENTO STATECHANGE, AL ABRIRSE EL PANEL NO DETECTA NADA PORLO QUE NO SE EJECUTA SU ACCION.
+
+
+
+
+
+
+
+//--

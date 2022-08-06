@@ -89,7 +89,7 @@ foreign key (cod_modelo) references modelo(cod_modelo)
 
 CREATE TABLE boleta(
 cod_boleta     char(7),
-fecha_emision  datetime,
+fecha_hora_emision timestamp,
 cod_cliente    char(7),
 cod_empleado   char(5),
 primary key (cod_boleta),
@@ -475,6 +475,17 @@ begin
 end;
 //DELIMITER ;
 
+drop procedure if exists pa_buscar_cliente_por_dni_exacto;
+DELIMITER //
+create procedure pa_buscar_cliente_por_dni_exacto(
+	in p_valor varchar(50)
+)
+begin
+	select * from cliente where dni = p_valor;
+end;
+//DELIMITER ;
+
+
 DELIMITER //
 create procedure pa_buscar_cliente_por_distrito(
 	in p_valor varchar(50)
@@ -705,17 +716,17 @@ begin
 end;
 //DELIMITER ;
 
-call pa_insertar_modelo('M1001','1CEA003',110.00,180.00,'MA001','CAT01');
-call pa_insertar_modelo('M1002','1CSG001',145.00,220.00,'MA002','CAT01');
-call pa_insertar_modelo('M1003','5VCS001',125.00,200.00,'MA001','CAT02');
+call pa_insertar_modelo('M1001','1CEA003',50.00,90.00,'MA001','CAT01');
+call pa_insertar_modelo('M1002','1CSG001',65.00,124.00,'MA002','CAT01');
+call pa_insertar_modelo('M1003','5VCS001',53.00,110.00,'MA001','CAT02');
 
-call pa_insertar_modelo('M1004','Bartic Ne',200.00,325.00,'MA002','CAT02');
-call pa_insertar_modelo('M1005','Burkos Cl',93.00,155.00,'MA003','CAT02');
-call pa_insertar_modelo('M1006','Bart Gr',112.00,182.00,'MA002','CAT01');
+call pa_insertar_modelo('M1004','Bartic Ne',87.00,142.00,'MA002','CAT02');
+call pa_insertar_modelo('M1005','Burkos Cl',73.00,135.00,'MA003','CAT02');
+call pa_insertar_modelo('M1006','Bart Gr',55.00,112.00,'MA002','CAT01');
 
-call pa_insertar_modelo('M1007','FRESIEN-EMB009',160.00,240.00,'MA003','CAT01');
-call pa_insertar_modelo('M1008','ZALITH001',179.00,279.00,'MA001','CAT02');
-call pa_insertar_modelo('M1009','IMBROS410',139.00,219.00,'MA003','CAT01');
+call pa_insertar_modelo('M1007','FRESIEN-EMB009',49.00,99.00,'MA003','CAT01');
+call pa_insertar_modelo('M1008','ZALITH001',78.00,149.00,'MA001','CAT02');
+call pa_insertar_modelo('M1009','IMBROS410',67.00,111.00,'MA003','CAT01');
 
 call pa_listar_modelo();
 
@@ -938,26 +949,30 @@ call pa_listar_calzado;
 
 ############################################### BOLETA ################################################
 
+drop procedure if exists pa_listar_boleta;
 DELIMITER // 
 create procedure pa_listar_boleta()
 begin
-	select * from boleta;
+	select b.cod_boleta,date_format(b.fecha_hora_emision, "%d-%m-%Y %h:%i:%S %p") as hora,b.cod_cliente,b.cod_empleado from boleta b;
 end;
 //DELIMITER ;
+
+
 
 drop procedure if exists pa_insertar_boleta;
 DELIMITER //
 create procedure pa_insertar_boleta(
 	in p_cod_boleta char(7),
-    -- no es necesario colocar la fecha de emision como parametro porque se mySql lo obtiene con el metodo "now()"
+    -- no es necesario colocar la fecha ni hora de emision como parametro porque mySql lo obtiene con el metodo "now()"
     in p_cod_cliente char(7),
     in p_cod_empleado char(5)
 )
 begin
-	insert into boleta(cod_boleta,fecha_emision,cod_cliente,cod_empleado) 
-    values(p_cod_boleta,now(),p_cod_cliente,p_cod_empleado);
+	insert into boleta(cod_boleta,fecha_hora_emision,cod_cliente,cod_empleado) 
+    values(p_cod_boleta,NOW(),p_cod_cliente,p_cod_empleado);
 end;
 //DELIMITER ;
+
 
 drop procedure if exists pa_buscar_ultimo_codigo_boleta;
 DELIMITER //
@@ -967,7 +982,75 @@ begin
 end;
 //DELIMITER ;
 
- -- no es necesario colocar la fecha de emision como parametro porque se mySql lo obtiene con el metodo "now()"
+
+drop procedure if exists pa_buscar_boleta;
+DELIMITER //
+create procedure pa_buscar_boleta( -- busca la boleta por su codigo y nos devuelve la coleccion de todos los valores de la boleta los que se repiten y los que no.
+	in p_valor varchar(50)
+)
+begin
+	select bol.cod_boleta, bol.fecha_hora_emision,
+			emp.cod_empleado, emp.nombre, emp.apellidos,
+			cli.cod_cliente, cli.nombre, cli.apellidos, cli.dni, cli.direccion, dis.descripcion,
+            cal.cod_calzado, det.cantidad,  mar.nombre_marca, mdl.nombre_modelo, cat.descripcion, cal.talla, cal.color, mdl.precio_venta, det.importe
+    from boleta bol
+		inner join detalle_boleta as det on bol.cod_boleta = det.cod_boleta
+        inner join calzado as cal on det.cod_calzado = cal.cod_calzado
+        inner join empleado as emp on bol.cod_empleado = emp.cod_empleado
+		inner join cliente as cli on bol.cod_cliente = cli.cod_cliente
+		inner join distrito as dis on cli.cod_distrito = dis.cod_distrito
+        inner join modelo as mdl on cal.cod_modelo = mdl.cod_modelo
+		inner join marca as mar on mdl.cod_marca = mar.cod_marca
+		inner join categoria as cat on mdl.cod_categoria = cat.cod_categoria
+	having bol.cod_boleta = p_valor;
+end;
+//DELIMITER ;
+
+
+
+drop procedure if exists pa_buscar_cabeza_boleta;
+DELIMITER //
+create procedure pa_buscar_cabeza_boleta( -- busca la boleta por su codigo y nos muestra solo una fila con todos los valores que no cambian de la boleta como el cliente y el empleado
+	in p_valor varchar(50)
+)
+begin
+	select bol.cod_boleta, bol.fecha_hora_emision,
+			emp.cod_empleado, concat(emp.nombre," ",emp.apellidos) as empleado,
+			cli.cod_cliente, concat(cli.nombre," ",cli.apellidos) as cliente, cli.dni, cli.direccion, dis.descripcion, cli.telefono,
+            sum(det.importe) as total
+    from boleta bol
+		inner join detalle_boleta as det on bol.cod_boleta = det.cod_boleta
+        inner join empleado as emp on bol.cod_empleado = emp.cod_empleado
+		inner join cliente as cli on bol.cod_cliente = cli.cod_cliente
+		inner join distrito as dis on cli.cod_distrito = dis.cod_distrito
+    group by bol.cod_boleta,bol.fecha_hora_emision,emp.cod_empleado,empleado,cli.cod_cliente,cliente, cli.dni, cli.direccion, dis.descripcion, cli.telefono
+	having bol.cod_boleta = p_valor;
+end;
+//DELIMITER ;
+
+
+drop procedure if exists pa_buscar_detalle_boleta;
+DELIMITER //
+create procedure pa_buscar_detalle_boleta( -- busca la boleta por su codigo y nos devuelve la coleccion de valores que cambian de la boleta, como los calzados que se venden
+	in p_valor varchar(50)
+)
+begin
+	select bol.cod_boleta,
+			cal.cod_calzado, det.cantidad,  concat("Calzado ",mar.nombre_marca," ", mdl.nombre_modelo," ", cal.talla," ", cal.color) as descripcion, mdl.precio_venta, det.importe
+    from boleta bol
+		inner join detalle_boleta as det on bol.cod_boleta = det.cod_boleta
+        inner join calzado as cal on det.cod_calzado = cal.cod_calzado
+        inner join modelo as mdl on cal.cod_modelo = mdl.cod_modelo
+		inner join marca as mar on mdl.cod_marca = mar.cod_marca
+		inner join categoria as cat on mdl.cod_categoria = cat.cod_categoria
+	having bol.cod_boleta = p_valor;
+end;
+//DELIMITER ;
+
+-- call pa_buscar_cabeza_boleta('BL10004');
+-- call pa_buscar_cabeza_boleta();
+
+-- no es necesario colocar la fecha ni hora de emision como parametro porque se mySql lo obtiene con el metodo "now()"
 call pa_insertar_boleta('BL10001','CL10001','EM001');
 call pa_insertar_boleta('BL10002','CL10002','EM002');
 call pa_insertar_boleta('BL10003','CL10003','EM003');
@@ -998,12 +1081,22 @@ begin
 end;
 //DELIMITER ;
 
-call pa_insertar_detalle_boleta('BL10001','CZ10001','2',360.00);
-call pa_insertar_detalle_boleta('BL10001','CZ10006','1',200.00);
-call pa_insertar_detalle_boleta('BL10002','CZ10002','1',180.00);
-call pa_insertar_detalle_boleta('BL10002','CZ10008','1',325.00);
-call pa_insertar_detalle_boleta('BL10003','CZ10009','2',364.00);
-call pa_insertar_detalle_boleta('BL10003','CZ10007','1',325.00);
+call pa_insertar_detalle_boleta('BL10001','CZ10001','2',180.00);
+call pa_insertar_detalle_boleta('BL10001','CZ10006','1',110.00);
+call pa_insertar_detalle_boleta('BL10002','CZ10002','1',90.00);
+call pa_insertar_detalle_boleta('BL10002','CZ10008','1',142.00);
+call pa_insertar_detalle_boleta('BL10003','CZ10009','2',224.00);
+call pa_insertar_detalle_boleta('BL10003','CZ10007','1',142.00);
+
+call pa_insertar_detalle_boleta('BL10004','CZ10003','2',248.00);
+call pa_insertar_detalle_boleta('BL10004','CZ10005','3',330.00);
+call pa_insertar_detalle_boleta('BL10004','CZ10002','1',90.00);
+call pa_insertar_detalle_boleta('BL10004','CZ10004','2',248.00);
 
 call pa_listar_detalle_boleta;
 
+-- 1 --> select timediff(now(),convert_tz(now(),@@session.time_zone,'+00:00'));
+-- 2 --> SELECT @@global.time_zone, @@session.time_zone;
+-- 3 --> set global time_zone='-00:00';
+-- 4 --> set time_zone='-00:00';
+-- ERROR CREO --> SELECT IF(@@session.time_zone = 'SYSTEM', @@system_time_zone, @@session.time_zone);

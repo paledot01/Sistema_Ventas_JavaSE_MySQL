@@ -24,6 +24,8 @@ public interface ClienteInterfaceDao {
 	
 	public ArrayList<Cliente> buscarPorDni(String valor);
 	
+	public Cliente buscarPorDniExacto(String valor);
+	
 	public ArrayList<Cliente> buscarPorDistrito(String valor);
 	
 	

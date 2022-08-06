@@ -864,7 +864,8 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 
 
 
-
+// ERROR:
+// - Al guardar el nuevo calzado, si hubo un error, se desactiva el boton del modelo que permite pasar el nombre del modelo.
 
 
 

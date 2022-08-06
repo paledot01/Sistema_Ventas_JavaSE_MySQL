@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import entidad.CalzadoReporte;
 import entidad.Cliente;
 import entidad.Empleado;
 import interfaces.ClienteInterfaceDao;
@@ -21,7 +22,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Cliente> lista;
-	private Cliente obj;
+//	private Cliente obj;
 	
 	// Sentencias
 	
@@ -34,6 +35,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	final String SEARCHCODE = "{call pa_buscar_cliente_por_codigo(?)}";
 	final String SEARCHNAME = "{call pa_buscar_cliente_por_nombre_apellido(?)}";
 	final String SEARCHDNI = "{call pa_buscar_cliente_por_dni(?)}";
+	final String SEARCH_DNI_EXACT = "{call pa_buscar_cliente_por_dni_exacto(?)}";
 	final String SEARCHDISTRITO = "{call pa_buscar_cliente_por_distrito(?)}";
 
 	
@@ -42,6 +44,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	public ArrayList<Cliente> listar() {
 		
 		lista = new ArrayList<Cliente>();
+		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -182,7 +185,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	@Override
 	public Cliente buscarPorCodigo(String codigo) {
 		
-		obj = null;
+		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -226,7 +229,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	public ArrayList<Cliente> buscarPorNombre(String valor) {
 
 		lista = new ArrayList<Cliente>();
-		
+		Cliente obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
 			cs = cn.prepareCall(SEARCHNAME);
@@ -268,6 +271,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	public ArrayList<Cliente> buscarPorDni(String valor) {
 
 		lista = new ArrayList<Cliente>();
+		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -305,11 +309,56 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		return lista;
 		
 	}
+	
+	
+	@Override
+	public Cliente buscarPorDniExacto(String valor) {
+		
+		Cliente obj = null;
+		
+		try{
+			cn = ConnectionMySQL_8.getConnection();
+			cs = cn.prepareCall(SEARCH_DNI_EXACT);
+			cs.setString(1, valor);
+			
+			rs = cs.executeQuery();
+			
+			while(rs.next()){
+				int i=1;
+				obj = new Cliente(
+						rs.getString(i++), // posicion 1
+						rs.getString(i++), // posicion 2
+						rs.getString(i++), // ...
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++)
+				);
+			}
+			
+		}catch (SQLException e) {
+			System.out.println("Error en la sentencia buscarPorDniExacto() - CLIENTE --> " + e.getMessage());
+		}catch (Exception e){
+			System.out.println("Error en la sentencia buscarPorDniExacto() - CLIENTE --> " + e.getMessage());
+		}finally {
+			try {
+				if( rs != null ) rs.close();
+				if( cs != null ) cs.close();
+				if( cn != null ) cn.close();
+			} catch (SQLException e2) {
+				System.out.println("Error al cerrar la base de datos" + e2.getMessage());
+			}
+		}
+		return obj;
+	}
+	
 
 	@Override
 	public ArrayList<Cliente> buscarPorDistrito(String valor) {
 
 		lista = new ArrayList<Cliente>();
+		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
@@ -347,5 +396,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		return lista;
 		
 	}
+
+
 
 }

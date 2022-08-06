@@ -231,7 +231,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 //		lblMantenimiento.setBackground(utils.Library.Claro_1);
 		
 		lblX = new JLabel("");
-		lblX.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/oie_271125432pr78yL.png")));
+		lblX.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/lista.png")));
 		lblX.setBounds(0, 0, 30, 22);
 		pnl_btn_mantenimiento.add(lblX);
 		lblX.setOpaque(true);

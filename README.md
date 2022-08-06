@@ -41,10 +41,32 @@ Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del man
 
 ---
 
+## 4th version
+- Se modificó los mantenimientos anterior para mejorar su rapidez a la hora de mostrar los datos.
+- Se añadio un Reloj para el sistema con Thread.
+- Se creo el Panel Venta que permite registrar una venta y generar el comprobante.
+- Para el Panel Venta se creo una ventana para buscar los calzados.
+- Se creo un evento personalizado para el "codigo de calzado" que permite detectar la modificacion de su contenido para ejecutar la accion de mostrar los detalles del calzado.
+- Para mostrar los detalles del calzado que se va agregar a la lista se creo el diseño de una hoja usando la clase Graphics2D de Java.
+- Se agregó el boton de eliminar dentro de la tabla, para aumentar la rapidez en el proceso.
+- Se creo la plantilla para el comprobante de venta en los formatos A4 y Ticket.
+- Se creo dos nuevos iconos para el CDP y se modifico otros que se descargaron de internet.
+
+Problemas solucionados:
+- Al seleccionar el formato ticket para el CDP y realizar la venta, este mostraba la previsualizacion de manera correcta pero al exportarlo en formato PDF, la fuente de texto utilizado para la creacion de la plantilla se modificaba por una fuente por defecto.
+- El boton dentro de la tabla podia realizar cualquier funcion programada, excepto eliminar la misma fila que contenia el boton. Esto ocurria porque al hacerle click al boton, la fila se eliminaba antes de que acabara la animacion que se activaba en el boton, provocando que el boton se quede flotando en la nada, y el sistema se bugeaba.
+- Al realizar la venta, la hora que se mostraba en el comprobante estaba retrasado 5 horas. Esto ocurria porque la hora se registraba directamente en la Base de Datos con el metodo NOW() esto asu vez provocaba que tanto el MySql como el Eclipse le restaran cada uno 5 horas a la hora de la zona horaria internacional, porque estos estaban por defecto con la zona horaria local (del Sistema Operativo).
+
+|  |  |  |  |
+| ------------- |:-------------:|:-------------:|:-------------:|
+| ![][4rd_img_1] | ![][4rd_img_2] | ![][4rd_img_3] | ![][4rd_img_4] |
+| ![][4rd_img_5] | ![][4rd_img_6] | ![][4rd_img_7] | |
+
+
 ### Herramientas utilizadas:
 - **Eclipse** como IDE principal para el desarrollo del sistema.
 - **MySQL** como motor de la base de datos.
-- **JasperSoft Studio** para la creacion del reporte en PDF.
+- **JasperSoft Studio** para la creacion de plantillas para los reportes en PDF.
 - **Corel Draw** para la creacion de iconos.
 - **Visual Studio Code** para la edicion de este README.md.
 - **Git Bash** para subir y actualizar este repositorio.
@@ -60,10 +82,19 @@ Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del man
 [1st_img_1]: ./screenshot/version_01_01.png
 [1st_img_2]: ./screenshot/version_01_02.png
 [1st_img_3]: ./screenshot/version_01_03.png
+
 [2nd_img_1]: ./screenshot/version_02_01.png
 [2nd_img_2]: ./screenshot/version_02_02.png
 [2nd_img_3]: ./screenshot/version_02_03.png
 [2nd_img_4]: ./screenshot/version_02_04.png
+
 [3rd_img_1]: ./screenshot/version_03_01.png
 [3rd_img_2]: ./screenshot/version_03_02.png
 
+[4rd_img_1]: ./screenshot/version_04_01.png
+[4rd_img_2]: ./screenshot/version_04_02.png
+[4rd_img_3]: ./screenshot/version_04_03.png
+[4rd_img_4]: ./screenshot/version_04_04.png
+[4rd_img_5]: ./screenshot/version_04_05.png
+[4rd_img_6]: ./screenshot/version_04_06.png
+[4rd_img_7]: ./screenshot/version_04_07.png

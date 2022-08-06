@@ -14,6 +14,7 @@ public class ConnectionMySQL_8 {
 			
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql://localhost:3306/shoesformen?serverTimezone=UTC";
+//			jdbc:mysql://localhost/db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 			String user = "root";
 			String psw = "12345";
 			con= DriverManager.getConnection(url,user,psw);
