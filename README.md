@@ -66,12 +66,11 @@ Problemas solucionados:
 - Se creo una ultima animación que genera un movimiento circular continuo de un componente. Esto se realizó con Thread y la clase Math.
 - Se agregó un pequeño archivo de texto a este repositorio que contiene notas, observaciones, datos, comentarios, problemas y soluciones, que fui encontrando y apuntando a lo largo de todo el desarrollo de este proyecto, el archivo se encuentra dentro de la carpeta "extra".
 
-## Imagenes Extras
 
 ![][Extra_BD_shoesformen]
 
 
-| 1 Animacion_Circular______________________ | 2 | 3 Datos_extras |
+| 1 Animacion_Circular_____________________ | 2 | 3 Datos_extras |
 | ------------- |:-------------:|:-------------:|
 | ![][Extra_animacion_circular] | ![][Extra_distribucion_paneles] | ![][Extra_datos] |
 
