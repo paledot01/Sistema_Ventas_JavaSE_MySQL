@@ -93,8 +93,8 @@ Problemas solucionados:
 
 
 
-## Apreciación:
-El proyecto lo inicie teniendo en mente crear un sistema de escritorio pequeño pero completo, y en el proceso practicar lo que vimos el primer año de la carrera pero tambien aprender nuevas cosas. Durante el desarrollo surgian ideas de implementar ciertas funciones que aunque no eran estrictamente necesarias para que el sistema funcione mejoraban la apariencia o rapidez de interacción con el sistema, debido a ello el desarrollo se extendio mucho más de lo que pensé y por las clases tuve que deterlo varias veces. Aunque el sistema no fue concluido disfrute mucho el proceso del mismo y creo que el objetivo principal se cumplió.
+### Apreciación Final:
+El proyecto lo inicie teniendo en mente crear un sistema de escritorio pequeño pero completo, y en el proceso practicar lo que vimos el primer año de la carrera pero tambien aprender nuevas cosas. Durante el desarrollo surgian ideas de implementar ciertas funciones que aunque no eran estrictamente necesarias para que el sistema funcione mejoraban la apariencia o rapidez de interacción con el sistema; debido a ello el desarrollo se extendió mucho más de lo que pensé y por las clases tuve que deterlo por semanas e incluso meses. Aunque el sistema no fue concluido disfrute mucho el proceso del mismo y creo que el objetivo principal se cumplió.
 
 
 
