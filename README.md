@@ -1,5 +1,5 @@
 # Sistema de venta de calzados
-Sistema de venta de calzados desarrollado con Java, Eclipse y MySQL como motor de base de datos.
+Sistema de venta de calzados desarrollado en Java con MySQL como motor de base de datos.
 
 ## Primer avance (GUI)
 Se realizó:
@@ -70,7 +70,7 @@ Problemas solucionados:
 ![][Extra_BD_shoesformen]
 
 
-| 1 Animacion_Circular____________________ | 2 | 3 Datos_extras |
+| 1 Animacion_Circular___________________ | 2 | 3 Datos_extras |
 | ------------- |:-------------:|:-------------:|
 | ![][Extra_animacion_circular] | ![][Extra_distribucion_paneles] | ![][Extra_datos] |
 
