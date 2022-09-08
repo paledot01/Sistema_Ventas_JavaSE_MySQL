@@ -1,13 +1,12 @@
 package Controlador;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -40,7 +39,7 @@ import utils.ConnectionMySQL_8;
 public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	
@@ -53,30 +52,30 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	
 	// Sentencias
-	final String GETALL = "{call pa_listar_calzado()}";
+	final String GETALL_MOD = "{call pa_listar_calzado_modificado()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_calzado()}";
 	final String INSERT = "{call pa_insertar_calzado(?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_calzado(?,?,?,?,?)}";
 	
-	final String SEARCH_ORIGINAL_CODE = "{call pa_buscar_calzado_original_por_codigo(?)}";
-	final String SEARCH_CODE = "{call pa_buscar_calzado_por_codigo(?)}";
-	final String SEARCH_CODE_EXACT = "{call pa_buscar_calzado_por_codigo_exacto(?)}";
+	final String SEARCH_ORG_CODE_IXT = "{call pa_buscar_calzado_original_codigo_ixt(?)}";
+	final String SEARCH_MOD_CODE_EXT = "{call pa_buscar_calzado_modificado_codigo_ext(?)}";
+	final String SEARCH_MOD_CODE_IXT = "{call pa_buscar_calzado_modificado_codigo_ixt(?)}";
 	
-	final String SEARCH_MODEL = "{call pa_buscar_calzado_por_modelo(?)}";
-	final String SEARCH_CATEGORY = "{call pa_buscar_calzado_por_categoria(?)}";
-	final String SEARCH_BRAND = "{call pa_buscar_calzado_por_marca(?)}";
-	final String SEARCH_TALLA = "{call pa_buscar_calzado_por_talla(?)}";
-	final String SEARCH_COLOR = "{call pa_buscar_calzado_por_color(?)}";
+	final String SEARCH_MOD_MODEL_IXT = "{call pa_buscar_calzado_modificado_modelo_ixt(?)}";
+	final String SEARCH_MOD_CATEGORY_IXT = "{call pa_buscar_calzado_modificado_categoria_ixt(?)}";
+	final String SEARCH_MOD_BRAND_IXT = "{call pa_buscar_calzado_modificado_marca_ixt(?)}";
+	final String SEARCH_MOD_TALLA_IXT = "{call pa_buscar_calzado_modificado_talla_ixt(?)}";
+	final String SEARCH_MOD_COLOR_IXT = "{call pa_buscar_calzado_modificado_color_ixt(?)}";
 	
 	
 	@Override
-	public ArrayList<CalzadoReporte> listar() {
+	public ArrayList<CalzadoReporte> listarModificado() {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_MOD);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -229,13 +228,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Calzado> buscarOriginalPorCodigo(String valor) {
+	public ArrayList<Calzado> buscarOrgCodigoIxt(String valor) {
 		
 		listaOriginal = new ArrayList<Calzado>();
 		Calzado obj;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_ORIGINAL_CODE);
+			cs = cn.prepareCall(SEARCH_ORG_CODE_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -272,13 +271,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 	
 	
 	
-	public CalzadoReporte buscarPorCodigoExacto(String valor) {
+	public CalzadoReporte buscarModCodigoExt(String valor) {
 				
 		CalzadoReporte objR = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CODE_EXACT);
+			cs = cn.prepareCall(SEARCH_MOD_CODE_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -319,13 +318,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor) {
+	public ArrayList<CalzadoReporte> buscarModCodigoIxt(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CODE);
+			cs = cn.prepareCall(SEARCH_MOD_CODE_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -368,13 +367,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorModelo(String valor) {
+	public ArrayList<CalzadoReporte> buscarModModeloIxt(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_MODEL);
+			cs = cn.prepareCall(SEARCH_MOD_MODEL_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -417,13 +416,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorCategoria(String valor) {
+	public ArrayList<CalzadoReporte> buscarModCategoriaIxt(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CATEGORY);
+			cs = cn.prepareCall(SEARCH_MOD_CATEGORY_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -466,13 +465,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorMarca(String valor) {
+	public ArrayList<CalzadoReporte> buscarModMarcaIxt(String valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_BRAND);
+			cs = cn.prepareCall(SEARCH_MOD_BRAND_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -515,13 +514,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorTalla(int valor) {
+	public ArrayList<CalzadoReporte> buscarModTallaIxt(int valor) {
 		
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_TALLA);
+			cs = cn.prepareCall(SEARCH_MOD_TALLA_IXT);
 			cs.setInt(1, valor);
 			
 			rs = cs.executeQuery();
@@ -564,13 +563,13 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<CalzadoReporte> buscarPorColor(String valor) {
+	public ArrayList<CalzadoReporte> buscarModColorIxt(String valor) {
 
 		listaReporte = new ArrayList<CalzadoReporte>();
 		CalzadoReporte objR = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_COLOR);
+			cs = cn.prepareCall(SEARCH_MOD_COLOR_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -620,7 +619,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 		try {
 			
 			File archivo;
-			FileInputStream archivoEntrada = null;
+//			FileInputStream archivoEntrada = null;
 			FileOutputStream archivoSalida = null;
 			
 			
@@ -632,7 +631,7 @@ public class CalzadoGestionDao implements CalzadoInterfaceDao{
 			
 			
 			/** showDialog(componentePadre, nombreBotonAprobado) -- devuelve un numero que representa la eleccion del usuario.*/
-			if(ventSeleccion.showDialog(null, "Guardar") == ventSeleccion.APPROVE_OPTION){
+			if(ventSeleccion.showDialog(null, "Guardar") == JFileChooser.APPROVE_OPTION){
 				
 				// toString(), transforma el archivo seleccionado en un cadena de la ruta del archivo, añadiendole el formarto.
 				String ruta = ventSeleccion.getSelectedFile().toString().concat(".txt"); 

@@ -303,7 +303,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 			@Override
 			public void update(DocumentEvent e) {
 				String valor = txtCodigoCalzado.getText().trim();
-				obj = gCalzado.buscarPorCodigoExacto(valor); // en este caso cuando el valor es incorrecto el obj si se le esta cambiando su valor.
+				obj = gCalzado.buscarModCodigoExt(valor); // en este caso cuando el valor es incorrecto el obj si se le esta cambiando su valor.
 				 
 				if(obj==null){
 					limpiarSeccionCalzado();
@@ -639,7 +639,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	
 	public void listarDistritosCbo(){
 		
-		ArrayList<Distrito> listDistrito = gDistrito.listarDistrito();
+		ArrayList<Distrito> listDistrito = gDistrito.listarOriginal();
 		
 		for(Distrito dis : listDistrito){
 			cboDistrito.addItem(dis.getDescripcion());
@@ -823,7 +823,7 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 			String telefono = txtTelefono.getText().trim();
 			
 			// obtiene el codigo distrito
-			Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+			Distrito d = gDistrito.buscarOrgAllExt(cboDistrito.getSelectedItem().toString()) ;
 			String distrito = d.getCod_distrito();
 			if(!dni.equals("")){ // para que se cree el objeto almenos debe ingresar el dni si no el obj se mantiene null
 				obj = new Cliente(codigo, nombre, apellidos, dni, "", telefono, null, distrito);
@@ -888,8 +888,8 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	
 	void GenerarComprobante(){
 		codigoBoleta = txtNumeroBoleta.getText();
-		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoleta(codigoBoleta);
-		ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoleta(codigoBoleta);
+		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoletaModCodigoExt(codigoBoleta);
+		ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoletaModCodigoExt(codigoBoleta);
 		
 		// 0 -> a4
 		// 1 -> ticket
@@ -903,11 +903,11 @@ public class Pnl_Content_Venta extends JPanel implements ActionListener, MouseLi
 	
 	void GenerarUltimoComprobante(){
 		
-		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoleta(codigoBoleta);
+		Boleta_Cabecera_Reporte cabeza = gVenta.buscarCabezaBoletaModCodigoExt(codigoBoleta);
 		if(cabeza == null){
 			mensajeError("No se encontro el ultimo Comprobante");
 		}else{
-			ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoleta(codigoBoleta);
+			ArrayList<Boleta_Detalle_Reporte> detalle = gVenta.buscarDetalleBoletaModCodigoExt(codigoBoleta);
 			// 0 -> a4
 			// 1 -> ticket
 			int tipoCDP = 0;

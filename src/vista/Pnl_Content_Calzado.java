@@ -396,7 +396,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<CalzadoReporte> data = gCalzado.listar();
+		ArrayList<CalzadoReporte> data = gCalzado.listarModificado();
 		
 		for( int i = data.size()-1 ; i>=0 ; i-- ){
 			
@@ -471,7 +471,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		String codModelo = "";
 		
 		try{
-			codModelo = gModelo.buscarPorNombre(txtModelo.getText().trim()).getCod_modelo();
+			codModelo = gModelo.buscarOrgNombreExt(txtModelo.getText().trim()).getCod_modelo();
 		}catch (Exception e) {
 			System.out.println("Error en leerModelo() --> " + e.getMessage());
 		}
@@ -592,11 +592,11 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		// En la fila de la tabla busca el codigo del Calzado, con este codigo se busca en la BD el calzado y trae todos sus datos.
 		Calzado calzado = new Calzado();
 		String codigoFila = tblCalzado.getValueAt(posicionFila, 0).toString();
-		calzado = gCalzado.buscarOriginalPorCodigo(codigoFila).get(0);
+		calzado = gCalzado.buscarOrgCodigoIxt(codigoFila).get(0);
 		
 		// --
 		txtCodigo.setText( calzado.getCod_calzado() );
-		txtModelo.setText(  gModelo.buscar(calzado.getCod_modelo()).get(0).getNombre_modelo()  );
+		txtModelo.setText(  gModelo.buscarModAllIxt(calzado.getCod_modelo()).get(0).getNombre_modelo()  );
 		txtTalla.setText( String.valueOf(calzado.getTalla()) );
 		txtColor.setText( calzado.getColor() );
 		txtStock.setText( String.valueOf(calzado.getStock()) );
@@ -611,21 +611,21 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		
 		try {
 			if(rbCodigo.isSelected()){
-				data = gCalzado.buscarPorCodigo(valor);
+				data = gCalzado.buscarModCodigoIxt(valor);
 			}else if(rbModelo.isSelected()){
-				data = gCalzado.buscarPorModelo(valor);
+				data = gCalzado.buscarModModeloIxt(valor);
 			}else if(rbCategoria.isSelected()){
-				data = gCalzado.buscarPorCategoria(valor);
+				data = gCalzado.buscarModCategoriaIxt(valor);
 			}else if(rbMarca.isSelected()){
-				data = gCalzado.buscarPorMarca(valor);
+				data = gCalzado.buscarModMarcaIxt(valor);
 			}else if(rbTalla.isSelected()){
 				if(valor.equals("")){
-					data = gCalzado.listar();
+					data = gCalzado.listarModificado();
 				}else{
-					data = gCalzado.buscarPorTalla(Integer.parseInt(valor));
+					data = gCalzado.buscarModTallaIxt(Integer.parseInt(valor));
 				}
 			}else if(rbColor.isSelected()){
-				data = gCalzado.buscarPorColor(valor);
+				data = gCalzado.buscarModColorIxt(valor);
 			}
 		}catch (NumberFormatException e) {
 			System.out.println("Error en la busqueda() --> " + e.getMessage());
@@ -774,7 +774,7 @@ public class Pnl_Content_Calzado extends JPanel implements MouseListener, Action
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String codigo = txtCodigo.getText();
-			ArrayList<Calzado> listaCalzado = gCalzado.buscarOriginalPorCodigo(codigo);
+			ArrayList<Calzado> listaCalzado = gCalzado.buscarOrgCodigoIxt(codigo);
 			
 			if(listaCalzado.size() != 1){
 				registrarCalzado();

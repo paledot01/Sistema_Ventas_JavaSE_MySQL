@@ -2,7 +2,6 @@ package interfaces;
 
 import java.util.ArrayList;
 
-import entidad.CalzadoReporte;
 import entidad.Empleado;
 import entidad.EmpleadoReporte;
 
@@ -11,7 +10,7 @@ public interface EmpleadoInterfaceDao {
 	
 	public ArrayList<Empleado> listarOriginal();
 	
-	public ArrayList<EmpleadoReporte> listar();
+	public ArrayList<EmpleadoReporte> listarModificado();
 	
 	public Empleado validarAcceso(String user, String pass);
 	
@@ -23,18 +22,18 @@ public interface EmpleadoInterfaceDao {
 	
 	// public int eliminarEmpleado(String codigo);
 	
-	public ArrayList<Empleado> buscarOriginalPorCodigo(String valor);
+	public ArrayList<Empleado> buscarOrgCodigoIxt(String valor);
 	
-	public EmpleadoReporte buscarPorCodigoExacto(String valor);
+	public EmpleadoReporte buscarModCodigoExt(String valor);
 	
-	public ArrayList<EmpleadoReporte> buscarPorCodigo(String valor);
+	public ArrayList<EmpleadoReporte> buscarModCodigoIxt(String valor);
 	
 	
-	public ArrayList<EmpleadoReporte> buscarPorNombre(String valor);
+	public ArrayList<EmpleadoReporte> buscarModNombreIxt(String valor);
 	
-	public ArrayList<EmpleadoReporte> buscarPorDni(String valor);
+	public ArrayList<EmpleadoReporte> buscarModDniIxt(String valor);
 	
-	public ArrayList<EmpleadoReporte> buscarPorDistrito(String valor);
+	public ArrayList<EmpleadoReporte> buscarModDistritoIxt(String valor);
 	
 	
 	public int exportarTXT( ArrayList<EmpleadoReporte> empleados );

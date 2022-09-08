@@ -18,7 +18,9 @@ public class Library {
 	
 	public static final Color Celeste = new Color(186, 221, 240);
 	public static final Color Rojo = new Color(233, 165, 157);
+	public static final Color AMARILLO = new Color(255, 199, 95);
 	public static final Color Crema = new Color(255, 255, 238);
 	public static final Color Menu = new Color(240, 240, 240);
+	
 	
 }

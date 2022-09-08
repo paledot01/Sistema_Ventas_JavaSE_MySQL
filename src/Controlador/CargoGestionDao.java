@@ -2,13 +2,12 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entidad.Cargo;
-import entidad.Distrito;
 import interfaces.CargoInterfaceDao;
 import utils.ConnectionMySQL_8;
 
@@ -16,7 +15,7 @@ public class CargoGestionDao implements CargoInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Cargo> lista;
@@ -25,17 +24,17 @@ public class CargoGestionDao implements CargoInterfaceDao{
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_cargo()}";
-	final String SEARCH = "{call pa_buscar_cargo(?)}";
+	final String GETALL_ORG = "{call pa_listar_cargo_original()}";
+	final String SEARCH_ORG_ALL_EXT = "{call pa_buscar_cargo_original_all_ext(?)}";
 	
 	@Override
-	public ArrayList<Cargo> listarCargo() {
+	public ArrayList<Cargo> listarOriginal() {
 		
 		lista = new ArrayList<Cargo>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -64,11 +63,11 @@ public class CargoGestionDao implements CargoInterfaceDao{
 	
 	
 	@Override
-	public Cargo buscarCargo(String valor) {
+	public Cargo buscarOrgAllExt(String valor) {
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH);
+			cs = cn.prepareCall(SEARCH_ORG_ALL_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();

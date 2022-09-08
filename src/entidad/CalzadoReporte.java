@@ -107,7 +107,6 @@ public class CalzadoReporte {
 		
 		String[] atributo = new String[9];
 //		Object[] atributo = new Object[9];
-		int indice = 0;
 		
 		atributo[0] = getCod_calzado();
 		atributo[1] = getNombre_modelo();

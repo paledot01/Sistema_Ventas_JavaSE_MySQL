@@ -7,8 +7,8 @@ import entidad.Cargo;
 public interface CargoInterfaceDao {
 	
 	
-	public ArrayList<Cargo> listarCargo();
+	public ArrayList<Cargo> listarOriginal();
 	
-	public Cargo buscarCargo(String valor); // --> busca por codigo o descripcion
+	public Cargo buscarOrgAllExt(String valor); // --> busca por codigo o descripcion
 	
 }

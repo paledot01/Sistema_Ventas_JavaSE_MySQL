@@ -2,7 +2,7 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -16,7 +16,7 @@ public class CategoriaGestionDao implements CategoriaInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Categoria> lista;
@@ -24,11 +24,11 @@ public class CategoriaGestionDao implements CategoriaInterfaceDao{
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_categoria()}";
+	final String GETALL_ORG = "{call pa_listar_categoria_original()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_categoria()}";
 	final String INSERT = "{call pa_insertar_categoria(?,?)}";
 	final String UPDATE = "{call pa_actualizar_categoria(?,?)}";
-	final String SEARCH = "{call pa_buscar_categoria(?)}";
+	final String SEARCH_ORG_ALL_IXT = "{call pa_buscar_categoria_original_all_ixt(?)}";
 
 	
 	
@@ -67,13 +67,13 @@ public class CategoriaGestionDao implements CategoriaInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Categoria> listar() {
+	public ArrayList<Categoria> listarOriginal() {
 		
 		lista = new ArrayList<Categoria>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -202,13 +202,13 @@ public class CategoriaGestionDao implements CategoriaInterfaceDao{
 //	}
 	
 	@Override
-	public ArrayList<Categoria> buscar(String valor) {
+	public ArrayList<Categoria> buscarOrgAllIxt(String valor) {
 		
 		lista = new ArrayList<Categoria>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH);
+			cs = cn.prepareCall(SEARCH_ORG_ALL_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();

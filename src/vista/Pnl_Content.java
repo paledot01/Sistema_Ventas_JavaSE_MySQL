@@ -31,7 +31,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	private JPanel pnl_menu_content_1;
 	private JLabel lblNewLabel_2;
 	private JLabel lblSignOut;
-	private JPanel pnl_top_bar;
+	private JPanel pnl_content_topbar;
 	private JLabel lblMantenimiento;
 	//-- Componentes estaticos
 	public static  JPanel pnl_menu_content_2;
@@ -110,7 +110,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		
 		// Encontrando el Cargo del empleado conectado
 		String codigo = Pnl_Access_Login.empleadoConectado.getCod_cargo();
-		String cargo = gCargo.buscarCargo(codigo).getDescripcion().toUpperCase();
+		String cargo = gCargo.buscarOrgAllExt(codigo).getDescripcion().toUpperCase();
 		lblCargo = new JLabel(cargo); // <-------------------------------------------
 		lblCargo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCargo.setForeground(new Color(230,230,230));
@@ -424,48 +424,48 @@ public class Pnl_Content extends JPanel implements MouseListener {
 		pnl_content_body.setBounds(230, 30, 870, 670);
 		pnl_content.add(pnl_content_body);
 		
-		pnl_top_bar = new JPanel();
-		pnl_top_bar.setBackground(new Color(63, 68, 73));
-		pnl_top_bar.setBorder(new LineBorder(new Color(95, 103, 112)));
-		pnl_top_bar.setBounds(230, 0, 870, 30);
-		pnl_content.add(pnl_top_bar);
-		pnl_top_bar.setLayout(null);
+		pnl_content_topbar = new JPanel();
+		pnl_content_topbar.setBackground(new Color(63, 68, 73));
+		pnl_content_topbar.setBorder(new LineBorder(new Color(95, 103, 112)));
+		pnl_content_topbar.setBounds(230, 0, 870, 30);
+		pnl_content.add(pnl_content_topbar);
+		pnl_content_topbar.setLayout(null);
 		
 		lblFecha = new JLabel("xxxxx");
 		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFecha.setForeground(SystemColor.menu);
-		lblFecha.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblFecha.setBounds(421, 0, 296, 30);
-		pnl_top_bar.add(lblFecha);
+		lblFecha.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 12));
+		lblFecha.setBounds(401, 0, 296, 30);
+		pnl_content_topbar.add(lblFecha);
 		
 		lblPaledotgmailcom = new JLabel("paledot01@gmail.com");
 		lblPaledotgmailcom.setForeground(SystemColor.menu);
 		lblPaledotgmailcom.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		lblPaledotgmailcom.setBounds(189, 0, 157, 30);
-		pnl_top_bar.add(lblPaledotgmailcom);
+		pnl_content_topbar.add(lblPaledotgmailcom);
 		
 		lblPaledot = new JLabel("paledot01");
 		lblPaledot.setForeground(SystemColor.menu);
 		lblPaledot.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		lblPaledot.setBounds(53, 0, 86, 30);
-		pnl_top_bar.add(lblPaledot);
+		pnl_content_topbar.add(lblPaledot);
 		
 		lblGitHub = new JLabel("");
 		lblGitHub.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/github.png")));
 		lblGitHub.setBounds(13, 0, 30, 30);
-		pnl_top_bar.add(lblGitHub);
+		pnl_content_topbar.add(lblGitHub);
 		
 		lblCorreo = new JLabel("");
 		lblCorreo.setIcon(new ImageIcon(Pnl_Content.class.getResource("/img/correo.png")));
 		lblCorreo.setBounds(149, 0, 30, 30);
-		pnl_top_bar.add(lblCorreo);
+		pnl_content_topbar.add(lblCorreo);
 		
 		lblReloj = new JLabel("00:00:00 PM");
 		lblReloj.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReloj.setFont(new Font("Courier New", Font.BOLD, 16));
 		lblReloj.setForeground(SystemColor.menu);
-		lblReloj.setBounds(727, 0, 143, 30);
-		pnl_top_bar.add(lblReloj);
+		lblReloj.setBounds(707, 0, 163, 30);
+		pnl_content_topbar.add(lblReloj);
 		
 		
 		// EL PANEL VENTA INICIA ACTIVADO POR DEFECTO
@@ -492,7 +492,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	}
 	
 	public void fechaActual() {
-		Date fecha=new Date();
+		Date fecha = new Date();
 		
 		DateFormat df6 =  DateFormat.getDateInstance(DateFormat.FULL);
 		lblFecha.setText("Fecha : " + df6.format(fecha));
@@ -500,7 +500,7 @@ public class Pnl_Content extends JPanel implements MouseListener {
 	}
 	
 	public static void MostrarEnPanelContentBody(JPanel p){
-		p.setSize(1100,700);
+		p.setSize(870,670);
 		p.setLocation(0, 0);
 		pnl_content_body.removeAll();
 		pnl_content_body.setLayout(null);

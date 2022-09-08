@@ -7,7 +7,7 @@ import entidad.CalzadoReporte;
 
 public interface CalzadoInterfaceDao {
 
-	public ArrayList<CalzadoReporte> listar();
+	public ArrayList<CalzadoReporte> listarModificado();
 	
 	public String generarCodigo();
 	
@@ -16,22 +16,22 @@ public interface CalzadoInterfaceDao {
 	public int actualizar(Calzado c);
 	
 	
-	public ArrayList<Calzado> buscarOriginalPorCodigo(String valor);
+	public ArrayList<Calzado> buscarOrgCodigoIxt(String valor);
 	
-	public ArrayList<CalzadoReporte> buscarPorCodigo(String valor);
+	public CalzadoReporte buscarModCodigoExt(String valor);
 	
-	public CalzadoReporte buscarPorCodigoExacto(String valor);
+	public ArrayList<CalzadoReporte> buscarModCodigoIxt(String valor);
 	
 	
-	public ArrayList<CalzadoReporte> buscarPorModelo(String valor);
+	public ArrayList<CalzadoReporte> buscarModModeloIxt(String valor);
 	
-	public ArrayList<CalzadoReporte> buscarPorCategoria(String valor);
+	public ArrayList<CalzadoReporte> buscarModCategoriaIxt(String valor);
 	
-	public ArrayList<CalzadoReporte> buscarPorMarca(String valor);
+	public ArrayList<CalzadoReporte> buscarModMarcaIxt(String valor);
 	
-	public ArrayList<CalzadoReporte> buscarPorTalla(int valor);
+	public ArrayList<CalzadoReporte> buscarModTallaIxt(int valor);
 	
-	public ArrayList<CalzadoReporte> buscarPorColor(String valor);
+	public ArrayList<CalzadoReporte> buscarModColorIxt(String valor);
 	
 	
 	public int exportarTXT(ArrayList<CalzadoReporte> calzados);

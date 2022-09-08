@@ -1,7 +1,7 @@
 # Sistema de venta de calzados
-Sistema de venta de calzados en Java con Eclipse y MySQL como motor de base de datos.
+Sistema de venta de calzados desarrollado con Java, Eclipse y MySQL como motor de base de datos.
 
-## 1st version (GUI)
+## Primer avance (GUI)
 Se realizó:
 - La estructura de paneles del sistema.
 - Eleccion de la fuente de texto y colores.
@@ -13,7 +13,7 @@ Se realizó:
 | ------------- |:-------------:| :-----:|
 | ![][1st_img_1] | ![][1st_img_2] | ![][1st_img_3] |
 
-## 2nd version
+## Segundo Avance
 
 Se desarrollo el mantenimiento Empleado, el cual posee las siguientes funciones:
 - Permite añadir un nuevo empleado, donde el sistema autogenera un código de identificacion asi como un usuario y contraseña, estos ultimos en funcion de sus datos personales.
@@ -28,7 +28,7 @@ para esta segunda version se realizo tambien:
 | ------------- |:-------------:|:-------------:|:-------------:|
 | ![][2nd_img_1] | ![][2nd_img_2] | ![][2nd_img_3] | ![][2nd_img_4] |
 
-## 3rd version
+## Tercer Avance
 Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del mantenimiento Empleado como, los reportes y los codigos autogenerados, ademas :
 - Se incluyo dentro de este, otros mantenimientos que eran necesarios, esto con el fin de agilizar los registros de los calzados sin tener que entrar a otras ventanas para hacer esto.
 - Se añadio la opcion de transferir desde el panel Modelo, el nombre, para facilitar el registro de los calzados.
@@ -40,7 +40,7 @@ Se desarrollo el mantenimiento Calzado con muchas de las caracteristicas del man
 | ![][3rd_img_1] | ![][3rd_img_2] |
 
 
-## 4th version
+## Cuarto Avance
 - Se modificó los mantenimientos anterior para mejorar su rapidez a la hora de mostrar las listas.
 - Se añadio un Reloj para el sistema con Thread.
 - Se creo el Panel Venta que permite registrar una venta y generar el comprobante.
@@ -61,22 +61,42 @@ Problemas solucionados:
 | ![][4rd_img_1] | ![][4rd_img_2] | ![][4rd_img_3] | ![][4rd_img_4] |
 | ![][4rd_img_5] | ![][4rd_img_6] | ![][4rd_img_7] | |
 
+## Quinto y ultimo Avance
+- Se modificó el código, tanto del sistema como de la Base de Datos para que estos sean más claros y entendible en su lectura.
+- Se creo una ultima animación que genera un movimiento circular continuo de un componente. Esto se realizó con Thread y la clase Math.
+- Se agregó un pequeño archivo de texto a este repositorio que contiene notas, observaciones, datos, comentarios, problemas y soluciones, que fui encontrando y apuntando a lo largo de todo el desarrollo de este proyecto, el archivo se encuentra dentro de la carpeta "extra".
+
+## Imagenes Extras
+
+![][Extra_BD_shoesformen]
+
+
+| 1 Animacion_Circular______________________ | 2 | 3 Datos_extras |
+| ------------- |:-------------:|:-------------:|
+| ![][Extra_animacion_circular] | ![][Extra_distribucion_paneles] | ![][Extra_datos] |
+
 ---
 
 ### Herramientas utilizadas:
-- **Eclipse** como IDE principal para el desarrollo del sistema.
+- **JDK 8**
+- **Eclipse** como IDE principal para el desarrollo del sistema (version: 2022-06 R).
 - **MySQL** como motor de la base de datos.
-- **JasperSoft Studio** para la creacion de plantillas para los reportes en PDF.
-- **Corel Draw** para la creacion de iconos.
-- **Visual Studio Code** para la edicion de este README.md.
+- **JasperSoft Studio** para la creacion de plantillas necesarios para los reportes en PDF.
+- **Corel Draw** para la creación y modificación de iconos.
+- **Visual Studio Code** para la edición de este README.md.
 - **Git Bash** para subir y actualizar este repositorio.
 
 
+### Nota:
+- Se usaron iconos de <https://fontawesome.com/>, y para los iconos creados se tomo como referencia diseños de internet.
 
 ---
 
-### Nota:
-- Se usaron iconos de <https://fontawesome.com/>, y para los iconos creados se tomo como referencia diseños de internet.
+
+
+## Apreciación:
+El proyecto lo inicie teniendo en mente crear un sistema de escritorio pequeño pero completo, y en el proceso practicar lo que vimos el primer año de la carrera pero tambien aprender nuevas cosas. Durante el desarrollo surgian ideas de implementar ciertas funciones que aunque no eran estrictamente necesarias para que el sistema funcione mejoraban la apariencia o rapidez de interacción con el sistema, debido a ello el desarrollo se extendio mucho más de lo que pensé y por las clases tuve que deterlo varias veces. Aunque el sistema no fue concluido disfrute mucho el proceso del mismo y creo que el objetivo principal se cumplió.
+
 
 
 [1st_img_1]: ./screenshot/version_01_01.png
@@ -98,3 +118,8 @@ Problemas solucionados:
 [4rd_img_5]: ./screenshot/version_04_05.png
 [4rd_img_6]: ./screenshot/version_04_06.png
 [4rd_img_7]: ./screenshot/version_04_07.png
+
+[Extra_animacion_circular]: ./screenshot/Extra_animacion_circular.gif
+[Extra_datos]: ./screenshot/Extra_datos.png
+[Extra_distribucion_paneles]: ./screenshot/Extra_distribucion_paneles.png
+[Extra_BD_shoesformen]: ./screenshot/Extra_BD_shoesformen.png

@@ -5,6 +5,9 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
+
+import hilos.Animacion_Marea;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 
@@ -55,5 +58,7 @@ public class Pnl_Access extends JPanel {
 		pnl_access_main.repaint();
 		
 	}
+	
+
 	
 }

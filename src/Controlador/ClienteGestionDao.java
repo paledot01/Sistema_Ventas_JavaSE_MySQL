@@ -2,15 +2,13 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import entidad.CalzadoReporte;
 import entidad.Cliente;
-import entidad.Empleado;
 import interfaces.ClienteInterfaceDao;
 import utils.ConnectionMySQL_8;
 
@@ -18,7 +16,7 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Cliente> lista;
@@ -26,29 +24,29 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_cliente()}";
+	final String GETALL_ORG = "{call pa_listar_cliente_original()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_cliente()}";
 	final String INSERT = "{call pa_insertar_cliente(?,?,?,?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_cliente(?,?,?,?,?,?,?,?)}";
 	//final String DELETE = "{call pa_eliminar_empleado(?)}";
 	
-	final String SEARCHCODE = "{call pa_buscar_cliente_por_codigo(?)}";
-	final String SEARCHNAME = "{call pa_buscar_cliente_por_nombre_apellido(?)}";
-	final String SEARCHDNI = "{call pa_buscar_cliente_por_dni(?)}";
-	final String SEARCH_DNI_EXACT = "{call pa_buscar_cliente_por_dni_exacto(?)}";
-	final String SEARCHDISTRITO = "{call pa_buscar_cliente_por_distrito(?)}";
-
+	final String SEARCH_ORG_CODE_IXT = "{call pa_buscar_cliente_original_codigo_ixt(?)}";
+	final String SEARCH_ORG_NAME_IXT = "{call pa_buscar_cliente_original_nombreapellido_ixt(?)}";
+	final String SEARCH_ORG_DNI_IXT = "{call pa_buscar_cliente_original_dni_ixt(?)}";
+	final String SEARCH_ORG_DNI_EXT = "{call pa_buscar_cliente_original_dni_ext(?)}";
+	final String SEARCH_MOD_DISTRITO_IXT = "{call pa_buscar_cliente_modificado_distrito_ixt(?)}";
+	
 	
 	
 	@Override
-	public ArrayList<Cliente> listar() {
+	public ArrayList<Cliente> listarOriginal() {
 		
 		lista = new ArrayList<Cliente>();
 		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -81,6 +79,8 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
 	public String generarCodigo() {
 
@@ -111,6 +111,8 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
 	public int registrar(Cliente c) {
 		
@@ -146,6 +148,8 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
 	public int actualizar(Cliente c) {
 
@@ -182,14 +186,16 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
-	public Cliente buscarPorCodigo(String codigo) {
+	public Cliente buscarOrgCodigoIxt(String codigo) { // ACA NO ESTABIEN PORQUE EL STORE PROCEDURE DEVUELVE UNA LISTA, LO ARREGLE OBTENIENDO SOLO LA PRIMERA DE ELLAS PERO DEBE CORREGIRSE DESDE LA BD
 		
 		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHCODE);
+			cs = cn.prepareCall(SEARCH_ORG_CODE_IXT);
 			cs.setString(1, codigo);
 			
 			rs = cs.executeQuery();
@@ -225,14 +231,16 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
-	public ArrayList<Cliente> buscarPorNombre(String valor) {
+	public ArrayList<Cliente> buscarOrgNombreIxt(String valor) {
 
 		lista = new ArrayList<Cliente>();
 		Cliente obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHNAME);
+			cs = cn.prepareCall(SEARCH_ORG_NAME_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -267,15 +275,17 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
-	public ArrayList<Cliente> buscarPorDni(String valor) {
+	public ArrayList<Cliente> buscarOrgDniIxt(String valor) {
 
 		lista = new ArrayList<Cliente>();
 		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHDNI);
+			cs = cn.prepareCall(SEARCH_ORG_DNI_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -311,14 +321,15 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 	}
 	
 	
+	
 	@Override
-	public Cliente buscarPorDniExacto(String valor) {
+	public Cliente buscarOrgDniExt(String valor) {
 		
 		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_DNI_EXACT);
+			cs = cn.prepareCall(SEARCH_ORG_DNI_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -353,16 +364,17 @@ public class ClienteGestionDao implements ClienteInterfaceDao{
 		return obj;
 	}
 	
+	
 
 	@Override
-	public ArrayList<Cliente> buscarPorDistrito(String valor) {
+	public ArrayList<Cliente> buscarModDistritoIxt(String valor) {
 
 		lista = new ArrayList<Cliente>();
 		Cliente obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHDISTRITO);
+			cs = cn.prepareCall(SEARCH_MOD_DISTRITO_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();

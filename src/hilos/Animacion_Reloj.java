@@ -1,5 +1,6 @@
 package hilos;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,8 +16,14 @@ public class Animacion_Reloj extends Thread{
 			
 			Date fecha = new Date();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a"); // obtenemos la hora de la fecha
-			Pnl_Content.lblReloj.setText(sdf.format(fecha));
+			// modificamos el simbolo am y pm
+			DateFormatSymbols symbols = new DateFormatSymbols();
+			 String[] modifiedAmPm = {"AM", "PM"};
+			 symbols.setAmPmStrings(modifiedAmPm);
+			
+			// cambiamos el formato de la fecha y hora y agregamos el simbolo am y pm creado
+			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a", symbols); // obtenemos la hora de la fecha
+			Pnl_Content.lblReloj.setText(sdf.format(fecha).toUpperCase());
 			
 			try {
 				Thread.sleep(1000);

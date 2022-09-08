@@ -35,13 +35,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ComponentEvent;
 
 public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener, MouseListener, KeyListener, ComponentListener {
-	private JPanel pnl_content_calzado_modelo;
+	private JPanel pnl_modelo;
 	private JTable tblModelo;
 	private JScrollPane scrollPane;
 	private JPanel panel;
@@ -77,15 +75,15 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	public Pnl_Content_Calzado_Modelo() {
 		setLayout(null);
 		
-		pnl_content_calzado_modelo = new JPanel();
-		pnl_content_calzado_modelo.setBorder(new LineBorder(new Color(95, 103, 112), 2));
-		pnl_content_calzado_modelo.setBounds(0, 0, 500, 304);
-		add(pnl_content_calzado_modelo);
-		pnl_content_calzado_modelo.setLayout(null);
+		pnl_modelo = new JPanel();
+		pnl_modelo.setBorder(new LineBorder(new Color(95, 103, 112), 2));
+		pnl_modelo.setBounds(0, 0, 500, 304);
+		add(pnl_modelo);
+		pnl_modelo.setLayout(null);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 144, 480, 149);
-		pnl_content_calzado_modelo.add(scrollPane);
+		pnl_modelo.add(scrollPane);
 		
 		/** ------------------------------------------------------------- **/
 		tblModelo = new JTable();
@@ -118,7 +116,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		panel.setLayout(null);
 		panel.setBackground(new Color(220, 220, 220));
 		panel.setBounds(10, 11, 165, 36);
-		pnl_content_calzado_modelo.add(panel);
+		pnl_modelo.add(panel);
 		
 		txtCodigo = new JTextField();
 		txtCodigo.setText("-----");
@@ -139,31 +137,31 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre.setEnabled(false);
 		lblNombre.setBounds(10, 59, 55, 22);
-		pnl_content_calzado_modelo.add(lblNombre);
+		pnl_modelo.add(lblNombre);
 		
 		lblCategoria = new JLabel("Categoria *");
 		lblCategoria.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblCategoria.setEnabled(false);
 		lblCategoria.setBounds(10, 85, 62, 22);
-		pnl_content_calzado_modelo.add(lblCategoria);
+		pnl_modelo.add(lblCategoria);
 		
 		lblMarca = new JLabel("Marca *");
 		lblMarca.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblMarca.setEnabled(false);
 		lblMarca.setBounds(10, 111, 48, 22);
-		pnl_content_calzado_modelo.add(lblMarca);
+		pnl_modelo.add(lblMarca);
 		
 		lblPv = new JLabel("P.V");
 		lblPv.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblPv.setEnabled(false);
 		lblPv.setBounds(217, 85, 27, 22);
-		pnl_content_calzado_modelo.add(lblPv);
+		pnl_modelo.add(lblPv);
 		
 		lblPc = new JLabel("P.C");
 		lblPc.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblPc.setEnabled(false);
 		lblPc.setBounds(217, 59, 27, 22);
-		pnl_content_calzado_modelo.add(lblPc);
+		pnl_modelo.add(lblPc);
 		
 		txtBuscar = new JTextField();
 		txtBuscar.addKeyListener(this);
@@ -172,7 +170,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		txtBuscar.setDisabledTextColor(Color.GRAY);
 		txtBuscar.setColumns(10);
 		txtBuscar.setBounds(254, 15, 196, 22);
-		pnl_content_calzado_modelo.add(txtBuscar);
+		pnl_modelo.add(txtBuscar);
 		
 		txtNombre = new JTextField();
 		txtNombre.setEnabled(false);
@@ -181,7 +179,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		txtNombre.setDisabledTextColor(Color.GRAY);
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(82, 59, 125, 22);
-		pnl_content_calzado_modelo.add(txtNombre);
+		pnl_modelo.add(txtNombre);
 		
 		txtPv = new JTextField();
 		txtPv.setEnabled(false);
@@ -190,7 +188,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		txtPv.setDisabledTextColor(Color.GRAY);
 		txtPv.setColumns(10);
 		txtPv.setBounds(254, 85, 69, 22);
-		pnl_content_calzado_modelo.add(txtPv);
+		pnl_modelo.add(txtPv);
 		
 		txtPc = new JTextField();
 		txtPc.setEnabled(false);
@@ -199,38 +197,38 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		txtPc.setDisabledTextColor(Color.GRAY);
 		txtPc.setColumns(10);
 		txtPc.setBounds(254, 59, 69, 22);
-		pnl_content_calzado_modelo.add(txtPc);
+		pnl_modelo.add(txtPc);
 		
 		cboMarca = new JComboBox();
 		cboMarca.setEnabled(false);
 		cboMarca.setFont(new Font("Lucida Console", Font.PLAIN, 13));
 		cboMarca.setBounds(82, 111, 125, 22);
-		pnl_content_calzado_modelo.add(cboMarca);
+		pnl_modelo.add(cboMarca);
 		
 		cboCategoria = new JComboBox();
 		cboCategoria.setEnabled(false);
 		cboCategoria.setFont(new Font("Lucida Console", Font.PLAIN, 13));
 		cboCategoria.setBounds(82, 85, 125, 22);
-		pnl_content_calzado_modelo.add(cboCategoria);
+		pnl_modelo.add(cboCategoria);
 		
 		btnBuscar = new JButton("");
 		btnBuscar.addActionListener(this);
 		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Calzado_Modelo.class.getResource("/img/buscar_30px.png")));
 		btnBuscar.setBounds(460, 11, 30, 30);
-		pnl_content_calzado_modelo.add(btnBuscar);
+		pnl_modelo.add(btnBuscar);
 		
 		btnNuevo = new JButton("");
 		btnNuevo.addActionListener(this);
 		btnNuevo.setIcon(new ImageIcon(Pnl_Content_Calzado_Modelo.class.getResource("/img/nuevo.png")));
 		btnNuevo.setBounds(420, 62, 30, 30);
-		pnl_content_calzado_modelo.add(btnNuevo);
+		pnl_modelo.add(btnNuevo);
 		
 		btnGuardar = new JButton("");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setEnabled(false);
 		btnGuardar.setIcon(new ImageIcon(Pnl_Content_Calzado_Modelo.class.getResource("/img/guardar.png")));
 		btnGuardar.setBounds(460, 62, 30, 30);
-		pnl_content_calzado_modelo.add(btnGuardar);
+		pnl_modelo.add(btnGuardar);
 		
 		btnCancelar = new JButton("");
 		btnCancelar.addActionListener(this);
@@ -243,17 +241,17 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		btnEnviar.addActionListener(this);
 		btnEnviar.setVisible(false);
 		btnEnviar.setBounds(420, 103, 30, 30);
-		pnl_content_calzado_modelo.add(btnEnviar);
+		pnl_modelo.add(btnEnviar);
 		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Modelo.class.getResource("/img/cancelar.png")));
 		btnCancelar.setBounds(420, 103, 30, 30);
-		pnl_content_calzado_modelo.add(btnCancelar);
+		pnl_modelo.add(btnCancelar);
 		
 		btnModificar = new JButton("");
 		btnModificar.addActionListener(this);
 		btnModificar.setEnabled(false);
 		btnModificar.setIcon(new ImageIcon(Pnl_Content_Calzado_Modelo.class.getResource("/img/modificar.png")));
 		btnModificar.setBounds(460, 103, 30, 30);
-		pnl_content_calzado_modelo.add(btnModificar);
+		pnl_modelo.add(btnModificar);
 		
 		
 		mostrarDataTabla(); // --> Muestra los datos de la tabla modelo
@@ -263,8 +261,8 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	
 	public void listarDatosCbo(){
 		
-		ArrayList<Categoria> listCategoria = gCategoria.listar();
-		ArrayList<Marca> listMarca = gMarca.listar();
+		ArrayList<Categoria> listCategoria = gCategoria.listarOriginal();
+		ArrayList<Marca> listMarca = gMarca.listarOriginal();
 		
 		for(Categoria cat : listCategoria){
 			cboCategoria.addItem(cat.getDescripcion());
@@ -279,7 +277,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<ModeloReporte> data = gModelo.listar();
+		ArrayList<ModeloReporte> data = gModelo.listarModificado();
 		
 		for( int i = data.size()-1 ; i>=0 ; i-- ){
 			
@@ -385,12 +383,12 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 
 		// obtiene el codigo Categoria
 		String codCategoria = null;
-		ArrayList<Categoria> listCat = gCategoria.buscar(cboCategoria.getSelectedItem().toString()) ;
+		ArrayList<Categoria> listCat = gCategoria.buscarOrgAllIxt(cboCategoria.getSelectedItem().toString()) ;
 		codCategoria = listCat.get(0).getCod_categoria();
 
 		// obtiene el codigo Marca
 		String codMarca = null;
-		ArrayList<Marca> listMar = gMarca.buscar(cboMarca.getSelectedItem().toString()) ;
+		ArrayList<Marca> listMar = gMarca.buscarOrgAllIxt(cboMarca.getSelectedItem().toString()) ;
 		codMarca = listMar.get(0).getCod_marca();
 		
 		// -->
@@ -419,7 +417,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		ModeloReporte mod = new ModeloReporte();
 		String codigoFila = tblModelo.getValueAt(posicionFila, 0).toString();
 		
-		mod = gModelo.buscar(codigoFila).get(0);
+		mod = gModelo.buscarModAllIxt(codigoFila).get(0);
 		
 		txtCodigo.setText( mod.getCod_modelo());
 		txtNombre.setText( mod.getNombre_modelo() );
@@ -439,12 +437,12 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		
 		// obtiene el codigo Categoria
 		String codCategoria = null;
-		ArrayList<Categoria> listCat = gCategoria.buscar(cboCategoria.getSelectedItem().toString()) ;
+		ArrayList<Categoria> listCat = gCategoria.buscarOrgAllIxt(cboCategoria.getSelectedItem().toString()) ;
 		codCategoria = listCat.get(0).getCod_categoria();
 
 		// obtiene el codigo Marca
 		String codMarca = null;
-		ArrayList<Marca> listMar = gMarca.buscar(cboMarca.getSelectedItem().toString()) ;
+		ArrayList<Marca> listMar = gMarca.buscarOrgAllIxt(cboMarca.getSelectedItem().toString()) ;
 		codMarca = listMar.get(0).getCod_marca();
 		
 		if(nombre.equals("") || pc == -1 || pv == -1){
@@ -474,7 +472,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		
 		ArrayList<ModeloReporte> data = new ArrayList<ModeloReporte>();
 		
-		data = gModelo.buscar(valor);
+		data = gModelo.buscarModAllIxt(valor);
 		
 		return data;
 		
@@ -530,7 +528,7 @@ public class Pnl_Content_Calzado_Modelo extends JPanel implements ActionListener
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			ArrayList<ModeloReporte> listModelos = gModelo.buscar(cod);
+			ArrayList<ModeloReporte> listModelos = gModelo.buscarModAllIxt(cod);
 			
 			if( listModelos.size() != 1 ){
 				registrarModelo();

@@ -11,15 +11,15 @@ public interface ModeloInterfaceDao {
 	
 	public ArrayList<Modelo> listarOriginal();
 	
-	public ArrayList<ModeloReporte> listar();
+	public ArrayList<ModeloReporte> listarModificado();
 	
 	public int registrar (Modelo m);
 	
 	public int actualizar (Modelo m);
 	
-	public ArrayList<ModeloReporte> buscar (String valor); // busca por codigo, nombre, categoria o marca, devolviendo todos los resultados.
+	public ArrayList<ModeloReporte> buscarModAllIxt (String valor); // busca por codigo, nombre, categoria o marca, devolviendo todos los resultados.
 	
-	public Modelo buscarPorNombre (String nombre); // busca por nombre y devuelve el modelo, es una busqueda simple
+	public Modelo buscarOrgNombreExt (String nombre); // busca por nombre y devuelve el modelo, es una busqueda simple
 	
 //	public Modelo buscar (String valor); // busca por codigo o descripcion.
 	

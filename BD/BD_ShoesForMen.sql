@@ -117,14 +117,14 @@ select * from estado;
 ############################################### DISTRITO ################################################
 
 DELIMITER // 
-create procedure pa_listar_distrito()
+create procedure pa_listar_distrito_original()
 begin
 	select * from distrito;
 end;
 //DELIMITER ;
 
 DELIMITER //
-create procedure pa_buscar_distrito(
+create procedure pa_buscar_distrito_original_all_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -142,14 +142,14 @@ insert distrito (cod_distrito,descripcion) value ('DI006','Independencia');
 ############################################### CARGO ################################################
 
 DELIMITER // 
-create procedure pa_listar_cargo()
+create procedure pa_listar_cargo_original()
 begin
 	select * from cargo;
 end;
 //DELIMITER ;
 
 DELIMITER //
-create procedure pa_buscar_cargo(
+create procedure pa_buscar_cargo_original_all_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -182,9 +182,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_listar_empleado;
+drop procedure if exists pa_listar_empleado_modificado;
 DELIMITER // 
-create procedure pa_listar_empleado()
+create procedure pa_listar_empleado_modificado()
 begin
 	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
@@ -267,9 +267,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_original_por_codigo;
+drop procedure if exists pa_buscar_empleado_original_codigo_ixt;
 DELIMITER //
-create procedure pa_buscar_empleado_original_por_codigo(
+create procedure pa_buscar_empleado_original_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -278,9 +278,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_por_codigo_exacto;
+drop procedure if exists pa_buscar_empleado_modificado_codigo_ext;
 DELIMITER //
-create procedure pa_buscar_empleado_por_codigo_exacto(
+create procedure pa_buscar_empleado_modificado_codigo_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -293,9 +293,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_por_codigo;
+drop procedure if exists pa_buscar_empleado_modificado_codigo_ixt;
 DELIMITER //
-create procedure pa_buscar_empleado_por_codigo(
+create procedure pa_buscar_empleado_modificado_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -309,9 +309,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_por_nombre_apellido;
+drop procedure if exists pa_buscar_empleado_modificado_nombreapellido_ixt;
 DELIMITER //
-create procedure pa_buscar_empleado_por_nombre_apellido(
+create procedure pa_buscar_empleado_modificado_nombreapellido_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -326,9 +326,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_por_dni;
+drop procedure if exists pa_buscar_empleado_modificado_dni_ixt;
 DELIMITER //
-create procedure pa_buscar_empleado_por_dni(
+create procedure pa_buscar_empleado_modificado_dni_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -342,9 +342,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_empleado_por_distrito;
+drop procedure if exists pa_buscar_empleado_modificado_distrito_ixt;
 DELIMITER //
-create procedure pa_buscar_empleado_por_distrito(
+create procedure pa_buscar_empleado_modificado_distrito_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -362,7 +362,7 @@ end;
 # la creacion de distrito.
 # call pa_buscar_empleado_por_distrito('e');
 
-call pa_insertar_empleado('EM001','KEVIN','BASILIO','44455500','JR. 2 DE MAYO #43','999333555','paledot01@gmail.com','DI004','CAR01','','',1);
+call pa_insertar_empleado('EM001','KEVIN','BAS','44455500','JR. 2 DE MAYO #43','999333555','paledot01@gmail.com','DI004','CAR01','admin','admin',1);
 call pa_insertar_empleado('EM002','ANGELICA','ANDRADE CERNA','40138356','JR.M ANUEL PRADO #250','970315487','ANDRADE@gmail.com','DI005','CAR02','angelicaa','40138356',0);
 call pa_insertar_empleado('EM003','ROSAURA','TARAZONA RIVAS','40457140','JR. LOS ROSALES #350', '993315487','TARANOZA@gmail.com','DI002','CAR02','rosaurat','40457140',1);
 call pa_insertar_empleado('EM004','RUTH','TARDIO HUAMAN','40198740','AV. JOSE BALTA #170', '990115487','TARDIO@gmail.com','DI004','CAR02','rutht','40198740',0);
@@ -394,7 +394,7 @@ call pa_listar_empleado_original();
 ############################################### CLIENTE ################################################
 
 DELIMITER // 
-create procedure pa_listar_cliente()
+create procedure pa_listar_cliente_original()
 begin
 	select * from cliente;
 end;
@@ -448,8 +448,9 @@ begin
 end;
 //DELIMITER ;
 
+
 DELIMITER //
-create procedure pa_buscar_cliente_por_codigo(
+create procedure pa_buscar_cliente_original_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -458,7 +459,7 @@ end;
 //DELIMITER ;
 
 DELIMITER //
-create procedure pa_buscar_cliente_por_nombre_apellido(
+create procedure pa_buscar_cliente_original_nombreapellido_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -466,8 +467,9 @@ begin
 end;
 //DELIMITER ;
 
+
 DELIMITER //
-create procedure pa_buscar_cliente_por_dni(
+create procedure pa_buscar_cliente_original_dni_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -475,9 +477,10 @@ begin
 end;
 //DELIMITER ;
 
-drop procedure if exists pa_buscar_cliente_por_dni_exacto;
+
+drop procedure if exists pa_buscar_cliente_original_dni_ext;
 DELIMITER //
-create procedure pa_buscar_cliente_por_dni_exacto(
+create procedure pa_buscar_cliente_original_dni_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -487,7 +490,7 @@ end;
 
 
 DELIMITER //
-create procedure pa_buscar_cliente_por_distrito(
+create procedure pa_buscar_cliente_modificado_distrito_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -497,18 +500,19 @@ begin
 end;
 //DELIMITER ;
 
+
 call pa_insertar_cliente('CL10001','ANETH LUANA','TINEO URIBE','32425643','AV. LOS GIRASOLES # 1800','990990230','LUANITAHERMOSA@GMAIL.COM','DI002');
 call pa_insertar_cliente('CL10002','JOSE LUIS','TARAZONA ZELA','78395021','AV. LAS FLORES # 1800',null,'JOSESITO@GMAIL.COM','DI003');
 call pa_insertar_cliente('CL10003','ANA MARIA','VILLAVICENCIO CASTRO','48502717','AV. LAS FLORES # 2560','989434228','ANITAMARIA@GMAIL.COM','DI005');
 call pa_insertar_cliente('CL10004','JOSE ANTONIO','ENCISO NOLASCO','86294711','AV. PROCERES DE LA INDEPENDENCIA # 5000','987845874','JOSANTONIO@GMAIL.COM','DI006');
 call pa_insertar_cliente('CL10005','ALEJANDRA','CHUCO HUERTA','97537923','AV. GRAN CHIMU # 3500','963245874','ALEJANDRITA5245@HOTMAIL.COM','DI005');
 
-call pa_listar_cliente;
+call pa_listar_cliente_original;
 
 ############################################### MARCA ################################################
 
 DELIMITER // 
-create procedure pa_listar_marca()
+create procedure pa_listar_marca_original()
 begin
 	select * from marca;
 end;
@@ -547,7 +551,7 @@ end;
 -- //DELIMITER ;
 
 DELIMITER //
-create procedure pa_buscar_marca(
+create procedure pa_buscar_marca_original_all_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -566,12 +570,12 @@ call pa_insertar_marca('MA001','Calimod');
 call pa_insertar_marca('MA002','Basement');
 call pa_insertar_marca('MA003','Call It Spring');
 
-call pa_listar_marca();
+call pa_listar_marca_original();
 
 ############################################### CATEGORIA ################################################
 
 DELIMITER // 
-create procedure pa_listar_categoria()
+create procedure pa_listar_categoria_original()
 begin
 	select * from categoria;
 end;
@@ -600,8 +604,9 @@ begin
 end;
 //DELIMITER ;
 
+
 DELIMITER //
-create procedure pa_buscar_categoria(
+create procedure pa_buscar_categoria_original_all_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -619,7 +624,7 @@ end;
 call pa_insertar_categoria('CAT01','Casual');
 call pa_insertar_categoria('CAT02','Vestir');
 
-call pa_listar_categoria();
+call pa_listar_categoria_original();
 
 ############################################### MODELO ################################################
 
@@ -632,9 +637,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_listar_modelo;
+drop procedure if exists pa_listar_modelo_modificado;
 DELIMITER //
-create procedure pa_listar_modelo()
+create procedure pa_listar_modelo_modificado()
 begin
 	select md.cod_modelo, md.nombre_modelo, mr.nombre_marca, ct.descripcion, md.precio_compra, md.precio_venta from modelo as md
     inner join marca as mr on md.cod_marca = mr.cod_marca
@@ -679,9 +684,10 @@ begin
 end;
 //DELIMITER ;
 
-drop procedure if exists pa_buscar_modelo_por_nombre_simple;
+
+drop procedure if exists pa_buscar_modelo_original_nombre_ext;
 DELIMITER //
-create procedure pa_buscar_modelo_por_nombre_simple(
+create procedure pa_buscar_modelo_original_nombre_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -689,10 +695,11 @@ begin
 end;
 //DELIMITER ;
 
+
 -- Busca el modelo por nombre_modelo, cod_modelo, nombre_marca o descripcion de la categoria
-drop procedure if exists pa_buscar_modelo;
+drop procedure if exists pa_buscar_modelo_modificado_all_ixt;
 DELIMITER //
-create procedure pa_buscar_modelo(
+create procedure pa_buscar_modelo_modificado_all_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -728,7 +735,7 @@ call pa_insertar_modelo('M1007','FRESIEN-EMB009',49.00,99.00,'MA003','CAT01');
 call pa_insertar_modelo('M1008','ZALITH001',78.00,149.00,'MA001','CAT02');
 call pa_insertar_modelo('M1009','IMBROS410',67.00,111.00,'MA003','CAT01');
 
-call pa_listar_modelo();
+call pa_listar_modelo_original();
 
 
 
@@ -743,9 +750,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_listar_calzado;
+drop procedure if exists pa_listar_calzado_modificado;
 DELIMITER //
-create procedure pa_listar_calzado()
+create procedure pa_listar_calzado_modificado()
 begin
 	select cz.cod_calzado , md.nombre_modelo , mr.nombre_marca , ct.descripcion , cz.talla , cz.color , md.precio_compra , md.precio_venta , cz.stock from calzado as cz 
     inner join modelo as md on cz.cod_modelo = md.cod_modelo
@@ -813,9 +820,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_original_por_codigo;
+drop procedure if exists pa_buscar_calzado_original_codigo_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_original_por_codigo(
+create procedure pa_buscar_calzado_original_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -824,9 +831,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_codigo_exacto;
+drop procedure if exists pa_buscar_calzado_modificado_codigo_ext;
 DELIMITER //
-create procedure pa_buscar_calzado_por_codigo_exacto(
+create procedure pa_buscar_calzado_modificado_codigo_ext(
 	in p_valor varchar(50)
 )
 begin
@@ -839,9 +846,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_codigo;
+drop procedure if exists pa_buscar_calzado_modificado_codigo_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_codigo(
+create procedure pa_buscar_calzado_modificado_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -854,9 +861,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_modelo;
+drop procedure if exists pa_buscar_calzado_modificado_modelo_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_modelo(
+create procedure pa_buscar_calzado_modificado_modelo_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -869,9 +876,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_categoria;
+drop procedure if exists pa_buscar_calzado_modificado_categoria_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_categoria(
+create procedure pa_buscar_calzado_modificado_categoria_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -885,9 +892,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_marca;
+drop procedure if exists pa_buscar_calzado_modificado_marca_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_marca(
+create procedure pa_buscar_calzado_modificado_marca_ixt(
 	in p_valor varchar(50)
 )
 begin
@@ -901,9 +908,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_talla;
+drop procedure if exists pa_buscar_calzado_modificado_talla_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_talla(
+create procedure pa_buscar_calzado_modificado_talla_ixt(
 	in p_valor int
 )
 begin
@@ -916,9 +923,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_calzado_por_color;
+drop procedure if exists pa_buscar_calzado_modificado_color_ixt;
 DELIMITER //
-create procedure pa_buscar_calzado_por_color(
+create procedure pa_buscar_calzado_modificado_color_ixt(
 	in p_valor varchar(15)
 )
 begin
@@ -945,13 +952,13 @@ call pa_insertar_calzado('CZ10008','M1004',42,'Canela',8);
 
 call pa_insertar_calzado('CZ10009','M1006',41,'Negro',3);
 
-call pa_listar_calzado;
+call pa_listar_calzado_original;
 
 ############################################### BOLETA ################################################
 
-drop procedure if exists pa_listar_boleta;
+drop procedure if exists pa_listar_boleta_modificado;
 DELIMITER // 
-create procedure pa_listar_boleta()
+create procedure pa_listar_boleta_modificado()
 begin
 	select b.cod_boleta,date_format(b.fecha_hora_emision, "%d-%m-%Y %h:%i:%S %p") as hora,b.cod_cliente,b.cod_empleado from boleta b;
 end;
@@ -983,9 +990,9 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_boleta;
+drop procedure if exists pa_buscar_boleta_modificado_codigo_ext;
 DELIMITER //
-create procedure pa_buscar_boleta( -- busca la boleta por su codigo y nos devuelve la coleccion de todos los valores de la boleta los que se repiten y los que no.
+create procedure pa_buscar_boleta_modificado_codigo_ext( -- busca la boleta por su codigo y nos devuelve la coleccion de todos los valores de la boleta los que se repiten y los que no.
 	in p_valor varchar(50)
 )
 begin
@@ -1008,9 +1015,9 @@ end;
 
 
 
-drop procedure if exists pa_buscar_cabeza_boleta;
+drop procedure if exists pa_buscar_cabezaBoleta_modificado_codigo_ext;
 DELIMITER //
-create procedure pa_buscar_cabeza_boleta( -- busca la boleta por su codigo y nos muestra solo una fila con todos los valores que no cambian de la boleta como el cliente y el empleado
+create procedure pa_buscar_cabezaBoleta_modificado_codigo_ext( -- busca la boleta por su codigo y nos muestra solo una fila con todos los valores que no cambian de la boleta como el cliente y el empleado
 	in p_valor varchar(50)
 )
 begin
@@ -1029,9 +1036,10 @@ end;
 //DELIMITER ;
 
 
-drop procedure if exists pa_buscar_detalle_boleta;
+
+drop procedure if exists pa_buscar_detalleBoleta_modificado_codigo_ext;
 DELIMITER //
-create procedure pa_buscar_detalle_boleta( -- busca la boleta por su codigo y nos devuelve la coleccion de valores que cambian de la boleta, como los calzados que se venden
+create procedure pa_buscar_detalleBoleta_modificado_codigo_ext( -- busca la boleta por su codigo y nos devuelve la coleccion de valores que cambian de la boleta, como los calzados que se venden
 	in p_valor varchar(50)
 )
 begin
@@ -1056,12 +1064,12 @@ call pa_insertar_boleta('BL10002','CL10002','EM002');
 call pa_insertar_boleta('BL10003','CL10003','EM003');
 call pa_insertar_boleta('BL10004','CL10003','EM003');
 
-call pa_listar_boleta;
+call pa_listar_boleta_modificado;
 
 ############################################### DETALLE BOLETA ################################################
 
 DELIMITER // 
-create procedure pa_listar_detalle_boleta()
+create procedure pa_listar_detalleBoleta_original()
 begin
 	select * from detalle_boleta;
 end;
@@ -1093,7 +1101,7 @@ call pa_insertar_detalle_boleta('BL10004','CZ10005','3',330.00);
 call pa_insertar_detalle_boleta('BL10004','CZ10002','1',90.00);
 call pa_insertar_detalle_boleta('BL10004','CZ10004','2',248.00);
 
-call pa_listar_detalle_boleta;
+call pa_listar_detalleBoleta_original;
 
 -- 1 --> select timediff(now(),convert_tz(now(),@@session.time_zone,'+00:00'));
 -- 2 --> SELECT @@global.time_zone, @@session.time_zone;

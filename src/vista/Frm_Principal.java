@@ -1,6 +1,5 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,9 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.SystemColor;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -18,9 +15,7 @@ import javax.swing.UIManager;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.Closeable;
 import java.awt.Cursor;
-import javax.swing.ImageIcon;
 
 public class Frm_Principal extends JFrame implements MouseListener, MouseMotionListener {
 

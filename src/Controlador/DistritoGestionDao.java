@@ -2,7 +2,7 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class DistritoGestionDao implements DistritoInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Distrito> lista;
@@ -23,18 +23,18 @@ public class DistritoGestionDao implements DistritoInterfaceDao{
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_distrito()}";
-	final String SEARCH = "{call pa_buscar_distrito(?)}";
+	final String GETALL_ORG = "{call pa_listar_distrito_original()}";
+	final String SEARCH_ORG_ALL_EXT = "{call pa_buscar_distrito_original_all_ext(?)}";
 	
 	
 	@Override
-	public ArrayList<Distrito> listarDistrito() {
+	public ArrayList<Distrito> listarOriginal() {
 		
 		lista = new ArrayList<Distrito>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -63,11 +63,11 @@ public class DistritoGestionDao implements DistritoInterfaceDao{
 	
 	
 	@Override
-	public Distrito buscarDistrito(String valor) {
+	public Distrito buscarOrgAllExt(String valor) {
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH);
+			cs = cn.prepareCall(SEARCH_ORG_ALL_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();

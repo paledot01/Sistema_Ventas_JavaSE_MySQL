@@ -3,14 +3,13 @@ package interfaces;
 import java.util.ArrayList;
 
 import entidad.Distrito;
-import entidad.Empleado;
 
 
 public interface DistritoInterfaceDao {
 
 	
-	public ArrayList<Distrito> listarDistrito();
+	public ArrayList<Distrito> listarOriginal(); // --> lista con los atributos originales del objeto
 	
-	public Distrito buscarDistrito(String valor); // --> busca por codigo o descripcion
-	
+	public Distrito buscarOrgAllExt(String valor); // --> busca con cualquiera de todos sus atributos(codigo, descripcion), cuyo 'valor' debe ser igual al resultado (Exacto), y que devuelve un objeto con los atributos originales.
+	 
 }

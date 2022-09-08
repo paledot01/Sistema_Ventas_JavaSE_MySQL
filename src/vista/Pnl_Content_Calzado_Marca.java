@@ -29,7 +29,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener, MouseListener, KeyListener {
-	private JPanel panel;
+	private JPanel pnl_marca;
 	private JPanel panel_1;
 	private JTextField txtCodigo;
 	private JLabel label;
@@ -53,17 +53,17 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 	public Pnl_Content_Calzado_Marca() {
 		setLayout(null);
 		
-		panel = new JPanel();
-		panel.setBorder(new LineBorder( Library.Claro_2 , 2));
-		panel.setBounds(0, 0, 500, 304);
-		add(panel);
-		panel.setLayout(null);
+		pnl_marca = new JPanel();
+		pnl_marca.setBorder(new LineBorder( Library.Claro_2 , 2));
+		pnl_marca.setBounds(0, 0, 500, 304);
+		add(pnl_marca);
+		pnl_marca.setLayout(null);
 		
 		panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBackground(new Color(220, 220, 220));
 		panel_1.setBounds(10, 11, 165, 36);
-		panel.add(panel_1);
+		pnl_marca.add(panel_1);
 		
 		txtCodigo = new JTextField();
 		txtCodigo.setText("-----");
@@ -84,11 +84,11 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre.setEnabled(false);
 		lblNombre.setBounds(10, 58, 55, 22);
-		panel.add(lblNombre);
+		pnl_marca.add(lblNombre);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 134, 480, 159);
-		panel.add(scrollPane);
+		pnl_marca.add(scrollPane);
 		
 		tblMarca = new JTable();
 		tblMarca.addKeyListener(this);
@@ -117,7 +117,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		txtNombre.setDisabledTextColor(Color.GRAY);
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(82, 58, 150, 22);
-		panel.add(txtNombre);
+		pnl_marca.add(txtNombre);
 		
 		txtBuscar = new JTextField();
 		txtBuscar.addKeyListener(this);
@@ -126,40 +126,40 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		txtBuscar.setDisabledTextColor(Color.GRAY);
 		txtBuscar.setColumns(10);
 		txtBuscar.setBounds(254, 15, 196, 22);
-		panel.add(txtBuscar);
+		pnl_marca.add(txtBuscar);
 		
 		btnBuscar = new JButton("");
 		btnBuscar.addActionListener(this);
 		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/buscar_30px.png")));
 		btnBuscar.setBounds(460, 11, 30, 30);
-		panel.add(btnBuscar);
+		pnl_marca.add(btnBuscar);
 		
 		btnModificar = new JButton("");
 		btnModificar.addActionListener(this);
 		btnModificar.setEnabled(false);
 		btnModificar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/modificar.png")));
 		btnModificar.setBounds(460, 93, 30, 30);
-		panel.add(btnModificar);
+		pnl_marca.add(btnModificar);
 		
 		btnCancelar = new JButton("");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setVisible(false);
 		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/cancelar.png")));
 		btnCancelar.setBounds(10, 93, 30, 30);
-		panel.add(btnCancelar);
+		pnl_marca.add(btnCancelar);
 		
 		btnGuardar = new JButton("");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setEnabled(false);
 		btnGuardar.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/guardar.png")));
 		btnGuardar.setBounds(420, 93, 30, 30);
-		panel.add(btnGuardar);
+		pnl_marca.add(btnGuardar);
 		
 		btnNuevo = new JButton("");
 		btnNuevo.addActionListener(this);
 		btnNuevo.setIcon(new ImageIcon(Pnl_Content_Calzado_Marca.class.getResource("/img/nuevo.png")));
 		btnNuevo.setBounds(380, 93, 30, 30);
-		panel.add(btnNuevo);
+		pnl_marca.add(btnNuevo);
 
 	
 		MostrarDataTabla(); // --> Muestra los datos de la tabla Categoria
@@ -169,7 +169,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 	void MostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<Marca> data = gMarca.listar();
+		ArrayList<Marca> data = gMarca.listarOriginal();
 		
 		for( int i = data.size()-1 ; i>=0 ; i-- ){
 			
@@ -233,7 +233,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		Marca mar = new Marca();
 		String codigoFila = tblMarca.getValueAt(posicionFila, 0).toString();
 		
-		mar = gMarca.buscar(codigoFila).get(0);
+		mar = gMarca.buscarOrgAllIxt(codigoFila).get(0);
 		
 		txtCodigo.setText( mar.getCod_marca() );
 		txtNombre.setText( mar.getNombre_marca() );
@@ -280,7 +280,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		
 		ArrayList<Marca> data = new ArrayList<Marca>();
 		
-		data = gMarca.buscar(valor);
+		data = gMarca.buscarOrgAllIxt(valor);
 		
 		return data;
 		
@@ -314,7 +314,7 @@ public class Pnl_Content_Calzado_Marca extends JPanel implements ActionListener,
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			ArrayList<Marca> mar = gMarca.buscar(cod);
+			ArrayList<Marca> mar = gMarca.buscarOrgAllIxt(cod);
 			
 			if(mar.size() != 1){
 				registrarMarca();

@@ -1,0 +1,284 @@
+-- Perifericos Tecnobyte
+
+oscuro -       RGB(27, 31, 35)
+medio oscuri - RGB(38, 42, 45)
+claro -        RGB(43, 47, 51)
+mas claro -    RGB(254, 254, 254)
+
+verde - RGB(109, 179, 63)
+
+-- Calzados
+fond logo --> 
+oscuro -   RGB(45,45,45)
+gris -     RGB(230,230,230)
+
+menu = 240,240,240
+RGB(27, 31, 35) -- hover oscuro
+RGB(43, 47, 51) -- fuera oscuro
+RGB(63, 68, 73) -- dentro claro
+RGB(95,103,112) -- borde de linea
+
+RGB(40,79,83) -- verde
+23,57,92
+
+Color Jaspersoft (Header) -- RGB(247,245,245)
+
+color fond : menu
+
+
+SKU (Stock Keeping Unit - Unidad de Mantenimiento en Stock)
+
+- codigo unico que indentifica a la unidad de venta mas pequeña.
+- si existen dos productos iguales estos tendran el mismo SKU y 
+  deberan estar en el mismo lugar
+ ejem --> SAJ2J3HDIDNC3   automatico
+      --> ZAP-IBI-MAR-41  zapato marca ibiza marrones talla 41 
+			  siguiendo un sistema
+
+si tenemos 10 zapatos de la misma marca, todos compartiran el mismo
+SKU, osea este no identifica a cada par de zapato, sino a la
+unidad de venta. porlo que este codigo nos ayudará a conocer si
+tenemos disponibilidad de este producto.
+
+- es un codigo de uso estrictamente interno.
+
+el codigo de barra es basicamente lo mismo a los Sku, 
+con la diferencia que las barras se pueden usar interno y externo.
+sku solo interno.
+
+-------------------------------------------------------------------------------------------------
+
+Configuración Eclipse:
+- Windows/preference/windows Builder/Swing/Code Genereation, ahi “Field” tebe tener un check, 
+	ahora entramos a Event Handlers, ahi debe estar seleccionado Implement Listener inter.... 
+	y create stub event, debe tener un check y de la lista seleccionamos la penultima opcion 
+	“$(event_name)$(Component_name)” hora entramos a LookAndFeel que esta dentro de Layouts 
+	los cuatro opciones deben tener check aplicamos y cerramos.
+- Ortografia ( Desabilitar ) : Window / Preference / General / Editor / Text Editors / Spelling, 
+	desactivamos la casilla general “Enable spell checking” y le das “OK”.
+- Para cambiar el tamaño del código o fuente Window / Preferences / General / Appearance / 
+	Color and Fonts / Basic / Text Font.
+- Activar Java Asistente: - Windows / Preferences / Java / Editor / Content Assist / Advanced, 
+	en la segunda caja de herramientas debe estar marcado Java Proposals.
+	NUEVO(03/09/2022), en la primera caja tambien debe estar marcado Java Proposals, en la primera caja todos 
+	los que esten marcados, apareceran al principio(default) cuando apretemos Ctrl + Space, y 
+	cuando lo volvamos a apretar se mostrará los seleccionamos en la segunda caja pero de manera individual y en 
+	el orden elegido de arriba hacia abajo.
+--------------------------------------------------------------------------------------------------
+
+System.exit(0); // libera recursos y cierra la aplicacion
+JFrame.dispose(); // libera recursos y cierra la ventana actual (JFrame)
+
+btnCancelar.setFocusable(false); // el boton se vuelve infocusiable
+btnCancelar.setRolloverEnabled(false); // desabilita el efecto rollver del boton
+
+
+- bloque estatico --> se utiliza para inicializar variables estaticas.
+
+- String hereda de Object, para convertir String to Object:
+
+	String s="hello";  
+	Object obj=s;  
+	System.out.println(obj);  
+	output --> hello
+
+- estado Empleado 
+	0 -> inactivo
+	1 -> activo
+
+- solucion del panel strip, con opaque.
+
+- zorder par componentes (no contenedores):
+        contenedor.setComponentZOrder(button1, 1);
+        panel.setComponentZOrder(button2, 0);
+        panel.setComponentZOrder(button3, 2);
+
+- Libreria PoiApache : sirve para exportar excel (SOLUCIONADO)
+	- poi.apache.org / Downloads / the Latest stable release is Apache POI 5.2.2
+	- Binary Distribution / Click en el ZIP / CLick en el primer link que recomienda / Se descarga
+	- descomprimes el archivo y solo utilizaremos "poi-5.2.2" que es el basico y principal.
+	- lo jalamos en las librerias del projecto, actualizamos.
+	- En eclipse, entramos a "Build Path" para añadirlo al projecto como libreria.
+	
+	Observaciones:
+	- tuve muchos problemas para implementarlo debido que la informacion en internet esta 
+	  desactualizada, porque ellos creaban archivos XLS que es una version antigua de excel,
+	  yo queria crea archivos XLSX.
+	- dentro de la libreria PoiApache eran varios los JAR que debiamos agregar al proyecto 
+	  para que funciones.
+	- apesar de que logramos crear el archivo correctamente, en la consola de Java sigue 
+	  apareciendo un error que dice lo siguiente: " ERROR StatusLogger Log4j2 could not find a logging 
+	  implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console... "
+	- No se a que se debe, y no encontre en internet una solucion almenos entendible para mi.
+	- Aun de lo que pude revisar puede ser que el problema sea la version del Eclipse que estoy utilizando, 
+	  debido que es una antigua.
+	- jar añadidos al projecto para que funciones:
+	
+	- commons-collections4-4.4
+	- commons-compress-1.21
+	- commons-io-2.11.0
+	- commons-math3-3.6.1
+	- log4j-api-2.17.2
+	- poi-5.2.2
+	- poi-ooxml-5.2.2
+	- poi-ooxml-full-5.2.2
+	- xmlbeans-5.0.3
+	
+	SOLUCION: cambiar la version del Poi Apache al "poi-bin-5.0.0", use los siguientes los 7 JAR
+	- poi-5.0.0
+	- poi-ooxml-5.0.0
+	- commons-math3-3.6.1
+	- commons-collections4-4.4
+	- commons-compress-1.20
+	- xmlbeans-4.0.0
+	- poi-ooxml-full-5.0.0
+
+	
+--> Cambiar el " Look and Feel " : se agrega el siguiente codigo, que hace referencia a la ruta de del archivo 
+				   , en el metodo MAIN :
+
+	public static void main(String[] args) {
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frm_Principal frame = new Frm_Principal();
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					frame.setVisible(true);
+					/** CENTRAR LA VENTANA **/
+					frame.setLocationRelativeTo(null); 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+--> Reporte en PDF: la manera realizado por el profesor en JavaWeb parece que no funciona, encontre dos maneras:
+	- Atravez de una "clase adaptador", que implementa la interface JRDataSource. Esta clase 
+	  es el que proporcionada los datos al reporte que creamos en Jasper.
+	- Otra forma es conectando a la base de datos, osea los datos vienen directamente de la base de datos,
+	  y en ves que conectar la plantilla con los datos, se conecta directamente con la BD.
+	- Logre implementar la manera del profesor pero se tuvo que añadir codigo encontrado en internet.
+
+
+	- VERIFICA LA TABLA DEBE ESTAR DENTOR DE DETAILS.
+	- para cambiar los colores a las tabla ya creada, click derecho en la tabla / change table style.
+	- colocar la imagen en el mismo Jasper manda arror a la hora de imprimir el pdf en Eclipse,
+	  creo que es por la ruta, creo que mejor se manda la imagen desde el propio eclipse.
+
+	- EL #$#$# "jasperreports-javaflow-6.17.0" DA ERROR, ELIMINA ESA $##$##$ DE LAS LIBRERIAS.
+	
+	- Agregar imagenes en el jasper, pero que se suba desde el eclipse:
+		- creamos un nuevo parametro con cualquier nombre del tipo "String".
+		- arrastramos la herramienta de imagen / Custom expresion / click en el icono del 
+		  de la derecha que aparece / en la nueva ventana buscamos Parameters / doble click 
+		  en el parametro logo creado / click en + en "Value Class" / click en los tres 
+		  puntitos que aparecen / buscamos "String", seleccionamos "java.lang.String" ok /
+		  finish. 
+		- compilamos el nuevo reporte y el "jasper" lo pasamos al eclipse.
+		- en eclipse añadimos un nuevo parametro ( "nombre_imagen", "ruta_imagen" ).
+
+	- error, view jasper si abre el archivo pero al guardar en pdf ocurre un error. Solucion, 
+	  remplazar la libreria "iText-2.1.7", del profe por "itext-2.1.7.js4" [ sourceforge.net ].
+	
+--> PROBLEMA DE EVENTO stateChanged, al hacer visible un boton este no era reconocido por
+	este evento, creo que este evento no esta dentro del stateChanged, aunque pareciece que 
+	si deberia.
+	--> Solucion el evento componentShown, este me funciono perfecto.
+
+--> JDialog : 
+	- no ocupa un espacio en la barra de tareas.
+	- al abrirse bloquea el JFrame principal, solo podemos trabajar en el 
+	  JDialog mientras esta activo.
+	- Al cerrarlo no se cierra el JFrame Principal.
+
+--> Fecha y Hora:
+	- java.sql.Date / java.sql.Time / java.utils.Date en java y Mysql no guarda la zona horaria mientras que java.sql.Timestamp si.
+		porlo que si se cambia la zona horaria al unico que le afectara sera a Timestamp esto no es malo ni bueno si no todo lo 
+		contrario. segun lei y para mi tambien es mejor tener el control de las zonas horarias con Timestamp.
+	- UTC (Cooridinated Universal Time - Tiempo universal coordinado): es el estandar de tiempo, por el cual
+		el mundo regula los relojes y el tiempo. GMT se basa en la posicion media del Sol esta en deshuso.
+	- en java - Wed Jul 13 21:43:39 COT 2022 --> COT - Colombia Time UTC-05:00.
+	- Establecer zona horaria en Java a nivel de JVM antes de crear la fecha --> TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+	- ver la zona horaria del Java en el Jasper, colocas el parametro predefinido "$P{REPORT_TIME_ZONE}" a la plantilla, cuando 
+		se utilize aca se mostrará la zona horaria que se esta utilizando.
+	
+	- Primero -> intente por separado, guardar en mysql, obtener en java y mostrar en jasper la fecha en java.sql.Date y la hora 
+		en java.sql.Time, se encontro dos problemas:
+			1. la hora se mostraba atrasada 5 horas y con un formato diferente al original de mysql. SOLUCION: insertar 
+				la fecha en el MySQL en el horario internacional UTC osea +- 00:00, es decir en el MySQL la fecha
+				se mostraba con 5 horas adelantadas porque segun mi zona deberia ser UTC -05:00. pero a la hora de 
+				de llamarlo en el ECLIPSE este si tiene la zona horaria UTC -05:00, porlo que se mostrara con la hora 
+				correcta.
+			2. apesar de que las variables sql.Date y sql.Time solo almacena la fecha y hora respectivamente, al mostrarse 
+				en el jasper estos dos parametros se mostraban ambos como fecha y hora completa, la parte que NO poseian 
+				se colocaba una hora y fecha por defecto. NO SOLUCIONADO.
+	- Segundo -> la fecha y hora, lo guarde en mysql, obtuve en java y mostre en el jasper en una sola variable sql.Timestamp.
+		cambiando la fecha en el MySQL en el horario internacional UTC osea +- 00:00, es decir en el MySQL la fecha se 
+		mostraba con 5 horas adelantadas.
+
+--> Ticket:
+	- el ticket lo cree casi de la misma manera que el comprobante A4, y la pagina del tiket tiene un tamaño 
+	  predefinido exacto, el problema que el ticket deberia tener un tamaño variable.
+	  No encontre una solucion perfecta, lo que hice fue, colocarle un tamaño decente, añadí la banda "Column Footer" y en las propiedades de la 
+	  pagina lo puse "float" para que Detail solo tenga el espacio necesarios para su lista, y el espacio sobrante quedaria abajo :/
+
+--> JASPER ERROR--> si el tamaño de la pagina es menor al minimo necesario para que se muestre los datos colocados, todo lo relacionado con la 
+	  pagina se bugeará, los parametros, las Bandas etc.
+
+--> JASPER fuente de texto --> https://community.jaspersoft.com/wiki/custom-font-font-extension
+	- El problema es que al crear la plantilla con una fuente especifico y al utilizarlo en el sistema de venta se previsualiza 
+	  correctamente pero a la hora de exportarlo en PDF, este cambia su fuente a Arial.
+	1. Descargamos la fuente que queremos agregar de internet o copiamos los que vienen en windows: C / Windows / Fonts.
+	2. En el Jasper creamos nuestra fuente personalizada :
+		1. window / preferences / Jaspersoft Studio / fonts / add / Nombre, Hidden-sin check, Normal-Bold-Italic-Bold Italic
+		   buscamos la fuente obtenida en formato .ttf, PDF Font Name-sin check, PDF Encoding-Identity-H(Unicode with
+		   horizontal writing), Embed this font in PDF document-sin check / Next / Next / Finish / Apply and Close.
+	3. Exportamos nuestra fuente personalizada para poder usarlo en cualquier aplicacion:
+		1. window / preferences / Jaspersoft Studio / fonts.
+		2. seleccionamos nuestra fuente / Export / Nombre(debe tener el mismo nombre que la fuente)-Ubicacion / Guardar.
+	4. Añadimos la fuente exportada personalizada a nuestra app: 
+		1. en mi caso colocamos la fuente personalizada .jar dentro del proyecto dentro de la carpeta Libraries.
+		2. ahora podemos agregarlo al sistema : Proyecto / Build path / Configure Build path / Add JARs / Buscar la fuente y lo añades.
+	5. OBVIAMENTE DEBISTE HABER USADO LA FUENTE EN LA CONSTRUCCION, HABER COMPILADO LA PLANTILLA Y MANDARLO AL PROYECTO DE SOFTWARE.
+	   Y RECUERDA QUE PARA QUE JASPER PUEDA SEGUIR FUNCIONANDO CON LA FUENTE PERSONALIZA EL ARCHIVO TTF NO DEBE SER ELIMINADO DE SU
+	   UBICACION UNA VES CONFIGURADO EN EL JASPERS.
+
+
+Problemas:
+- panel calzado : al querer agregar,cancelar o modificar un registro de calzado, inicalmente se llamaba al panel Modelo, 
+	con todos los registros que este posee lo cual demoraba alrededor de medio segundo en aparecer.  
+	haciendo que cualquiera de estas operaciones resulte lenta.
+	Solucion parcial: si el panel modelo ya se encuentra activado, no volver a llamarlo, porque esto era lo que generaba
+	la demora, sino solo limpiar todos los componentes. Pero para realizar esta funcion desde el otro panel se debia cambiar 
+	a "static" todos los componentes a modificar que eran muchos, esto tampoco me parecia lo correcto, la otra 
+	solucion que se me ocurrio fue añadir un evento al panel modelo que cuando detecte que un componente dentro 
+	de este panel se haga visible auntomaticamente limpie todo. solo tuve que crear este componente como "static" 
+	añadirle el evento "componentShown", hacerlo visible desde el panel calzado, para que se limpie todo sin 
+	tener que recargar todo el panel y generando que los registros no tengan demoras.
+	
+- JasperViewer : este es el visualizador para los reportes de jasper, el cual tiene un boton que permite guardar el archivo en 
+	distintos formatos, el problema es que el formato de pdf no esta seleccionado, por defecto aparece el formato .jrprint, esto 
+	obliga a desplegar el combobox y tener que buscarlo. queria que el formato pdf sea el formato por defecto para evitar
+	tener que buscarlo. en internet encontre la misma solucion en diferentes paginas, el problema es que esta solucion estaba "deprecated"
+	solo encontre una solucion actual pero en esta se usaba la libreria pooq, que modifica el lenguaje Java. no logré cambiar de pooq a java.
+	NO SOLUCIONADO
+
+Observaciones:
+- En el metodo de las exportaciones para el reporte  hay una advertencia no error en:
+	
+	JFileChooser ventSeleccion = new JFileChooser();
+		if(ventSeleccion.showDialog(null, "Guardar") == ventSeleccion.APPROVE_OPTION){ --> INCORRECTO
+		}
+ 
+		if(ventSeleccion.showDialog(null, "Guardar") == JFileChooser.APPROVE_OPTION){ --> CORRECTO
+		}
+
+  cuando utilizamos un metodo o un campo estatico, debemos acceder a ellos atraves de la clase original no de una instancia de esta.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+VERSIONES:
+	- Eclipse IDE Mars 2 [2016] --> inicio del proyecto
+	- Eclipse IDE 2022-06 R --> actual
+

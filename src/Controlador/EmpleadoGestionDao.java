@@ -1,13 +1,12 @@
 package Controlador;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -41,7 +40,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Empleado> listaOriginal;
@@ -51,20 +50,20 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	// Sentencias
 	
 	final String VALIDATE = "{call pa_validar_empleado(?,?)}";
-	final String GETALLORIGINAL = "{call pa_listar_empleado_original()}";
-	final String GETALL = "{call pa_listar_empleado()}";
+	final String GETALL_ORG = "{call pa_listar_empleado_original()}";
+	final String GETALL_MOD = "{call pa_listar_empleado_modificado()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_empleado()}";
 	final String INSERT = "{call pa_insertar_empleado(?,?,?,?,?,?,?,?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_empleado(?,?,?,?,?,?,?,?,?,?,?,?)}";
 	//final String DELETE = "{call pa_eliminar_empleado(?)}";
 	
-	final String SEARCH_ORIGINAL_CODE = "{call pa_buscar_empleado_original_por_codigo(?)}";
-	final String SEARCH_CODE_EXACT = "{call pa_buscar_empleado_por_codigo_exacto(?)}";
-	final String SEARCH_CODE = "{call pa_buscar_empleado_por_codigo(?)}";
+	final String SEARCH_ORG_CODE_IXT = "{call pa_buscar_empleado_original_codigo_ixt(?)}";
+	final String SEARCH_MOD_CODE_EXT = "{call pa_buscar_empleado_modificado_codigo_ext(?)}";
+	final String SEARCH_MOD_CODE_IXT = "{call pa_buscar_empleado_modificado_codigo_ixt(?)}";
 
-	final String SEARCH_NAME = "{call pa_buscar_empleado_por_nombre_apellido(?)}";
-	final String SEARCH_DNI = "{call pa_buscar_empleado_por_dni(?)}";
-	final String SEARCH_DISTRITO = "{call pa_buscar_empleado_por_distrito(?)}";
+	final String SEARCH_MOD_NAME_IXT = "{call pa_buscar_empleado_modificado_nombreapellido_ixt(?)}";
+	final String SEARCH_MOD_DNI_IXT = "{call pa_buscar_empleado_modificado_dni_ixt(?)}";
+	final String SEARCH_MOD_DISTRITO_IXT = "{call pa_buscar_empleado_modificado_distrito_ixt(?)}";
 	
 
 	
@@ -128,7 +127,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALLORIGINAL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -170,14 +169,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<EmpleadoReporte> listar() {
+	public ArrayList<EmpleadoReporte> listarModificado() {
 
 		lista = new ArrayList<EmpleadoReporte>();
 		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_MOD);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -364,13 +363,13 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Empleado> buscarOriginalPorCodigo(String valor) {
+	public ArrayList<Empleado> buscarOrgCodigoIxt(String valor) {
 		
 		listaOriginal = new ArrayList<Empleado>();
 		Empleado obj;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_ORIGINAL_CODE);
+			cs = cn.prepareCall(SEARCH_ORG_CODE_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -413,13 +412,13 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public EmpleadoReporte buscarPorCodigoExacto(String valor) {
+	public EmpleadoReporte buscarModCodigoExt(String valor) {
 		
 		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CODE_EXACT);
+			cs = cn.prepareCall(SEARCH_MOD_CODE_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -466,13 +465,13 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<EmpleadoReporte> buscarPorCodigo(String valor) {
+	public ArrayList<EmpleadoReporte> buscarModCodigoIxt(String valor) {
 		
 		lista = new ArrayList<EmpleadoReporte>();
 		EmpleadoReporte obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CODE);
+			cs = cn.prepareCall(SEARCH_MOD_CODE_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -515,14 +514,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<EmpleadoReporte> buscarPorNombre(String valor) {
+	public ArrayList<EmpleadoReporte> buscarModNombreIxt(String valor) {
 		
 		lista = new ArrayList<EmpleadoReporte>();
 		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_NAME);
+			cs = cn.prepareCall(SEARCH_MOD_NAME_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -566,14 +565,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 
 
 	@Override
-	public ArrayList<EmpleadoReporte> buscarPorDni(String valor) {
+	public ArrayList<EmpleadoReporte> buscarModDniIxt(String valor) {
 		
 		lista = new ArrayList<EmpleadoReporte>();
 		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_DNI);
+			cs = cn.prepareCall(SEARCH_MOD_DNI_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -621,14 +620,14 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 	 * un empleado, extrayendo solo los primeros valores.
 	 * **/
 	@Override
-	public ArrayList<EmpleadoReporte> buscarPorDistrito(String valor) {
+	public ArrayList<EmpleadoReporte> buscarModDistritoIxt(String valor) {
 
 		lista = new ArrayList<EmpleadoReporte>();
 		EmpleadoReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_DISTRITO);
+			cs = cn.prepareCall(SEARCH_MOD_DISTRITO_IXT);
 			cs.setString(1, valor);
 
 			rs = cs.executeQuery();
@@ -680,7 +679,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 		try {
 			
 			File archivo;
-			FileInputStream archivoEntrada = null;
+//			FileInputStream archivoEntrada = null;
 			FileOutputStream archivoSalida = null;
 			
 			
@@ -692,7 +691,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			
 			
 			/** showDialog(componentePadre, nombreBotonAprobado) -- devuelve un numero que representa la eleccion del usuario.*/
-			if(ventSeleccion.showDialog(null, "Guardar") == ventSeleccion.APPROVE_OPTION){
+			if(ventSeleccion.showDialog(null, "Guardar") == JFileChooser.APPROVE_OPTION){ // 
 				
 				// toString(), transforma el archivo seleccionado en un cadena de la ruta del archivo, añadiendole el formarto.
 				String ruta = ventSeleccion.getSelectedFile().toString().concat(".txt"); 

@@ -2,13 +2,12 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import entidad.EmpleadoReporte;
 import entidad.Modelo;
 import entidad.ModeloReporte;
 import interfaces.ModeloInterfaceDao;
@@ -18,7 +17,7 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	
@@ -29,14 +28,14 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	
 	// Sentencias
 	
-	final String GET_ALL_ORIGINAL = "{call pa_listar_modelo_original()}";
-	final String GET_ALL = "{call pa_listar_modelo()}";
+	final String GETALL_ORG = "{call pa_listar_modelo_original()}";
+	final String GETALL_MOD = "{call pa_listar_modelo_modificado()}";
 	
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_modelo()}";
 	final String INSERT = "{call pa_insertar_modelo(?,?,?,?,?,?)}";
 	final String UPDATE = "{call pa_actualizar_modelo(?,?,?,?,?,?)}";
-	final String SEARCHSIMPLE = "{call pa_buscar_modelo_por_nombre_simple(?)}";
-	final String SEARCH = "{call pa_buscar_modelo(?)}";
+	final String SEARCH_ORG_NAME_EXT = "{call pa_buscar_modelo_original_nombre_ext(?)}";
+	final String SEARCH_MOD_ALL_IXT = "{call pa_buscar_modelo_modificado_all_ixt(?)}";
 	
 	
 	@Override
@@ -79,7 +78,7 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GET_ALL_ORIGINAL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -115,14 +114,14 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<ModeloReporte> listar() {
+	public ArrayList<ModeloReporte> listarModificado() {
 		
 		lista = new ArrayList<ModeloReporte>();
 		ModeloReporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GET_ALL);
+			cs = cn.prepareCall(GETALL_MOD);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -227,13 +226,15 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 		
 	}
 
+	
+	
 	@Override
-	public ArrayList<ModeloReporte> buscar(String valor) {
+	public ArrayList<ModeloReporte> buscarModAllIxt(String valor) {
 		lista = new ArrayList<ModeloReporte>();
 		ModeloReporte obj = null;
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH);
+			cs = cn.prepareCall(SEARCH_MOD_ALL_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -269,13 +270,13 @@ public class ModeloGestionDao implements ModeloInterfaceDao{
 
 	
 	@Override
-	public Modelo buscarPorNombre(String nombre) {
+	public Modelo buscarOrgNombreExt(String nombre) {
 		
 		Modelo obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCHSIMPLE);
+			cs = cn.prepareCall(SEARCH_ORG_NAME_EXT);
 			cs.setString(1, nombre);
 			
 			rs = cs.executeQuery();

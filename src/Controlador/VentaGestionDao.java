@@ -2,11 +2,9 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,10 +15,7 @@ import entidad.Boleta_Cabecera_Reporte;
 import entidad.Boleta_Detalle;
 import entidad.Boleta_Detalle_Reporte;
 import entidad.Cliente;
-import entidad.Empleado;
-import entidad.EmpleadoReporte;
 import interfaces.VentaInterfaceDao;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -34,11 +29,11 @@ public class VentaGestionDao implements VentaInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	
-	private ArrayList<Boleta_Detalle> lista;
+//	private ArrayList<Boleta_Detalle> lista;
 	
 	ClienteGestionDao gCliente = new ClienteGestionDao(); // --
 	
@@ -50,8 +45,8 @@ public class VentaGestionDao implements VentaInterfaceDao{
 	final String UPDATESTOCK = "{call pa_reducir_stock_calzado(?,?)}"; // parametros (codigo_calzado , cantidad)
 	
 	// Sentencias para generar la boleta
-	final String SEARCH_CABECERA_BOLETA = "{call pa_buscar_cabeza_boleta(?)}";
-	final String SEARCH_DETALLE_BOLETA = "{call pa_buscar_detalle_boleta(?)}";
+	final String SEARCH_CABECERABOLETA_MOD_CODE_EXT = "{call pa_buscar_cabezaBoleta_modificado_codigo_ext(?)}";
+	final String SEARCH_DETALLEBOLETA_MOD_CODE_EXT = "{call pa_buscar_detalleBoleta_modificado_codigo_ext(?)}";
 	
 	
 
@@ -99,7 +94,7 @@ public class VentaGestionDao implements VentaInterfaceDao{
 			 *  un codigo nuevo. pero aunque el cliente ' c ' no exista para evitar añadir mucho codigo, 
 			 *  se registra el cliente ' c ' pero luego se transfiere este cliente al otro cliente**/
 			
-			Cliente cliente = gCliente.buscarPorDniExacto(c.getDni());
+			Cliente cliente = gCliente.buscarOrgDniExt(c.getDni());
 			if(cliente == null){ // si no lo encuentra lo registra.
 				cs = cn.prepareCall(INSERTCLIENTE);
 				int i = 1;
@@ -172,13 +167,13 @@ public class VentaGestionDao implements VentaInterfaceDao{
 	
 	
 	@Override
-	public Boleta_Cabecera_Reporte buscarCabezaBoleta(String valor) {
+	public Boleta_Cabecera_Reporte buscarCabezaBoletaModCodigoExt(String valor) {
 		
 		Boleta_Cabecera_Reporte obj = null;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_CABECERA_BOLETA);
+			cs = cn.prepareCall(SEARCH_CABECERABOLETA_MOD_CODE_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -219,14 +214,14 @@ public class VentaGestionDao implements VentaInterfaceDao{
 
 	
 	@Override
-	public ArrayList<Boleta_Detalle_Reporte> buscarDetalleBoleta(String valor) {
+	public ArrayList<Boleta_Detalle_Reporte> buscarDetalleBoletaModCodigoExt(String valor) {
 		
 		ArrayList<Boleta_Detalle_Reporte> lista = new ArrayList<Boleta_Detalle_Reporte>();
 		Boleta_Detalle_Reporte obj;
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH_DETALLE_BOLETA);
+			cs = cn.prepareCall(SEARCH_DETALLEBOLETA_MOD_CODE_EXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
@@ -326,7 +321,6 @@ public class VentaGestionDao implements VentaInterfaceDao{
 		return respuesta;
 		
 	}
-
 
 
 	

@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
@@ -27,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import java.awt.SystemColor;
-import javax.swing.border.EtchedBorder;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -481,7 +479,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	public void listarCargosCbo(){
 		
-		ArrayList<Cargo> lista = gCargo.listarCargo();
+		ArrayList<Cargo> lista = gCargo.listarOriginal();
 		for(Cargo c : lista){
 			cboCargo.addItem(c.getDescripcion());
 		}
@@ -489,7 +487,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	
 	public void listarDistritoCbo(){
 		
-		ArrayList<Distrito> lista = gDistrito.listarDistrito();
+		ArrayList<Distrito> lista = gDistrito.listarOriginal();
 		for(Distrito d : lista){
 			cboDistrito.addItem(d.getDescripcion());
 		}
@@ -498,7 +496,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	public void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<EmpleadoReporte> data = gEmpleado.listar();
+		ArrayList<EmpleadoReporte> data = gEmpleado.listarModificado();
 		
 		/** Para mostrar los primeros al final y los ultimos al inicio **/
 		for (int i = data.size()-1; i >=0; i--) {
@@ -571,11 +569,11 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 		
 		// obtiene el codigo distrito
-		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+		Distrito d = gDistrito.buscarOrgAllExt(cboDistrito.getSelectedItem().toString()) ;
 		String codDistrito = d.getCod_distrito();
 		
 		// obtiene el codigo cargo
-		Cargo c = gCargo.buscarCargo(cboCargo.getSelectedItem().toString()) ;
+		Cargo c = gCargo.buscarOrgAllExt(cboCargo.getSelectedItem().toString()) ;
 		String codCargo = c.getCod_cargo();
 		
 		// -->
@@ -610,7 +608,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		EmpleadoReporte obj = new EmpleadoReporte();
 		String codigoFila = tblEmpleado.getValueAt(posicionFila, 0).toString();
 		
-		obj = gEmpleado.buscarPorCodigoExacto(codigoFila);
+		obj = gEmpleado.buscarModCodigoExt(codigoFila);
 		
 		txtCodigo.setText(obj.getCod_empleado());
 		txtNombre.setText(obj.getNombre());
@@ -664,11 +662,11 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 		
 		// obtiene el codigo distrito
-		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+		Distrito d = gDistrito.buscarOrgAllExt(cboDistrito.getSelectedItem().toString()) ;
 		String codDistrito = d.getCod_distrito();
 		
 		// obtiene el codigo cargo
-		Cargo c = gCargo.buscarCargo(cboCargo.getSelectedItem().toString()) ;
+		Cargo c = gCargo.buscarOrgAllExt(cboCargo.getSelectedItem().toString()) ;
 		String codCargo = c.getCod_cargo();
 		
 		// -------------->
@@ -697,13 +695,13 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		ArrayList<EmpleadoReporte> data = new ArrayList<EmpleadoReporte>();
 		
 		if(rdbtnNombreapellido.isSelected()){
-			data = gEmpleado.buscarPorNombre(valor);
+			data = gEmpleado.buscarModNombreIxt(valor);
 		}else if(rdbtnCodigo.isSelected()){
-			data = gEmpleado.buscarPorCodigo(valor);
+			data = gEmpleado.buscarModCodigoIxt(valor);
 		}else if(rdbtnDni.isSelected()){
-			data = gEmpleado.buscarPorDni(valor);
+			data = gEmpleado.buscarModDniIxt(valor);
 		}else if(rdbtnDistrito.isSelected()){
-			data = gEmpleado.buscarPorDistrito(valor);
+			data = gEmpleado.buscarModDistritoIxt(valor);
 		}
 		
 		return data;
@@ -760,7 +758,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		}
 		if (e.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			EmpleadoReporte emp = gEmpleado.buscarPorCodigoExacto(cod);
+			EmpleadoReporte emp = gEmpleado.buscarModCodigoExt(cod);
 			if(emp == null){
 				registrarEmpleado();
 			}else{

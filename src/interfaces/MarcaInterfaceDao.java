@@ -10,13 +10,13 @@ public interface MarcaInterfaceDao {
 	
 	public String generarCodigo();
 
-	public ArrayList<Marca> listar();
+	public ArrayList<Marca> listarOriginal();
 	
 	public int registrar(Marca c);
 	
 	public int actualizar(Marca c);
 	
-	public ArrayList<Marca> buscar(String valor);
+	public ArrayList<Marca> buscarOrgAllIxt(String valor);
 	
 //	public Marca buscar(String valor); // busca por codigo O descripcion
 	

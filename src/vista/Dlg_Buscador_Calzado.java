@@ -1,7 +1,6 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,8 +11,6 @@ import javax.swing.table.DefaultTableModel;
 
 import Controlador.CalzadoGestionDao;
 import entidad.CalzadoReporte;
-import entidad.Modelo;
-import utils.Library;
 import utils.RendererTableSimple;
 
 import java.awt.Color;
@@ -22,7 +19,6 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
-import java.awt.Window.Type;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
@@ -174,7 +170,7 @@ public class Dlg_Buscador_Calzado extends JDialog implements ActionListener, Key
 	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<CalzadoReporte> data = gCalzado.listar();
+		ArrayList<CalzadoReporte> data = gCalzado.listarModificado();
 		
 		// i >= data.size()-6
 		for( int i = data.size()-1 ; i >= 0 ; i-- ){
@@ -200,13 +196,13 @@ public class Dlg_Buscador_Calzado extends JDialog implements ActionListener, Key
 		try{
 			
 			if(rbCodigo.isSelected()){
-				data = gCalzado.buscarPorCodigo(valor);
+				data = gCalzado.buscarModCodigoIxt(valor);
 			}else if(rbModelo.isSelected()){
-				data = gCalzado.buscarPorModelo(valor);
+				data = gCalzado.buscarModModeloIxt(valor);
 			}else if(rbCategoria.isSelected()){
-				data = gCalzado.buscarPorCategoria(valor);
+				data = gCalzado.buscarModCategoriaIxt(valor);
 			}else if(rbMarca.isSelected()){
-				data = gCalzado.buscarPorMarca(valor);
+				data = gCalzado.buscarModMarcaIxt(valor);
 			}
 			
 		}catch (Exception e) {

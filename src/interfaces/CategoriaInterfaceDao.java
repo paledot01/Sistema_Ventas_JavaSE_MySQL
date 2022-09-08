@@ -9,13 +9,13 @@ public interface CategoriaInterfaceDao {
 	
 	public String generarCodigo();
 
-	public ArrayList<Categoria> listar();
+	public ArrayList<Categoria> listarOriginal();
 	
 	public int registrar(Categoria c);
 	
 	public int actualizar(Categoria c);
 	
-	public ArrayList<Categoria> buscar(String valor);
+	public ArrayList<Categoria> buscarOrgAllIxt(String valor);
 	
 //	public Categoria buscar(String valor); // busca por codigo O descripcion
 	

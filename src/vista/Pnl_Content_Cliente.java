@@ -370,7 +370,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 	
 	public void listarDistritoCbo(){
 		
-		ArrayList<Distrito> lista = gDistrito.listarDistrito();
+		ArrayList<Distrito> lista = gDistrito.listarOriginal();
 		for(Distrito d : lista){
 			cboDistrito.addItem(d.getDescripcion());
 		}
@@ -379,7 +379,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 	public void mostrarDataTabla(){
 		
 		modeloCliente.setRowCount(0);
-		ArrayList<Cliente> data = gCliente.listar();
+		ArrayList<Cliente> data = gCliente.listarOriginal();
 		
 		/** Para mostrar los primeros al final y los ultimos al inicio **/
 		for (int i = data.size()-1; i >=0; i--) {
@@ -390,7 +390,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 					data.get(i).getApellidos(),
 					data.get(i).getDni(),
 					data.get(i).getTelefono(),
-					gDistrito.buscarDistrito(data.get(i).getCod_distrito()).getDescripcion(),
+					gDistrito.buscarOrgAllExt(data.get(i).getCod_distrito()).getDescripcion(),
 					
 			};
 			modeloCliente.addRow(fila);
@@ -457,7 +457,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		
 		// obtiene el codigo distrito
 		String codDistrito = null;
-		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+		Distrito d = gDistrito.buscarOrgAllExt(cboDistrito.getSelectedItem().toString()) ;
 		if(d == null){
 			mensajeError("Escoge un Distrito");
 		}else{
@@ -497,7 +497,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		// En la fila de la tabla busca el codigo del empleado, con este codigo se busca en la BD al empleado y trae todos sus datos.
 		Cliente cli = new Cliente();
 		String codigoFila = tblCliente.getValueAt(posicionFila, 0).toString();
-		cli = gCliente.buscarPorCodigo(codigoFila);
+		cli = gCliente.buscarOrgCodigoIxt(codigoFila);
 		
 		txtCodigo.setText(cli.getCod_cliente());
 		txtNombre.setText(cli.getNombre());
@@ -507,7 +507,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		txtTelefono.setText(cli.getTelefono());
 		txtEmail.setText(cli.getEmail());
 		
-		Object objDistrito = gDistrito.buscarDistrito(cli.getCod_distrito()).getDescripcion();
+		Object objDistrito = gDistrito.buscarOrgAllExt(cli.getCod_distrito()).getDescripcion();
 		cboDistrito.setSelectedItem(objDistrito);
 		
 		
@@ -539,7 +539,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		
 		// obtiene el codigo distrito
 		String codDistrito = null;
-		Distrito d = gDistrito.buscarDistrito(cboDistrito.getSelectedItem().toString()) ;
+		Distrito d = gDistrito.buscarOrgAllExt(cboDistrito.getSelectedItem().toString()) ;
 		if(d == null){
 			mensajeError("Escoge un Distrito");
 		}else{
@@ -575,16 +575,16 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		Cliente cli = null;
 		
 		if(rbNombreApellido.isSelected()){
-			data = gCliente.buscarPorNombre(valor);
+			data = gCliente.buscarOrgNombreIxt(valor);
 		}else if(rbCodigo.isSelected()){
-			cli = gCliente.buscarPorCodigo(valor);
+			cli = gCliente.buscarOrgCodigoIxt(valor);
 			if(cli != null){
 				data.add(cli);
 			}
 		}else if(rbDni.isSelected()){
-			data = gCliente.buscarPorDni(valor);
+			data = gCliente.buscarOrgDniIxt(valor);
 		}else if(rbDistrito.isSelected()){
-			data = gCliente.buscarPorDistrito(valor);
+			data = gCliente.buscarModDistritoIxt(valor);
 		}
 		
 		return data;
@@ -602,7 +602,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 					c.getApellidos(),
 					c.getDni(),
 					c.getTelefono(),
-					gDistrito.buscarDistrito(c.getCod_distrito()).getDescripcion(),
+					gDistrito.buscarOrgAllExt(c.getCod_distrito()).getDescripcion(),
 					
 			};
 			modeloCliente.addRow(fila);
@@ -619,7 +619,7 @@ public class Pnl_Content_Cliente extends JPanel implements ActionListener, KeyLi
 		}
 		if (e.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			Cliente cli = gCliente.buscarPorCodigo(cod);
+			Cliente cli = gCliente.buscarOrgCodigoIxt(cod);
 			if(cli == null){
 				registrarCliente();
 			}else{

@@ -8,7 +8,7 @@ import entidad.Cliente;
 public interface ClienteInterfaceDao {
 
 
-	public ArrayList<Cliente> listar();
+	public ArrayList<Cliente> listarOriginal();
 	
 	public String generarCodigo();
 	
@@ -18,15 +18,15 @@ public interface ClienteInterfaceDao {
 	
 	// public int eliminar(String codigo);
 	
-	public Cliente buscarPorCodigo(String codigo);
+	public Cliente buscarOrgCodigoIxt(String codigo); // aca no esta bien, porque deberia devolver una lista.
 	
-	public ArrayList<Cliente> buscarPorNombre(String valor);
+	public ArrayList<Cliente> buscarOrgNombreIxt(String valor);
 	
-	public ArrayList<Cliente> buscarPorDni(String valor);
+	public ArrayList<Cliente> buscarOrgDniIxt(String valor);
 	
-	public Cliente buscarPorDniExacto(String valor);
+	public Cliente buscarOrgDniExt(String valor);
 	
-	public ArrayList<Cliente> buscarPorDistrito(String valor);
+	public ArrayList<Cliente> buscarModDistritoIxt(String valor); // aca no esta bien.
 	
 	
 }

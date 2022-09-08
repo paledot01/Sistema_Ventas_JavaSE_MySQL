@@ -29,7 +29,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListener, MouseListener, KeyListener {
-	private JPanel panel;
+	private JPanel pnl_categoria;
 	private JPanel panel_1;
 	private JTextField txtCodigo;
 	private JLabel label;
@@ -56,17 +56,17 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 	public Pnl_Content_Calzado_Categoria() {
 		setLayout(null);
 		
-		panel = new JPanel();
-		panel.setBorder(new LineBorder( Library.Claro_2 , 2));
-		panel.setBounds(0, 0, 500, 304);
-		add(panel);
-		panel.setLayout(null);
+		pnl_categoria = new JPanel();
+		pnl_categoria.setBorder(new LineBorder( Library.Claro_2 , 2));
+		pnl_categoria.setBounds(0, 0, 500, 304);
+		add(pnl_categoria);
+		pnl_categoria.setLayout(null);
 		
 		panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBackground(new Color(220, 220, 220));
 		panel_1.setBounds(10, 11, 165, 36);
-		panel.add(panel_1);
+		pnl_categoria.add(panel_1);
 		
 		txtCodigo = new JTextField();
 		txtCodigo.setText("-----");
@@ -85,7 +85,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 134, 480, 159);
-		panel.add(scrollPane);
+		pnl_categoria.add(scrollPane);
 		
 		tblCategoria = new JTable();
 		tblCategoria.addKeyListener(this);
@@ -111,7 +111,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		lblNombre.setEnabled(false);
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNombre.setBounds(10, 58, 55, 22);
-		panel.add(lblNombre);
+		pnl_categoria.add(lblNombre);
 		
 		txtBuscar = new JTextField();
 		txtBuscar.addKeyListener(this);
@@ -120,7 +120,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		txtBuscar.setDisabledTextColor(Color.GRAY);
 		txtBuscar.setColumns(10);
 		txtBuscar.setBounds(254, 15, 196, 22);
-		panel.add(txtBuscar);
+		pnl_categoria.add(txtBuscar);
 		
 		txtNombre = new JTextField();
 		txtNombre.setEnabled(false);
@@ -129,40 +129,40 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		txtNombre.setDisabledTextColor(Color.GRAY);
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(82, 58, 150, 22);
-		panel.add(txtNombre);
+		pnl_categoria.add(txtNombre);
 		
 		btnBuscar = new JButton("");
 		btnBuscar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/buscar_30px.png")));
 		btnBuscar.addActionListener(this);
 		btnBuscar.setBounds(460, 11, 30, 30);
-		panel.add(btnBuscar);
+		pnl_categoria.add(btnBuscar);
 		
 		btnCancelar = new JButton("");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setVisible(false);
 		btnCancelar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/cancelar.png")));
 		btnCancelar.setBounds(10, 93, 30, 30);
-		panel.add(btnCancelar);
+		pnl_categoria.add(btnCancelar);
 		
 		btnModificar = new JButton("");
 		btnModificar.addActionListener(this);
 		btnModificar.setEnabled(false);
 		btnModificar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/modificar.png")));
 		btnModificar.setBounds(460, 93, 30, 30);
-		panel.add(btnModificar);
+		pnl_categoria.add(btnModificar);
 		
 		btnGuardar = new JButton("");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setEnabled(false);
 		btnGuardar.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/guardar.png")));
 		btnGuardar.setBounds(420, 93, 30, 30);
-		panel.add(btnGuardar);
+		pnl_categoria.add(btnGuardar);
 		
 		btnNuevo = new JButton("");
 		btnNuevo.addActionListener(this);
 		btnNuevo.setIcon(new ImageIcon(Pnl_Content_Calzado_Categoria.class.getResource("/img/nuevo.png")));
 		btnNuevo.setBounds(380, 93, 30, 30);
-		panel.add(btnNuevo);
+		pnl_categoria.add(btnNuevo);
 
 		
 		mostrarDataTabla(); // --> Muestra los datos de la tabla Categoria
@@ -172,7 +172,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 	void mostrarDataTabla(){
 		
 		modelo.setRowCount(0);
-		ArrayList<Categoria> data = gCategoria.listar();
+		ArrayList<Categoria> data = gCategoria.listarOriginal();
 		
 		for( int i = data.size()-1 ; i>=0 ; i-- ){
 			
@@ -235,7 +235,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		Categoria cat = new Categoria();
 		String codigoFila = tblCategoria.getValueAt(posicionFila, 0).toString();
 		
-		cat = gCategoria.buscar(codigoFila).get(0);
+		cat = gCategoria.buscarOrgAllIxt(codigoFila).get(0);
 		
 		txtCodigo.setText( cat.getCod_categoria() );
 		txtNombre.setText( cat.getDescripcion() );
@@ -282,7 +282,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		
 		ArrayList<Categoria> data = new ArrayList<Categoria>();
 		
-		data = gCategoria.buscar(valor);
+		data = gCategoria.buscarOrgAllIxt(valor);
 		
 		return data;
 		
@@ -316,7 +316,7 @@ public class Pnl_Content_Calzado_Categoria extends JPanel implements ActionListe
 		}
 		if (arg0.getSource() == btnGuardar) {
 			String cod = txtCodigo.getText();
-			ArrayList<Categoria> listCategorias = gCategoria.buscar(cod);
+			ArrayList<Categoria> listCategorias = gCategoria.buscarOrgAllIxt(cod);
 			
 			if(listCategorias.size() != 1){
 				registrarCategoria();

@@ -2,7 +2,7 @@ package Controlador;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -16,7 +16,7 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 
 	
 	private Connection cn;
-	private PreparedStatement ps;
+//	private PreparedStatement ps;
 	private CallableStatement cs;
 	private ResultSet rs;
 	private ArrayList<Marca> lista;
@@ -24,11 +24,11 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 	
 	// Sentencias
 	
-	final String GETALL = "{call pa_listar_marca()}";
+	final String GETALL_ORG = "{call pa_listar_marca_original()}";
 	final String LASTCODE = "{call pa_buscar_ultimo_codigo_marca()}";
 	final String INSERT = "{call pa_insertar_marca(?,?)}";
 	final String UPDATE = "{call pa_actualizar_marca(?,?)}";
-	final String SEARCH = "{call pa_buscar_marca(?)}";
+	final String SEARCH_ORG_ALL_IXT = "{call pa_buscar_marca_original_all_ixt(?)}";
 
 	
 	
@@ -67,13 +67,13 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Marca> listar() {
+	public ArrayList<Marca> listarOriginal() {
 		
 		lista = new ArrayList<Marca>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(GETALL);
+			cs = cn.prepareCall(GETALL_ORG);
 			rs = cs.executeQuery();
 			
 			while(rs.next()){
@@ -168,13 +168,13 @@ public class MarcaGestionDao implements MarcaInterfaceDao{
 	
 	
 	@Override
-	public ArrayList<Marca> buscar(String valor) {
+	public ArrayList<Marca> buscarOrgAllIxt(String valor) {
 		
 		lista = new ArrayList<Marca>();
 		
 		try{
 			cn = ConnectionMySQL_8.getConnection();
-			cs = cn.prepareCall(SEARCH);
+			cs = cn.prepareCall(SEARCH_ORG_ALL_IXT);
 			cs.setString(1, valor);
 			
 			rs = cs.executeQuery();
