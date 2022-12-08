@@ -56,7 +56,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private JLabel lblDistrito;
 	private JLabel lblCargo;
 	private JLabel lblUsuario;
-	private JLabel lblContrasea;
+	private JLabel lblContrasena;
 	private JTable tblEmpleado;
 	private JScrollPane scrollPane;
 
@@ -70,7 +70,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 	private JPanel pnl_codigo;
 	private JPanel pnl_acceso;
 	private JTextField txtUsuario;
-	private JTextField txtContraseña;
+	private JTextField txtContrasena;
 	private JTextField txtDni;
 	private JTextField txtTelefono;
 	private JButton btnNuevo;
@@ -269,10 +269,10 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		pnl_acceso.add(lblUsuario);
 		lblUsuario.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		
-		lblContrasea = new JLabel("Contrase\u00F1a");
-		lblContrasea.setBounds(171, 7, 70, 22);
-		pnl_acceso.add(lblContrasea);
-		lblContrasea.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		lblContrasena = new JLabel("Contrase\u00F1a");
+		lblContrasena.setBounds(171, 7, 70, 22);
+		pnl_acceso.add(lblContrasena);
+		lblContrasena.setFont(new Font("Lucida Console", Font.PLAIN, 12));
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setDisabledTextColor(Color.GRAY);
@@ -284,15 +284,15 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		txtUsuario.setBounds(70, 7, 91, 22);
 		pnl_acceso.add(txtUsuario);
 		
-		txtContraseña = new JTextField();
-		txtContraseña.setDisabledTextColor(Color.GRAY);
-		txtContraseña.setEnabled(false);
-		txtContraseña.setText("-----");
-		txtContraseña.setHorizontalAlignment(SwingConstants.CENTER);
-		txtContraseña.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		txtContraseña.setColumns(10);
-		txtContraseña.setBounds(251, 7, 91, 22);
-		pnl_acceso.add(txtContraseña);
+		txtContrasena = new JTextField();
+		txtContrasena.setDisabledTextColor(Color.GRAY);
+		txtContrasena.setEnabled(false);
+		txtContrasena.setText("-----");
+		txtContrasena.setHorizontalAlignment(SwingConstants.CENTER);
+		txtContrasena.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		txtContrasena.setColumns(10);
+		txtContrasena.setBounds(251, 7, 91, 22);
+		pnl_acceso.add(txtContrasena);
 		
 		txtDni = new JTextField();
 		txtDni.setDisabledTextColor(Color.GRAY);
@@ -620,7 +620,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		cboDistrito.setSelectedItem(obj.getDistrito());
 		cboCargo.setSelectedItem(obj.getCargo());
 		txtUsuario.setText(obj.getUsuario());
-		txtContraseña.setText(obj.getContraseña());
+		txtContrasena.setText(obj.getContrasena());
 		
 		boolean respuesta = true;
 		if(obj.getEstado().equals("INACTIVO")){
@@ -641,7 +641,7 @@ public class Pnl_Content_Empleado extends JPanel implements MouseListener, KeyLi
 		cboDistrito.setSelectedIndex(0);
 		cboCargo.setSelectedIndex(0);
 		txtUsuario.setText("-----");
-		txtContraseña.setText("-----");
+		txtContrasena.setText("-----");
 		
 		btnModificar.setEnabled(false);
 

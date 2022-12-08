@@ -235,7 +235,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			cs.setString(i++, e.getCod_distrito());
 			cs.setString(i++, e.getCod_cargo());
 			cs.setString(i++, e.getUsuario());
-			cs.setString(i++, e.getContraseña());
+			cs.setString(i++, e.getContrasena());
 			cs.setInt(i++, e.getCod_estado());
 			
 			respuesta = cs.executeUpdate();
@@ -311,7 +311,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 			cs.setString(i++, e.getCod_distrito());
 			cs.setString(i++, e.getCod_cargo());
 			cs.setString(i++, e.getUsuario());
-			cs.setString(i++, e.getContraseña());
+			cs.setString(i++, e.getContrasena());
 			cs.setInt(i++, e.getCod_estado());
 			
 			respuesta = cs.executeUpdate();
@@ -712,7 +712,7 @@ public class EmpleadoGestionDao implements EmpleadoInterfaceDao{
 							emp.getDistrito() + "|" +
 							emp.getCargo() + "|" +
 							emp.getUsuario() + "|" +
-							emp.getContraseña() + "|" +
+							emp.getContrasena() + "|" +
 							emp.getEstado() + "\n";
 					
 					data += linea;

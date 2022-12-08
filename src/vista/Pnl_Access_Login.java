@@ -28,7 +28,7 @@ public class Pnl_Access_Login extends JPanel implements ActionListener, KeyListe
 	public static JPanel pnl_access_login;
 	private JPanel pnl_login;
 	private JLabel lblUsuario;
-	private JLabel lblContrasea;
+	private JLabel lblContrasena;
 	private JTextField txtUser;
 	private JButton btnEntrar;
 	private JLabel lblNewLabel;
@@ -63,11 +63,11 @@ public class Pnl_Access_Login extends JPanel implements ActionListener, KeyListe
 		lblUsuario.setBounds(37, 31, 91, 20);
 		pnl_login.add(lblUsuario);
 		
-		lblContrasea = new JLabel("Contrase\u00F1a :");
-		lblContrasea.setFont(new Font("Lucida Console", Font.PLAIN, 12));
-		lblContrasea.setForeground(new Color(230,230,230));
-		lblContrasea.setBounds(37, 98, 91, 20);
-		pnl_login.add(lblContrasea);
+		lblContrasena = new JLabel("Contrase\u00F1a :");
+		lblContrasena.setFont(new Font("Lucida Console", Font.PLAIN, 12));
+		lblContrasena.setForeground(new Color(230,230,230));
+		lblContrasena.setBounds(37, 98, 91, 20);
+		pnl_login.add(lblContrasena);
 		
 		txtUser = new JTextField();
 		txtUser.setFont(new Font("Lucida Console", Font.PLAIN, 12));

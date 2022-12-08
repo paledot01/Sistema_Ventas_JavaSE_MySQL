@@ -13,7 +13,7 @@ public class EmpleadoReporte {
 	private String distrito;
 	private String cargo;
 	private String usuario;
-	private String contraseña;
+	private String contrasena;
 	private String estado;
 	
 	// Constructores
@@ -22,7 +22,7 @@ public class EmpleadoReporte {
 
 	// Constructor para recibir empleados de la Base de Datos
 	public EmpleadoReporte(String cod_empleado, String nombre, String apellidos, String dni, String direccion,
-			String telefono, String email, String distrito, String cargo, String usuario, String contraseña,
+			String telefono, String email, String distrito, String cargo, String usuario, String contrasena,
 			String estado) {
 		super();
 		this.cod_empleado = cod_empleado;
@@ -35,7 +35,7 @@ public class EmpleadoReporte {
 		this.distrito = distrito;
 		this.cargo = cargo;
 		this.usuario = usuario;
-		this.contraseña = contraseña;
+		this.contrasena = contrasena;
 		this.estado = estado;
 	}
 	
@@ -121,12 +121,12 @@ public class EmpleadoReporte {
 		this.usuario = usuario;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getContrasena() {
+		return contrasena;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
 	}
 
 	public String getEstado() {
@@ -153,7 +153,7 @@ public class EmpleadoReporte {
 		atributo[7] = getDistrito();
 		atributo[8] = getCargo();
 		atributo[9] = getUsuario();
-		atributo[10] = getContraseña();
+		atributo[10] = getContrasena();
 		atributo[11] = getEstado();	
 		
 		return atributo[position];

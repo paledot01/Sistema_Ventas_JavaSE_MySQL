@@ -1,6 +1,8 @@
 # Sistema de venta de calzados
 Sistema de venta de calzados desarrollado en Java con MySQL como motor de base de datos.
 
+![][Extra_GIF_Main]
+
 ## Primer avance (GUI)
 Se realizó:
 - La estructura de paneles del sistema.
@@ -80,7 +82,7 @@ Problemas solucionados:
 - **JDK 8**
 - **Eclipse** como IDE principal para el desarrollo del sistema (version: 2022-06 R).
 - **MySQL** como motor de la base de datos.
-- **JasperSoft Studio** para la creacion de plantillas necesarios para los reportes en PDF.
+- **JasperSoft Studio** para la creacion de plantillas para los reportes en PDF.
 - **Corel Draw** para la creación y modificación de iconos.
 - **Visual Studio Code** para la edición de este README.md.
 - **Git Bash** para subir y actualizar este repositorio.
@@ -95,7 +97,6 @@ Problemas solucionados:
 
 ### Apreciación Final:
 El proyecto lo inicie teniendo en mente crear un sistema de escritorio pequeño pero completo, y en el proceso practicar lo que vimos el primer año de la carrera pero tambien aprender nuevas cosas. Durante el desarrollo surgian ideas de implementar ciertas funciones que aunque no eran estrictamente necesarias para que el sistema funcione mejoraban la apariencia o rapidez de interacción con el sistema; debido a ello el desarrollo se extendió mucho más de lo que pensé y por las clases tuve que detenerlo por semanas e incluso meses. Aunque el sistema no fue concluido disfrute mucho el proceso del mismo y creo que el objetivo principal se cumplió.
-
 
 
 [1st_img_1]: ./screenshot/version_01_01.png
@@ -118,6 +119,8 @@ El proyecto lo inicie teniendo en mente crear un sistema de escritorio pequeño 
 [4rd_img_6]: ./screenshot/version_04_06.png
 [4rd_img_7]: ./screenshot/version_04_07.png
 
+
+[Extra_GIF_Main]: ./screenshot/Extra_GIF_Main.gif
 [Extra_animacion_circular]: ./screenshot/Extra_animacion_circular.gif
 [Extra_datos]: ./screenshot/Extra_datos.png
 [Extra_distribucion_paneles]: ./screenshot/Extra_distribucion_paneles.png

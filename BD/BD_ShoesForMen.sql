@@ -56,7 +56,7 @@ email           varchar(45),
 cod_distrito    char(5),
 cod_cargo       char(5),
 usuario         varchar(25),
-contraseña      varchar(25),
+contrasena      varchar(25),
 cod_estado      int(1), 
 primary key (cod_empleado),
 foreign key (cod_distrito) references distrito(cod_distrito),
@@ -166,10 +166,10 @@ drop procedure if exists pa_validar_empleado;
 DELIMITER // 
 create procedure pa_validar_empleado(
 	in p_usuario varchar(25),
-    in p_contraseña varchar(25)
+    in p_contrasena varchar(25)
 )
 begin
-	select * from empleado where usuario = p_usuario and contraseña = p_contraseña and cod_estado = 1;
+	select * from empleado where usuario = p_usuario and contrasena = p_contrasena and cod_estado = 1;
 end;
 //DELIMITER ;
 
@@ -186,7 +186,7 @@ drop procedure if exists pa_listar_empleado_modificado;
 DELIMITER // 
 create procedure pa_listar_empleado_modificado()
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
@@ -208,12 +208,12 @@ create procedure pa_insertar_empleado(
     in p_cod_distrito char(5),
     in p_cod_cargo char(5),
     in p_usuario varchar(25),
-    in p_contraseña varchar(25),
+    in p_contrasena varchar(25),
     in p_cod_estado int(1)
 )
 begin
-	insert into empleado(cod_empleado,nombre,apellidos,dni,direccion,telefono,email,cod_distrito,cod_cargo,usuario,contraseña,cod_estado)
-    values(p_cod_empleado,p_nombre,p_apellidos,p_dni,p_direccion,p_telefono,p_email,p_cod_distrito,p_cod_cargo,p_usuario,p_contraseña,p_cod_estado);
+	insert into empleado(cod_empleado,nombre,apellidos,dni,direccion,telefono,email,cod_distrito,cod_cargo,usuario,contrasena,cod_estado)
+    values(p_cod_empleado,p_nombre,p_apellidos,p_dni,p_direccion,p_telefono,p_email,p_cod_distrito,p_cod_cargo,p_usuario,p_contrasena,p_cod_estado);
 end;
 //DELIMITER ;
 
@@ -238,7 +238,7 @@ create procedure pa_actualizar_empleado(
     in p_cod_distrito char(5),
     in p_cod_cargo char(5),
     in p_usuario varchar(25),
-    in p_contraseña varchar(25),
+    in p_contrasena varchar(25),
     in p_cod_estado int(1)
 )
 begin
@@ -252,7 +252,7 @@ begin
         cod_distrito    = p_cod_distrito,
         cod_cargo       = p_cod_cargo,
         usuario         = p_usuario,
-        contraseña      = p_contraseña,
+        contrasena      = p_contrasena,
         cod_estado      = p_cod_estado
     where cod_empleado = p_cod_empleado;
 end;
@@ -284,7 +284,7 @@ create procedure pa_buscar_empleado_modificado_codigo_ext(
 	in p_valor varchar(50)
 )
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
@@ -299,7 +299,7 @@ create procedure pa_buscar_empleado_modificado_codigo_ixt(
 	in p_valor varchar(50)
 )
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
@@ -315,7 +315,7 @@ create procedure pa_buscar_empleado_modificado_nombreapellido_ixt(
 	in p_valor varchar(50)
 )
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
@@ -332,7 +332,7 @@ create procedure pa_buscar_empleado_modificado_dni_ixt(
 	in p_valor varchar(50)
 )
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
@@ -348,7 +348,7 @@ create procedure pa_buscar_empleado_modificado_distrito_ixt(
 	in p_valor varchar(50)
 )
 begin
-	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contraseña, et.descripcion from empleado as e
+	select e.cod_empleado, e.nombre, e.apellidos, e.dni, e.direccion, e.telefono, e.email, d.descripcion, c.descripcion, e.usuario, e.contrasena, et.descripcion from empleado as e
     inner join distrito as d on d.cod_distrito = e.cod_distrito
     inner join cargo as c on c.cod_cargo = e.cod_cargo
     inner join estado as et on et.cod_estado = e.cod_estado
