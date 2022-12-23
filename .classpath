@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="libraries/mysql/mysql-connector-java-8.0.22.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/commons-compress-1.20.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/poi-5.0.0.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/poi-ooxml-5.0.0.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/poi-ooxml-full-5.0.0.jar"/>
+	<classpathentry kind="lib" path="libraries/apache_poi_excel/xmlbeans-4.0.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/commons-beanutils-1.8.3-kuali-4.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/itext-2.1.7.js4.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-annotation-processors-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-chart-customizers-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-chart-themes-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-custom-visualization-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-fonts-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-functions-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/jasperreports-metadata-6.17.0.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/joda-time-2.10.13.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/spring-beans-5.2.16.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/spring-core-5.2.16.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/spring-jcl-5.2.16.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libraries/jasperreports_pdf/tools.jar"/>
+	<classpathentry kind="lib" path="libraries/font/FontKevin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
