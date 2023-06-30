@@ -1,9 +1,7 @@
 # Sistema de venta de calzados | :clapper: [video de muestra][video_url]
 Sistema de venta de calzados desarrollado en Java con MySQL como motor de base de datos.
 
-acceso inicial:
-user: admin
-pass: admin
+acceso inicial [user: admin - pass: admin]
 
 [video_url]: https://drive.google.com/file/d/1xkekMJHkO5aSo4p88OzAjH64u8LYN37o/view?usp=share_link
 ![][Extra_GIF_Main]
